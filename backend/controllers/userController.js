@@ -1,16 +1,19 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const User = require('../models/userModel');
 const dotenv = require('dotenv');
 dotenv.config();
 
 // Register a new user
 exports.registerUser = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { fullname, email, password } = req.body;
 
-        // Chck if the user already exits
+        // console.log("User: ", fullname, email, password);
+        
+
+        // Check if the user already exits
         const userExists = await User.findOne({ email });
         if (userExists) {
             return res.status(400).json({ message: "User already exists" });
@@ -21,10 +24,13 @@ exports.registerUser = async (req, res) => {
 
         // Create a new user
         const newUser = new User({
-            username,
+            fullname,
             email,
             password: hashedPassword
         })
+
+        // console.log("New User: ", newUser);
+        
 
         await newUser.save();
         res.status(201).json({ message: "User registered successfully" });
@@ -37,6 +43,9 @@ exports.registerUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
+
+        console.log( email, password);
+        
         
         // Check if user exists
         const user = await User.findOne({ email });

@@ -8,10 +8,6 @@ const dotenv = require('dotenv');
 const path = require('path');
 // const bodyParser = require('body-parser');
 
-// Import routes
-// const postRoutes = require('./routes/posts');
-// const categoryRoutes = require('./routes/categories');
-// const authRoutes = require('./routes/auth');
 
 // Load environment variables
 dotenv.config();
@@ -39,9 +35,9 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // API routes
-// app.use('/api/posts', postRoutes);
-// app.use('/api/categories', categoryRoutes);
-// app.use('/api/auth', authRoutes);
+// app.use('/api/employee', require('./routes/employeesRoutes'));
+// app.use('/api/learner', require('./routes/learnerRoutes'));
+app.use('/api/user', require('./routes/userRoutes'));
 
 // Root route
 app.get('/', (req, res) => {
