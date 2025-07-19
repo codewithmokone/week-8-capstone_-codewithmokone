@@ -2,8 +2,15 @@ import Aside from "../components/Aside";
 import Header from "../components/Header";
 import { StatsCard } from '../components/StatsCard';
 import { Card } from '../components/Card'
+import { useContext } from "react";
+import { LearnerContext } from "../context/LearnerContext";
+import { UsersIcon,ClockIcon,BarChartIcon,CalendarIcon } from 'lucide-react'
 
 export default function Dashboard() {
+    const {learners} = useContext(LearnerContext)
+
+    console.log(learners.length);
+    
     return (
         <main className="space-y-6">
             <div>
@@ -15,11 +22,11 @@ export default function Dashboard() {
             </div>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 <StatsCard
-                    title="Total Children"
-                    value="42"
+                    title="Total Learners"
+                    value={learners.length}
                     description="+2 from last month"
                     trend="up"
-                    // icon={<UsersIcon className="h-6 w-6 text-blue-600" />}
+                    icon={<UsersIcon className="h-6 w-6 text-blue-600" />}
                     color="blue"
                 />
                 <StatsCard
@@ -27,7 +34,7 @@ export default function Dashboard() {
                     value="38"
                     description="91% attendance"
                     trend="neutral"
-                    // icon={<ClockIcon className="h-6 w-6 text-green-600" />}
+                    icon={<ClockIcon className="h-6 w-6 text-green-600" />}
                     color="green"
                 />
                 <StatsCard
@@ -35,17 +42,17 @@ export default function Dashboard() {
                     value="8"
                     description="3 completed"
                     trend="neutral"
-                    // icon={<BarChartIcon className="h-6 w-6 text-purple-600" />}
+                    icon={<BarChartIcon className="h-6 w-6 text-purple-600" />}
                     color="purple"
                 />
-                <StatsCard
+                {/* <StatsCard
                     title="Parent Messages"
                     value="12"
                     description="5 unread"
                     trend="up"
-                    // icon={<CalendarIcon className="h-6 w-6 text-amber-600" />}
+                    icon={<CalendarIcon className="h-6 w-6 text-amber-600" />}
                     color="amber"
-                />
+                /> */}
             </div>
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
                 <Card title="Announcements" className="lg:col-span-2">

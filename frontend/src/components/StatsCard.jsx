@@ -13,7 +13,7 @@ export const StatsCard = ({
       <div className="p-5">
         <div className="flex items-center">
           <div className={`flex-shrink-0 bg-white rounded-md p-3`}>
-            {/* {icon} */}
+            {icon}
           </div>
           <div className="ml-5 w-0 flex-1">
             <dl>
