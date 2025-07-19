@@ -1,43 +1,72 @@
-import Aside from "../components/Aside";
-import Header from "../components/Header";
-
-const children = [
-    {
-        id: 1,
-        name: 'Emma Johnson',
-        age: '4 years',
-        group: 'Butterflies',
-        attendance: '95%',
-        parentName: 'Sarah Johnson',
-        contactInfo: '(555) 123-4567',
-    },
-    {
-        id: 2,
-        name: 'Liam Smith',
-        age: '3 years',
-        group: 'Bumblebees',
-        attendance: '92%',
-        parentName: 'Michael Smith',
-        contactInfo: '(555) 234-5678',
-    },
-     {
-        id: 2,
-        name: 'Liam Smith',
-        age: '3 years',
-        group: 'Bumblebees',
-        attendance: '92%',
-        parentName: 'Michael Smith',
-        contactInfo: '(555) 234-5678',
-    },
-]
+import AddModal from "../components/AddModal";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { SearchIcon, FilterIcon, PlusIcon } from 'lucide-react'
 
 export default function Learners() {
+    const [children, setChildren] = useState();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const learnerFields = [
+        { name: "fullName", placeholder: "Full Name", required: true },
+        { name: "dateOfBirth", placeholder: "Date oF Birth", required: true, type: "date" },
+        { name: "gender", placeholder: "Gender", required: true },
+        // { name: "attendance", placeholder: "Attendance" },
+        { name: "guardianName", placeholder: "Parent/Guardian Name", required: true },
+        { name: "contactNumber", placeholder: "Contact Number", required: true, type: 'number' },
+    ];
+
+    const calculateAge = (dob) => {
+        const birthDate = new Date(dob);
+        const ageDifMs = Date.now() - birthDate.getTime();
+        const ageDate = new Date(ageDifMs);
+        return `${Math.abs(ageDate.getUTCFullYear() - 1970)} years`;
+    };
+
+    // Function for adding a new learner
+    const handleAddChild = async (data) => {
+        console.log(data);
+
+        try {
+            const response = await axios.post("http://localhost:4000/api/learners/register", data); // <-- your endpoint
+            const newLearner = response.data;
+
+            // Optionally: add to local state if backend doesn’t return full list
+            setChildren((prev) => [...prev, newLearner]);
+
+            // Or: refetch the full list instead
+            // fetchChildren();
+
+        } catch (err) {
+            console.error("Error adding learner:", err.response?.data || err.message);
+            alert("Failed to add learner.");
+        }
+    };
+
+    // Function for fetching learners
+    const fetchChildren = async () => {
+        try {
+            const res = await axios.get("http://localhost:4000/api/learners/");
+            const learners = res.data
+            console.log("Fetched Learners: ", learners);
+            setChildren(learners);
+        } catch (error) {
+            console.error("Error fetching learner:", err.response?.data || err.message);
+        }
+
+    };
+
+    useEffect(() => {
+        fetchChildren();
+    }, []);
+
+    console.log(children);
 
     return (
         <main className="space-y-6">
             <div className="sm:flex sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-2xl font-semibold text-gray-900">Children</h1>
+                    <h1 className="text-2xl font-semibold text-gray-900">Learners</h1>
                     <p className="mt-1 text-sm text-gray-500">
                         Manage children's information, attendance, and groups.
                     </p>
@@ -45,9 +74,10 @@ export default function Learners() {
                 <div className="mt-4 sm:mt-0">
                     <button
                         type="button"
+                        onClick={() => setIsModalOpen(true)}
                         className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                     >
-                        {/* <PlusIcon className="h-4 w-4 mr-2" /> */}
+                        <PlusIcon className="h-4 w-4 mr-2" />
                         Add Child
                     </button>
                 </div>
@@ -55,7 +85,7 @@ export default function Learners() {
             <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
                 <div className="flex-1 relative rounded-md shadow-sm">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        {/* <SearchIcon className="h-5 w-5 text-gray-400" /> */}
+                        <SearchIcon className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
                         type="text"
@@ -68,7 +98,7 @@ export default function Learners() {
                         type="button"
                         className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                     >
-                        {/* <FilterIcon className="h-4 w-4 mr-2 text-gray-500" /> */}
+                        <FilterIcon className="h-4 w-4 mr-2 text-gray-500" />
                         Filter
                     </button>
                 </div>
@@ -90,17 +120,17 @@ export default function Learners() {
                                 >
                                     Age
                                 </th>
-                                <th
+                                {/* <th
                                     scope="col"
                                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                 >
                                     Group
-                                </th>
+                                </th> */}
                                 <th
                                     scope="col"
                                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                 >
-                                    Attendance
+                                    Gender
                                 </th>
                                 <th
                                     scope="col"
@@ -112,7 +142,7 @@ export default function Learners() {
                                     scope="col"
                                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                 >
-                                    Contact
+                                    Contact No.
                                 </th>
                                 <th scope="col" className="relative px-6 py-3">
                                     <span className="sr-only">Actions</span>
@@ -120,13 +150,13 @@ export default function Learners() {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {children.map((child) => (
+                            {children ? children.map((child) => (
                                 <tr key={child.id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
                                             <div className="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
                                                 <span className="font-medium text-xs text-purple-800">
-                                                    {child.name
+                                                    {child.fullName
                                                         .split(' ')
                                                         .map((n) => n[0])
                                                         .join('')}
@@ -134,15 +164,43 @@ export default function Learners() {
                                             </div>
                                             <div className="ml-4">
                                                 <div className="text-sm font-medium text-gray-900">
-                                                    {child.name}
+                                                    {child.fullName}
                                                 </div>
                                             </div>
                                         </div>
+                                        {/* {child.firstName}{child.lastName} */}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {child.age}
+                                        {calculateAge(child.dateOfBirth)}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
+                                    {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {child.guardianName}
+                                    </td> */}
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {child.gender}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {child.guardianName}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {child.contactNumber ? (<>+27 {child.contactNumber}</>) : ('')}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <a
+                                            href="#"
+                                            className="text-purple-600 hover:text-purple-900"
+                                        >
+                                            View
+                                        </a>
+                                        <span className="mx-2 text-gray-300">|</span>
+                                        <a
+                                            href="#"
+                                            className="text-purple-600 hover:text-purple-900"
+                                        >
+                                            Edit
+                                        </a>
+                                    </td>
+                                    {/* <td className="px-6 py-4 whitespace-nowrap">
                                         <span
                                             className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                       ${child.group === 'Butterflies' ? 'bg-blue-100 text-blue-800' : child.group === 'Bumblebees' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}
@@ -173,9 +231,9 @@ export default function Learners() {
                                         >
                                             Edit
                                         </a>
-                                    </td>
+                                    </td> */}
                                 </tr>
-                            ))}
+                            )) : (<p>No added learners.</p>)}
                         </tbody>
                     </table>
                 </div>
@@ -269,6 +327,13 @@ export default function Learners() {
                     </div>
                 </div>
             </div>
+            <AddModal
+                title="Add New Learner"
+                fields={learnerFields}
+                onSubmit={handleAddChild}
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
         </main>
     )
 }
