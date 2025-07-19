@@ -1,14 +1,24 @@
 import { NavLink } from "react-router-dom";
+import {
+    HomeIcon,
+    UsersIcon,
+    CalendarIcon,
+    ActivityIcon,
+    MessageCircleIcon,
+    SettingsIcon,
+    HelpCircleIcon,
+    LogOutIcon,
+} from 'lucide-react'
 
 export default function Aside() {
     const links = [
-        { to: "/dashboard", label: "Dashboard" },
-        { to: "/learners", label: "Learners" },
-        { to: "/staff", label: "Staff" },
-        { to: "/learning", label: "Learning" },
-        { to: "/accounts", label: "Accounts" },
-        { to: "/communication", label: "Communication" },
-        { to: "/settings", label: "Settings" },
+        { to: "/dashboard", label: "Dashboard", icon: HomeIcon, },
+        { to: "/learners", label: "Learners", icon: UsersIcon, },
+        { to: "/staff", label: "Staff", icon: UsersIcon, },
+        { to: "/activities", label: "Activities", icon: ActivityIcon, },
+        { to: "/accounts", label: "Accounts", icon: HomeIcon, },
+        { to: "/calender", label: "Calender", icon: CalendarIcon, },
+        { to: "/settings", label: "Settings", icon: SettingsIcon, },
     ]
 
     // const secondaryNavigation = [
@@ -23,25 +33,29 @@ export default function Aside() {
     //         icon: HelpCircleIcon,
     //     },
     // ]
-    
+
     return (
         <aside className="w-fit bg-gray-600 h-screen flex flex-col gap-16 p-6">
             <div>
                 <h1 className="font-bold text-2xl text-gray-500">Logo</h1>
             </div>
             <nav className="flex flex-col gap-10">
-                {links.map(({ to, label }) => (
+                {links.map((link,index) => (
                     <NavLink
-                        key={to}
-                        to={to}
+                        key={index}
+                        to={link.to}
                         className={({ isActive }) =>
-                            `px-8 py-2 rounded transition-colors ${isActive
+                            `px-8 py-2 rounded transition-colors flex gap-4 ${isActive
                                 ? "text-gray-600 font-semibold bg-white"
                                 : "text-gray-700 dark:text-gray-200 hover:text-blue-500"
                             }`
                         }
                     >
-                        {label}
+                        <link.icon
+                        //     className={`mr-3 h-5 w-5 ${isActive ? 'text-purple-500' : 'text-gray-400'}`
+                        // }
+                        />
+                        {link.label}
                     </NavLink>
                 ))}
             </nav>
