@@ -1,64 +1,69 @@
-import { useState } from "react";
-import Aside from "../components/Aside";
-import Header from "../components/Header";
+import { useContext, useState } from "react";
 import AddModal from "../components/AddModal";
 import axios from "axios";
+import { SearchIcon, FilterIcon, PlusIcon } from 'lucide-react'
+import { EmployeeContext } from "../context/employeeContext";
 
-const employeesList = [
-    {
-        id: 1,
-        name: 'Emma Johnson',
-        age: '4 years',
-        group: 'Butterflies',
-        attendance: '95%',
-        parentName: 'Sarah Johnson',
-        contactInfo: '(555) 123-4567',
-    },
-    {
-        id: 2,
-        name: 'Liam Smith',
-        age: '3 years',
-        group: 'Bumblebees',
-        attendance: '92%',
-        parentName: 'Michael Smith',
-        contactInfo: '(555) 234-5678',
-    },
-    {
-        id: 2,
-        name: 'Liam Smith',
-        age: '3 years',
-        group: 'Bumblebees',
-        attendance: '92%',
-        parentName: 'Michael Smith',
-        contactInfo: '(555) 234-5678',
-    },
-]
+// const employeesList = [
+//     {
+//         id: 1,
+//         name: 'Emma Johnson',
+//         age: '4 years',
+//         group: 'Butterflies',
+//         attendance: '95%',
+//         parentName: 'Sarah Johnson',
+//         contactInfo: '(555) 123-4567',
+//     },
+//     {
+//         id: 2,
+//         name: 'Liam Smith',
+//         age: '3 years',
+//         group: 'Bumblebees',
+//         attendance: '92%',
+//         parentName: 'Michael Smith',
+//         contactInfo: '(555) 234-5678',
+//     },
+//     {
+//         id: 2,
+//         name: 'Liam Smith',
+//         age: '3 years',
+//         group: 'Bumblebees',
+//         attendance: '92%',
+//         parentName: 'Michael Smith',
+//         contactInfo: '(555) 234-5678',
+//     },
+// ]
 
 export default function Staff() {
-    const [employees, setEmployees] = useState(employeesList);
+    // const [employees, setEmployees] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const {employees, setEmployees} = useContext(EmployeeContext)
 
 
     const employeeFields = [
         { name: "fullName", placeholder: "Full Name", required: true },
         { name: "position", placeholder: "Position", required: true },
         { name: "email", placeholder: "Email", type: "email" },
+         { name: "contactNumber", placeholder: "Contact", type: "number" },
     ];
 
     const handleAddEmployee = async (data) => {
+        console.log(data);
+        
     try {
-        const response = await axios.post("http://localhost:5000/api/learners", data); // <-- your endpoint
+        const response = await axios.post("http://localhost:4000/api/employees/register", data); // <-- your endpoint
         const newLearner = response.data;
 
         // Optionally: add to local state if backend doesn’t return full list
-        setChildren((prev) => [...prev, newLearner]);
+        setEmployees((prev) => [...prev, newLearner]);
 
         // Or: refetch the full list instead
         // fetchChildren();
 
     } catch (err) {
-        console.error("Error adding learner:", err.response?.data || err.message);
-        alert("Failed to add learner.");
+        console.error("Error adding employee:", err.response?.data || err.message);
+        alert("Failed to add employee.");
     }
 };
 
@@ -74,22 +79,23 @@ export default function Staff() {
                     <div className="mt-4 sm:mt-0">
                         <button
                             type="button"
+                            onClick={() => setIsModalOpen(true)}
                             className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                         >
-                            {/* <PlusIcon className="h-4 w-4 mr-2" /> */}
+                            <PlusIcon className="h-4 w-4 mr-2" />
                             Add Epmloyee
                         </button>
                     </div>
                 </div>
-                <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                {/* <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
                     <div className="flex-1 relative rounded-md shadow-sm">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            {/* <SearchIcon className="h-5 w-5 text-gray-400" /> */}
+                            <SearchIcon className="h-5 w-5 text-gray-400" />
                         </div>
                         <input
                             type="text"
                             className="focus:ring-purple-500 focus:border-purple-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
-                            placeholder="Search children..."
+                            placeholder="Search Employees..."
                         />
                     </div>
                     <div>
@@ -97,11 +103,11 @@ export default function Staff() {
                             type="button"
                             className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                         >
-                            {/* <FilterIcon className="h-4 w-4 mr-2 text-gray-500" /> */}
+                            <FilterIcon className="h-4 w-4 mr-2 text-gray-500" />
                             Filter
                         </button>
                     </div>
-                </div>
+                </div> */}
                 <div className="bg-white shadow overflow-hidden rounded-lg">
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
@@ -117,34 +123,36 @@ export default function Staff() {
                                         scope="col"
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        Age
+                                        Position
                                     </th>
                                     <th
                                         scope="col"
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        Group
+                                        Email
                                     </th>
-                                    <th
+                                    {/* <th
                                         scope="col"
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        Attendance
+                                        Contact
                                     </th>
                                     <th
                                         scope="col"
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
                                         Parent/Guardian
-                                    </th>
+                                    </th> */}
                                     <th
                                         scope="col"
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
                                         Contact
                                     </th>
-                                    <th scope="col" className="relative px-6 py-3">
-                                        <span className="sr-only">Actions</span>
+                                    <th scope="col" className="relative px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                    >
+
+                                        Actions
                                     </th>
                                 </tr>
                             </thead>
@@ -155,7 +163,7 @@ export default function Staff() {
                                             <div className="flex items-center">
                                                 <div className="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
                                                     <span className="font-medium text-xs text-purple-800">
-                                                        {epmloyee.name
+                                                        {epmloyee.fullName
                                                             .split(' ')
                                                             .map((n) => n[0])
                                                             .join('')}
@@ -163,30 +171,30 @@ export default function Staff() {
                                                 </div>
                                                 <div className="ml-4">
                                                     <div className="text-sm font-medium text-gray-900">
-                                                        {epmloyee.name}
+                                                        {epmloyee.fullName}
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {epmloyee.age}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
+                                        </td> */}
+                                        {/* <td className="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                       ${epmloyee.group === 'Butterflies' ? 'bg-blue-100 text-blue-800' : epmloyee.group === 'Bumblebees' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}
                                             >
                                                 {epmloyee.group}
                                             </span>
+                                        </td> */}
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {epmloyee.position}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {epmloyee.attendance}
+                                            {epmloyee.email}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {epmloyee.parentName}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {epmloyee.contactInfo}
+                                            {epmloyee.contactNumber}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <a

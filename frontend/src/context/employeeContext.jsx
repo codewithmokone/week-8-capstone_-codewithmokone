@@ -27,10 +27,39 @@ export const EmployeeProvider = ({children}) => {
         fetchData()
     }, []);
 
+    const addEmployee = async (data) => {
+    try {
+      const res = await axios.post('/employees', data);
+      setEmployees((prev) => [...prev, res.data]);
+    } catch (err) {
+      console.error('Failed to add employee', err);
+    }
+  };
+
+  const updateEmployee = async (id, data) => {
+    try {
+      const res = await axios.put(`/employees/${id}`, data);
+      setEmployees((prev) =>
+        prev.map((e) => (e._id === id ? res.data : e))
+      );
+    } catch (err) {
+      console.error('Failed to update employee', err);
+    }
+  };
+
+  const deleteEmployee = async (id) => {
+    try {
+      await axios.delete(`/employees/${id}`);
+      setEmployees((prev) => prev.filter((e) => e._id !== id));
+    } catch (err) {
+      console.error('Failed to delete employee', err);
+    }
+  };
+
     console.log("Employee Context: ", employees);
     
     return (
-        <EmployeeContext.Provider value={{employees, loading, error}}>
+        <EmployeeContext.Provider value={{employees, addEmployee, updateEmployee, deleteEmployee, loading, error, setEmployees}}>
             {children}
         </EmployeeContext.Provider>
     )

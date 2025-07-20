@@ -1,11 +1,18 @@
 import AddModal from "../components/AddModal";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { SearchIcon, FilterIcon, PlusIcon } from 'lucide-react'
+import { LearnerContext } from "../context/LearnerContext";
 
 export default function Learners() {
-    const [children, setChildren] = useState();
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const { addLearner, learnersData, error } = useContext(LearnerContext);
+
+    console.log(learnersData);
+    
+
+    // const { addLearner, learnersData } = useContext(LearnerContext);
 
     const learnerFields = [
         { name: "fullName", placeholder: "Full Name", required: true },
@@ -28,39 +35,29 @@ export default function Learners() {
         console.log(data);
 
         try {
-            const response = await axios.post("http://localhost:4000/api/learners/register", data); // <-- your endpoint
-            const newLearner = response.data;
-
-            // Optionally: add to local state if backend doesn’t return full list
-            setChildren((prev) => [...prev, newLearner]);
-
-            // Or: refetch the full list instead
-            // fetchChildren();
-
-        } catch (err) {
-            console.error("Error adding learner:", err.response?.data || err.message);
-            alert("Failed to add learner.");
-        }
-    };
-
-    // Function for fetching learners
-    const fetchChildren = async () => {
-        try {
-            const res = await axios.get("http://localhost:4000/api/learners/");
-            const learners = res.data
-            console.log("Fetched Learners: ", learners);
-            setChildren(learners);
+            addLearner({data});
         } catch (error) {
-            console.error("Error fetching learner:", err.response?.data || err.message);
+            error
         }
 
+        
+
+        // try {
+
+        //     const response = await axios.post("http://localhost:4000/api/learners/register", data); // <-- your endpoint
+        //     const newLearner = response.data;
+
+        //     // Optionally: add to local state if backend doesn’t return full list
+        //     setLearners((prev) => [...prev, newLearner]);
+
+        //     // Or: refetch the full list instead
+        //     // fetchChildren();
+
+        // } catch (err) {
+        //     console.error("Error adding learner:", err.response?.data || err.message);
+        //     alert("Failed to add learner.");
+        // }
     };
-
-    useEffect(() => {
-        fetchChildren();
-    }, []);
-
-    console.log(children);
 
     return (
         <main className="space-y-6">
@@ -82,7 +79,7 @@ export default function Learners() {
                     </button>
                 </div>
             </div>
-            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+            {/* <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
                 <div className="flex-1 relative rounded-md shadow-sm">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <SearchIcon className="h-5 w-5 text-gray-400" />
@@ -102,7 +99,7 @@ export default function Learners() {
                         Filter
                     </button>
                 </div>
-            </div>
+            </div> */}
             <div className="bg-white shadow overflow-hidden rounded-lg">
                 <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
@@ -150,7 +147,7 @@ export default function Learners() {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {children ? children.map((child) => (
+                            {learnersData ? learnersData.map((child) => (
                                 <tr key={child.id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">

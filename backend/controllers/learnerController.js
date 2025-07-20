@@ -25,7 +25,7 @@
 //     }
 // }
 
-const employeeModel = require('../models/employeesModel');
+const learnersModel = require('../models/learnersModel');
 // const upload = require('../middleware/uploads');
 const fs = require('fs');
 const path = require('path');
@@ -33,26 +33,28 @@ const mongoose = require('mongoose');
 // const { log } = require('console');
 
 //Get all employees
-exports.getAllPosts = async (req,res) => {
-    try {
-        const posts = await employeeModel.find().sort({ createdAt: -1 });
+exports.getAllLearners = async (req, res) => {
+  try {
+    const learners = await learnersModel.find().sort({ createdAt: -1 });
 
-        const formattedPosts = posts.map(post => {
-            const postObj = post.toObject();
+    const formattedPosts = learners.map(learner => {
+      const imageObj = learner.toObject();
 
-            if (postObj.featuredImage?.data) {
-                postObj.featuredImage = {
-                    type: postObj.featuredImage.contentType,
-                    data: postObj.featuredImage.data.toString('base64')
-                };
-            }
+      if (imageObj.featuredImage?.data) {
+        imageObj.featuredImage = {
+          type: imageObj.featuredImage.contentType,
+          data: imageObj.featuredImage.data.toString('base64')
+        };
+      }
 
-            return postObj;
-        });
-        res.status(200).json(formattedPosts);
-    } catch (error) {
-        res.status(500).json({message: error.message});
-    }
+      return imageObj;
+    });
+    console.log(formattedPosts);
+    
+    res.status(200).json(formattedPosts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // Get a single post
@@ -67,41 +69,40 @@ exports.getPostById = async (req, res) => {
 };
 
 // Create a new post
-exports.createPost = async (req,res) => {
-    const { title, content, slug, category, tags,author, excerpt, isPublished} = req.body;
-    
-    try {
-        const imageData = req.file ? fs.readFileSync(path.join(__dirname + '../../uploads/' + req.file.filename)): null;
-        
-        const newEmployee = new Post({
-          title,
-          content,
-          slug, 
-          category,
-          tags,
-          author,
-          excerpt,
-          tags,
-          featuredImage: {
-            data: imageData,
-            contentType: 'image/png'
-          },
-          isPublished
-        });
+exports.createLearner = async (req, res) => {
+  const { fullName, dateOfBirth, gender,guardianName,contactNumber } = req.body;
 
-        const employee = await employeeModel.create(newEmployee)
-        res.status(201).json(employee);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
+  console.log("Controller", fullName, dateOfBirth, gender,guardianName,contactNumber);
+  
+
+  try {
+    // const imageData = req.file ? fs.readFileSync(path.join(__dirname + '../../uploads/' + req.file.filename)) : null;
+
+    const newLearner = new learnersModel({
+      fullName,
+      dateOfBirth,
+      gender,
+      guardianName,
+      contactNumber
+      // featuredImage: {
+      //   data: imageData,
+      //   contentType: 'image/png'
+      // }
+    });
+
+    const learner = await learnersModel.create(newLearner)
+    res.status(201).json(learner);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 }
 
 // Update a post
 exports.updatePost = async (req, res) => {
   console.log(req.body);
-  
+
   try {
-    const updatedEmployee = await employeeModel.findByIdAndUpdate(
+    const updatedEmployee = await learnersModel.findByIdAndUpdate(
       req.params.id,
       {
         featuredImage: req.file?.filename,
@@ -118,9 +119,9 @@ exports.updatePost = async (req, res) => {
 // Delete a post
 exports.deletePost = async (req, res) => {
   console.log(req.params.id);
-  
+
   try {
-    const deletedEmployee = await employeeModel.findByIdAndDelete(req.params.id);
+    const deletedEmployee = await learnersModel.findByIdAndDelete(req.params.id);
     if (!deletedPost) return res.status(404).json({ message: 'Post not found' });
     res.status(200).json({ message: 'Post deleted successfully' });
   } catch (err) {

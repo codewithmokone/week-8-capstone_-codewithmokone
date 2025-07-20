@@ -35,8 +35,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // API routes
-// app.use('/api/employee', require('./routes/employeesRoutes'));
-// app.use('/api/learner', require('./routes/learnerRoutes'));
+app.use('/api/employees', require('./routes/employeesRoutes'));
+app.use('/api/learners', require('./routes/learnersRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));
 
 // Root route

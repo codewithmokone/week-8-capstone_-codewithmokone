@@ -27,32 +27,32 @@
 
 const employeeModel = require('../models/employeesModel');
 // const upload = require('../middleware/uploads');
-const fs = require('fs');
-const path = require('path');
-const mongoose = require('mongoose');
+// const fs = require('fs');
+// const path = require('path');
+// const mongoose = require('mongoose');
 // const { log } = require('console');
 
 //Get all employees
-exports.getAllPosts = async (req,res) => {
-    try {
-        const posts = await employeeModel.find().sort({ createdAt: -1 });
+exports.getAllEmployees = async (req, res) => {
+  try {
+    const posts = await employeeModel.find().sort({ createdAt: -1 });
 
-        const formattedPosts = posts.map(post => {
-            const postObj = post.toObject();
+    const formattedPosts = posts.map(post => {
+      const postObj = post.toObject();
 
-            if (postObj.featuredImage?.data) {
-                postObj.featuredImage = {
-                    type: postObj.featuredImage.contentType,
-                    data: postObj.featuredImage.data.toString('base64')
-                };
-            }
+      if (postObj.featuredImage?.data) {
+        postObj.featuredImage = {
+          type: postObj.featuredImage.contentType,
+          data: postObj.featuredImage.data.toString('base64')
+        };
+      }
 
-            return postObj;
-        });
-        res.status(200).json(formattedPosts);
-    } catch (error) {
-        res.status(500).json({message: error.message});
-    }
+      return postObj;
+    });
+    res.status(200).json(formattedPosts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // Get a single post
@@ -67,39 +67,48 @@ exports.getPostById = async (req, res) => {
 };
 
 // Create a new post
-exports.createPost = async (req,res) => {
-    const { title, content, slug, category, tags,author, excerpt, isPublished} = req.body;
-    
-    try {
-        const imageData = req.file ? fs.readFileSync(path.join(__dirname + '../../uploads/' + req.file.filename)): null;
-        
-        const newEmployee = new Post({
-          title,
-          content,
-          slug, 
-          category,
-          tags,
-          author,
-          excerpt,
-          tags,
-          featuredImage: {
-            data: imageData,
-            contentType: 'image/png'
-          },
-          isPublished
-        });
+exports.createEmployees = async (req, res) => {
+  const { fullName,
+    email,
+    position,
+    contactNumber, } = req.body;
 
-        const employee = await employeeModel.create(newEmployee)
-        res.status(201).json(employee);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
+    console.log( fullName,
+    email,
+    position,
+    contactNumber);
+    
+
+  try {
+    // const imageData = req.file ? fs.readFileSync(path.join(__dirname + '../../uploads/' + req.file.filename)) : null;
+
+    const newEmployee = new employeeModel({
+      fullName,
+      email,
+      position,
+      contactNumber,
+      // tags,
+      // author,
+      // excerpt,
+      // tags,
+      // featuredImage: {
+      //   data: imageData,
+      //   contentType: 'image/png'
+      // },
+      // isPublished
+    });
+
+    const employee = await employeeModel.create(newEmployee)
+    res.status(201).json(employee);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 }
 
 // Update a post
 exports.updatePost = async (req, res) => {
   console.log(req.body);
-  
+
   try {
     const updatedEmployee = await employeeModel.findByIdAndUpdate(
       req.params.id,
@@ -118,7 +127,7 @@ exports.updatePost = async (req, res) => {
 // Delete a post
 exports.deletePost = async (req, res) => {
   console.log(req.params.id);
-  
+
   try {
     const deletedEmployee = await employeeModel.findByIdAndDelete(req.params.id);
     if (!deletedPost) return res.status(404).json({ message: 'Post not found' });

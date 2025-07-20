@@ -1,13 +1,7 @@
 const mongoose = require('mongoose');
 
 const LearnerSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-
-  lastName: {
+  fullName: {
     type: String,
     required: true,
     trim: true,
@@ -23,52 +17,63 @@ const LearnerSchema = new mongoose.Schema({
     enum: ['Male', 'Female', 'Other'],
   },
 
-  guardians: [
-    {
-      name: { type: String, required: true },
-      relationship: { type: String, required: true },
-      phone: { type: String, required: true },
-      email: { type: String },
-    },
-  ],
-
-  emergencyContacts: [
-    {
-      name: { type: String, required: true },
-      phone: { type: String, required: true },
-      relationship: { type: String },
-    },
-  ],
-
-  allergies: {
-    type: [String], // list of allergy names
-    default: [],
-  },
-
-  specialNeeds: {
+  guardianName: {
     type: String,
+    required: true,
+    trim: true,
   },
 
-  enrollmentDate: {
-    type: Date,
-    default: Date.now,
+  contactNumber: {
+    type: Number,
+    required: true,
   },
 
-  attendanceRecords: [
-    {
-      date: { type: Date, required: true },
-      present: { type: Boolean, required: true },
-    },
-  ],
+  // guardians: [
+  //   {
+  //     name: { type: String, required: true },
+  //     relationship: { type: String, required: true },
+  //     phone: { type: String, required: true },
+  //     email: { type: String },
+  //   },
+  // ],
 
-  notes: {
-    type: String,
-  },
+  // emergencyContacts: [
+  //   {
+  //     name: { type: String, required: true },
+  //     phone: { type: String, required: true },
+  //     relationship: { type: String },
+  //   },
+  // ],
 
-  isActive: {
-    type: Boolean,
-    default: true,
-  },
+  // allergies: {
+  //   type: [String], // list of allergy names
+  //   default: [],
+  // },
+
+  // specialNeeds: {
+  //   type: String,
+  // },
+
+  // enrollmentDate: {
+  //   type: Date,
+  //   default: Date.now,
+  // },
+
+  // attendanceRecords: [
+  //   {
+  //     date: { type: Date, required: true },
+  //     present: { type: Boolean, required: true },
+  //   },
+  // ],
+
+  // notes: {
+  //   type: String,
+  // },
+
+  // isActive: {
+  //   type: Boolean,
+  //   default: true,
+  // },
 });
 
 module.exports = mongoose.model('Learner', LearnerSchema);

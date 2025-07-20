@@ -1,12 +1,7 @@
 const mongoose = require('mongoose');
 
 const employeeSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  lastName: {
+  fullName: {
     type: String,
     required: true,
     trim: true,
@@ -22,21 +17,25 @@ const employeeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  department: {
-    type: String,
-  },
-  salary: {
+    contactNumber: {
     type: Number,
-    min: 0,
+    required: true,
   },
-  dateHired: {
-    type: Date,
-    default: Date.now,
-  },
-  isActive: {
-    type: Boolean,
-    default: true,
-  },
+  // department: {
+  //   type: String,
+  // },
+  // salary: {
+  //   type: Number,
+  //   min: 0,
+  // },
+  // dateHired: {
+  //   type: Date,
+  //   default: Date.now,
+  // },
+  // isActive: {
+  //   type: Boolean,
+  //   default: true,
+  // },
 });
 
 module.exports = mongoose.model('Employee', employeeSchema);

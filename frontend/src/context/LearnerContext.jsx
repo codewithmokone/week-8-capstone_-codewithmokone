@@ -1,10 +1,11 @@
 import { createContext, useEffect, useState } from "react";
-import axios from '../service/axios';
+// import axios from '../api/axios';
+import axios from 'axios'
 
 export const LearnerContext = createContext();
 
 export const LearnerProvider = ({ children }) => {
-    const [learners, setLearners] = useState([]);
+    const [learnersData, setLearnersData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -12,11 +13,12 @@ export const LearnerProvider = ({ children }) => {
         const fetchData = async () => {
             setLoading(true)
             try {
-                const response = await axios.get('learners/');
+                // const res = await axios.get('/learners');
+                const response = await fetch('http://localhost:4000/api/learners/');
                 const json = await response.json();
 
                 if (response.ok) {
-                    setLearners(json);
+                    setLearnersData(json);
                 }
             } catch (error) {
                 setError(error.message || 'Failed to fetch learners.')
@@ -29,17 +31,20 @@ export const LearnerProvider = ({ children }) => {
     }, []);
 
 
-    // ➕ Create
-    const addLearner = async (learnerData) => {
+    // Create
+    const addLearner = async (data) => {
+        console.log("add learner: ", data);
+        
         try {
-            const res = await axios.post('/learners', learnerData);
-            setLearners((prev) => [...prev, res.data]);
+            const response = await axios.post("http://localhost:4000/api/learners/register", data);
+            // const res = await axios.post('http://localhost:4000/api/learners/register', data);
+            setLearners((prev) => [...prev, response.data]);
         } catch (err) {
             console.error('Failed to add learner', err);
         }
     };
 
-    // ✏️ Update
+    // Update
     const updateLearner = async (id, updatedData) => {
         try {
             const res = await axios.put(`/learners/${id}`, updatedData);
@@ -51,7 +56,7 @@ export const LearnerProvider = ({ children }) => {
         }
     };
 
-    // ❌ Delete
+    // Delete
     const deleteLearner = async (id) => {
         try {
             await axios.delete(`/learners/${id}`);
@@ -61,10 +66,10 @@ export const LearnerProvider = ({ children }) => {
         }
     };
 
-    console.log("Learner Context: ", learners);
+    console.log("Learner Context: ", learnersData);
 
     return (
-        <LearnerContext.Provider value={{ learners, loading, error }}>
+        <LearnerContext.Provider value={{ learnersData ,addLearner, updateLearner, deleteLearner, loading, error }}>
             {children}
         </LearnerContext.Provider>
     )
