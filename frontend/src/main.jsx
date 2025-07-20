@@ -4,13 +4,16 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { LearnerProvider } from './context/LearnerContext.jsx'
+import { EmployeeProvider } from './context/employeeContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <LearnerProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <EmployeeProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </EmployeeProvider>
     </LearnerProvider>
   </StrictMode>
 )
