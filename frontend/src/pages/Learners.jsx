@@ -3,14 +3,18 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { SearchIcon, FilterIcon, PlusIcon } from 'lucide-react'
 import { LearnerContext } from "../context/LearnerContext";
+import ViewModal from "../components/ViewModal";
 
 export default function Learners() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+    const [selectedData, setSelectedData] = useState(null);
+    const [modalType, setModalType] = useState(null);
 
     const { addLearner, learnersData, error } = useContext(LearnerContext);
 
     console.log(learnersData);
-    
+
 
     // const { addLearner, learnersData } = useContext(LearnerContext);
 
@@ -35,12 +39,12 @@ export default function Learners() {
         console.log(data);
 
         try {
-            addLearner({data});
+            addLearner({ data });
         } catch (error) {
             error
         }
 
-        
+
 
         // try {
 
@@ -57,6 +61,12 @@ export default function Learners() {
         //     console.error("Error adding learner:", err.response?.data || err.message);
         //     alert("Failed to add learner.");
         // }
+    };
+
+    const handleView = (type, data) => {
+        setModalType(type);
+        setSelectedData(data);
+        setIsViewModalOpen(true);
     };
 
     return (
@@ -186,6 +196,7 @@ export default function Learners() {
                                         <a
                                             href="#"
                                             className="text-purple-600 hover:text-purple-900"
+                                            onClick={()=>handleView('learner',child)}
                                         >
                                             View
                                         </a>
@@ -330,6 +341,12 @@ export default function Learners() {
                 onSubmit={handleAddChild}
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
+            />
+            <ViewModal
+                isOpen={isViewModalOpen}
+                onClose={() => setIsViewModalOpen(false)}
+                type={'learner'}
+                data={selectedData}
             />
         </main>
     )
