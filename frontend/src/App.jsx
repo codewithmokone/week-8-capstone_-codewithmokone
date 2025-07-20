@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import Learners from './pages/Learners'
 import Staff from './pages/Staff'
-import Aside from './components/Aside'
+import Users from './pages/Users'
 import DashboardLayout from './layouts/DashboardLayout'
 // import Register from './pages/Register'
 
@@ -16,6 +16,7 @@ function App() {
         {/* <Route path='register' element={<Register />}/> */}
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/learners' element={<Learners />} />
+        <Route path='/users' element={<Users />} />
         <Route path='/staff' element={<Staff />} />
       </Routes>
     </DashboardLayout>

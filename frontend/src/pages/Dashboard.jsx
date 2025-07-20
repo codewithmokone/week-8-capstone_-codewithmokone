@@ -2,12 +2,23 @@ import Aside from "../components/Aside";
 import Header from "../components/Header";
 import { StatsCard } from '../components/StatsCard';
 import { Card } from '../components/Card'
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { LearnerContext } from "../context/LearnerContext";
 import { UsersIcon,ClockIcon,BarChartIcon,CalendarIcon } from 'lucide-react'
 
 export default function Dashboard() {
+    const [numberOfLearners, setNumberOfLearners] = useState('');
+    
     const {learners} = useContext(LearnerContext);
+
+    if(learners){
+        setNumberOfLearners(learners.length);
+        console.log(learners.length);
+        
+    }
+
+    console.log(learners);
+    
     
     return (
         <main className="space-y-6">
@@ -22,7 +33,7 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 <StatsCard
                     title="Total Learners"
-                    value={learners.length}
+                    value={numberOfLearners}
                     // description="+2 from last month"
                     // trend="up"
                     icon={<UsersIcon className="h-6 w-6 text-blue-600" />}

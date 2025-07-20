@@ -15,10 +15,10 @@ export default function Aside() {
         { to: "/dashboard", label: "Dashboard", icon: HomeIcon, },
         { to: "/learners", label: "Learners", icon: UsersIcon, },
         { to: "/staff", label: "Staff", icon: UsersIcon, },
-        { to: "/activities", label: "Activities", icon: ActivityIcon, },
-        { to: "/accounts", label: "Accounts", icon: HomeIcon, },
-        { to: "/calender", label: "Calender", icon: CalendarIcon, },
-        { to: "/settings", label: "Settings", icon: SettingsIcon, },
+        // { to: "/activities", label: "Activities", icon: ActivityIcon, },
+        // { to: "/accounts", label: "Accounts", icon: HomeIcon, },
+        { to: "/users", label: "Users", icon: CalendarIcon, },
+        // { to: "/settings", label: "Settings", icon: SettingsIcon, },
     ]
 
     // const secondaryNavigation = [
@@ -37,7 +37,7 @@ export default function Aside() {
     return (
         <aside className="w-fit bg-gray-600 h-screen flex flex-col gap-16 p-6">
             <div>
-                <h1 className="font-bold text-2xl text-gray-500">Logo</h1>
+                <h1 className="font-bold text-2xl text-gray-500">BrightPath LMS</h1>
             </div>
             <nav className="flex flex-col gap-10">
                 {links.map((link,index) => (

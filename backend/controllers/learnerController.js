@@ -49,7 +49,7 @@ exports.getAllLearners = async (req, res) => {
 
       return imageObj;
     });
-    console.log(formattedPosts);
+    // console.log(formattedPosts);
     
     res.status(200).json(formattedPosts);
   } catch (error) {
