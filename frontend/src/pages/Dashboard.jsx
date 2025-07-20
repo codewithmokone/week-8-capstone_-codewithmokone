@@ -2,22 +2,41 @@ import Aside from "../components/Aside";
 import Header from "../components/Header";
 import { StatsCard } from '../components/StatsCard';
 import { Card } from '../components/Card'
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LearnerContext } from "../context/LearnerContext";
 import { UsersIcon,ClockIcon,BarChartIcon,CalendarIcon } from 'lucide-react'
+import { UsersContext } from "../context/userContext";
 
 export default function Dashboard() {
     const [numberOfLearners, setNumberOfLearners] = useState('');
+    const [numberOfemployees, setNumberOfEmployees] = useState('');
+    const [numberOfUsers, setNumberOfUsers] = useState('');
     
-    const {learners} = useContext(LearnerContext);
+    const {learnersData} = useContext(LearnerContext);
+    const {usersData} = useContext(UsersContext);
 
-    if(learners){
-        setNumberOfLearners(learners.length);
-        console.log(learners.length);
-        
-    }
+    useEffect(() => {
+        const fetchLocalData = () => {
+            const userCount = localStorage.getItem('numberOfUsers');
+            const learnerCount = localStorage.getItem('numberOfLearners');
+            const emplyeeCount = localStorage.getItem('numberOfEmployees');
+            setNumberOfUsers(userCount);
+            setNumberOfEmployees(emplyeeCount);
+            setNumberOfLearners(learnerCount);
+        }
 
-    console.log(learners);
+        fetchLocalData();
+    }, []);
+    // if(learnersData){
+    //     setNumberOfLearners(learnersData.length);
+    // }
+
+    // if(usersData){
+    //     setNumberOfUsers(usersData.length);
+    // }
+
+    console.log(numberOfLearners);
+    console.log(usersData);
     
     
     return (
@@ -34,16 +53,18 @@ export default function Dashboard() {
                 <StatsCard
                     title="Total Learners"
                     value={numberOfLearners}
-                    // description="+2 from last month"
-                    // trend="up"
                     icon={<UsersIcon className="h-6 w-6 text-blue-600" />}
                     color="blue"
                 />
                 <StatsCard
                     title="Total Employees"
-                    value="38"
-                    // description="91% attendance"
-                    // trend="neutral"
+                    value={numberOfemployees}
+                    icon={<ClockIcon className="h-6 w-6 text-green-600" />}
+                    color="green"
+                />
+                <StatsCard
+                    title="Total Users"
+                    value={numberOfUsers}
                     icon={<ClockIcon className="h-6 w-6 text-green-600" />}
                     color="green"
                 />
@@ -88,22 +109,22 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </Card> */}
-                <Card title="Quick Actions">
+                {/* <Card title="Quick Actions">
                     <div className="space-y-3">
-                        {/* <button className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700">
+                        <button className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700">
                             Take Attendance
-                        </button> */}
+                        </button>
                         <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                             Add New Learner
                         </button>
                         <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                             Add New Employee
                         </button>
-                        {/* <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                             Message Parents
-                        </button> */}
+                        </button>
                     </div>
-                </Card>
+                </Card> */}
             </div>
         </main>
     )

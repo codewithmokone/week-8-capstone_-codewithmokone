@@ -19,6 +19,7 @@ export const LearnerProvider = ({ children }) => {
 
                 if (response.ok) {
                     setLearnersData(json);
+                    localStorage.setItem('numberOfLearners', json.length);
                 }
             } catch (error) {
                 setError(error.message || 'Failed to fetch learners.')

@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
     HomeIcon,
     UsersIcon,
@@ -17,20 +17,18 @@ import { useState } from "react";
 export default function Aside() {
     const [user, setUser] = useState([]);
 
-    useEffect(()=> {
+    const navigate = useNavigate();
+
+    // Fexthing user data from localstorage
+    useEffect(() => {
         const fetchLocalData = () => {
             const user = JSON.parse(localStorage.getItem('user'));
             setUser(user);
         }
 
-        fetchLocalData()
-    },[]);
-    
+        fetchLocalData();
+    }, []);
 
-    // const {usersData} = useContext(UsersContext);
-
-    console.log();
-    
     const adminlinks = [
         { to: "/dashboard", label: "Dashboard", icon: HomeIcon, },
         { to: "/learners", label: "Learners", icon: UsersIcon, },
@@ -47,7 +45,7 @@ export default function Aside() {
     ]
 
     // Handles links based on user role
-    const reservedLinks = user.role === 'admin' ? adminlinks : links; 
+    const reservedLinks = user.role === 'admin' ? adminlinks : links;
 
     // const secondaryNavigation = [
     //     {
@@ -62,12 +60,18 @@ export default function Aside() {
     //     },
     // ]
 
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        navigate('/');
+    };
+
     return (
         <aside className="w-fit bg-gray-600 h-screen flex flex-col gap-16 p-6">
             <div>
                 <h1 className="font-bold text-2xl text-gray-500">BrightPath LMS</h1>
             </div>
-            <div className="flex flex-col justify-between">
+            <div className="h-full flex flex-col justify-between">
                 <nav className="flex flex-col gap-10">
                     {reservedLinks.map((link, index) => (
                         <NavLink
@@ -99,10 +103,12 @@ export default function Aside() {
                         {item.name}
                     </NavLink>
                 ))} */}
-                    <button className="flex w-full items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700">
-                    <LogOutIcon className="mr-3 h-5 w-5 text-gray-400" />
-                    Log out
-                </button>
+                    <button className="flex w-full items-center px-8 py-3 text-sm font-medium text-white rounded-lg hover:bg-purple-50 hover:text-gray-600"
+                        onClick={handleLogout}
+                    >
+                        <LogOutIcon className="mr-3 h-5 w-5 " />
+                        Log out
+                    </button>
                 </div>
             </div>
         </aside>

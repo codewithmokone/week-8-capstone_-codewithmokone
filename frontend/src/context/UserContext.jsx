@@ -21,7 +21,10 @@ export const UsersProvider = ({ children }) => {
 
                 if (response.ok) {
                     setUsersData(json);
+                    localStorage.setItem('numberOfUsers', json.length);
+                    console.log(json.length);
                 }
+
             } catch (error) {
                 setError(error.message || 'Failed to fetch users.')
             } finally {
@@ -32,6 +35,9 @@ export const UsersProvider = ({ children }) => {
         fetchData();
         fetchUserProfile();
     }, []);
+
+    console.log(usersData);
+    
 
     // Fetching user profile
     const fetchUserProfile = async () => {

@@ -16,6 +16,7 @@ export const EmployeeProvider = ({children}) => {
                
                 if(response.ok) {
                     setEmployees(json);
+                    localStorage.setItem('numberOfEmployees', json.length);
                 }
             } catch (error) {
                 setError(error.message || 'Failed to fetch employees.')

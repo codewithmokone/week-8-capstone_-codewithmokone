@@ -148,7 +148,7 @@ export default function Learners() {
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                             {learnersData ? learnersData.map((child) => (
-                                <tr key={child.id} className="hover:bg-gray-50">
+                                <tr key={child._id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
                                             <div className="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
