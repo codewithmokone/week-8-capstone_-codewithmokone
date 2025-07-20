@@ -55,8 +55,6 @@ export const EmployeeProvider = ({children}) => {
       console.error('Failed to delete employee', err);
     }
   };
-
-    console.log("Employee Context: ", employees);
     
     return (
         <EmployeeContext.Provider value={{employees, addEmployee, updateEmployee, deleteEmployee, loading, error, setEmployees}}>

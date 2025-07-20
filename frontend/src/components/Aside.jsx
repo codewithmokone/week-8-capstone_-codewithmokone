@@ -9,9 +9,29 @@ import {
     HelpCircleIcon,
     LogOutIcon,
 } from 'lucide-react'
+import { useContext } from "react";
+import { UsersContext } from "../context/userContext";
+import { useEffect } from "react";
+import { useState } from "react";
 
 export default function Aside() {
-    const links = [
+    const [user, setUser] = useState([]);
+
+    useEffect(()=> {
+        const fetchLocalData = () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            setUser(user);
+        }
+
+        fetchLocalData()
+    },[]);
+    
+
+    // const {usersData} = useContext(UsersContext);
+
+    console.log();
+    
+    const adminlinks = [
         { to: "/dashboard", label: "Dashboard", icon: HomeIcon, },
         { to: "/learners", label: "Learners", icon: UsersIcon, },
         { to: "/staff", label: "Staff", icon: UsersIcon, },
@@ -20,6 +40,14 @@ export default function Aside() {
         { to: "/users", label: "Users", icon: CalendarIcon, },
         // { to: "/settings", label: "Settings", icon: SettingsIcon, },
     ]
+
+    const links = [
+        { to: "/dashboard", label: "Dashboard", icon: HomeIcon, },
+        { to: "/learners", label: "Learners", icon: UsersIcon, },
+    ]
+
+    // Handles links based on user role
+    const reservedLinks = user.role === 'admin' ? adminlinks : links; 
 
     // const secondaryNavigation = [
     //     {
@@ -39,28 +67,29 @@ export default function Aside() {
             <div>
                 <h1 className="font-bold text-2xl text-gray-500">BrightPath LMS</h1>
             </div>
-            <nav className="flex flex-col gap-10">
-                {links.map((link,index) => (
-                    <NavLink
-                        key={index}
-                        to={link.to}
-                        className={({ isActive }) =>
-                            `px-8 py-2 rounded transition-colors flex gap-4 ${isActive
-                                ? "text-gray-600 font-semibold bg-white"
-                                : "text-gray-700 dark:text-gray-200 hover:text-blue-500"
-                            }`
-                        }
-                    >
-                        <link.icon
-                        //     className={`mr-3 h-5 w-5 ${isActive ? 'text-purple-500' : 'text-gray-400'}`
-                        // }
-                        />
-                        {link.label}
-                    </NavLink>
-                ))}
-            </nav>
-            <div className="px-2 py-4 space-y-1">
-                {/* {secondaryNavigation.map((item) => (
+            <div className="flex flex-col justify-between">
+                <nav className="flex flex-col gap-10">
+                    {reservedLinks.map((link, index) => (
+                        <NavLink
+                            key={index}
+                            to={link.to}
+                            className={({ isActive }) =>
+                                `px-8 py-2 rounded transition-colors flex gap-4 ${isActive
+                                    ? "text-gray-600 font-semibold bg-white"
+                                    : "text-gray-700 dark:text-gray-200 hover:text-blue-500"
+                                }`
+                            }
+                        >
+                            <link.icon
+                            //     className={`mr-3 h-5 w-5 ${isActive ? 'text-purple-500' : 'text-gray-400'}`
+                            // }
+                            />
+                            {link.label}
+                        </NavLink>
+                    ))}
+                </nav>
+                <div className="px-2 py-4 space-y-1">
+                    {/* {secondaryNavigation.map((item) => (
                     <NavLink
                         key={item.name}
                         to={item.href}
@@ -70,10 +99,11 @@ export default function Aside() {
                         {item.name}
                     </NavLink>
                 ))} */}
-                {/* <button className="flex w-full items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700">
+                    <button className="flex w-full items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700">
                     <LogOutIcon className="mr-3 h-5 w-5 text-gray-400" />
                     Log out
-                </button> */}
+                </button>
+                </div>
             </div>
         </aside>
     )

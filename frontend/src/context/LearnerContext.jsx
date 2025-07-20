@@ -66,8 +66,6 @@ export const LearnerProvider = ({ children }) => {
         }
     };
 
-    console.log("Learner Context: ", learnersData);
-
     return (
         <LearnerContext.Provider value={{ learnersData ,addLearner, updateLearner, deleteLearner, loading, error }}>
             {children}

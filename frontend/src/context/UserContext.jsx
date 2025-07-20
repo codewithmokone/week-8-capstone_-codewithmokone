@@ -6,9 +6,11 @@ export const UsersContext = createContext();
 
 export const UsersProvider = ({ children }) => {
     const [usersData, setUsersData] = useState([]);
+    const [userProfile, setUserProfile] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Fetching users data
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
@@ -27,14 +29,37 @@ export const UsersProvider = ({ children }) => {
             }
         }
 
-        fetchData()
+        fetchData();
+        fetchUserProfile();
     }, []);
+
+    // Fetching user profile
+    const fetchUserProfile = async () => {
+        setLoading(true);
+        try {
+            const token = localStorage.getItem("token"); // or from cookies/context
+            const response = await fetch('http://localhost:4000/api/user/profile', {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) throw new Error("Failed to fetch user profile");
+            const profile = await response.json();
+            setUserProfile(profile);
+        } catch (error) {
+            setError(error.message || 'Failed to fetch user profile.');
+        } finally {
+            setLoading(false);
+        }
+    }
 
 
     // Create
     const addUser = async (data) => {
         console.log("add User: ", data);
-        
+
         try {
             const response = await axios.post("http://localhost:4000/api/users/register", data);
             // const res = await axios.post('http://localhost:4000/api/learners/register', data);
@@ -66,10 +91,8 @@ export const UsersProvider = ({ children }) => {
         }
     };
 
-    console.log("User Context: ", usersData);
-
     return (
-        <UsersContext.Provider value={{ addUser,usersData, updateUser, deleteUser, loading, error }}>
+        <UsersContext.Provider value={{ addUser, userProfile ,usersData, updateUser, deleteUser, loading, error }}>
             {children}
         </UsersContext.Provider>
     )

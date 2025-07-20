@@ -37,10 +37,7 @@ export default function Users() {
             console.error("Error adding user:", err.response?.data || err.message);
             alert("Failed to add user.");
         }
-    };
-
-    console.log(usersData);
-    
+    };    
 
     return (
         <main className="space-y-6">
