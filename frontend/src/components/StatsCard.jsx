@@ -21,7 +21,7 @@ export const StatsCard = ({
                 {title}
               </dt>
               <dd className="flex items-baseline">
-                <div className="text-2xl font-semibold text-gray-900">
+                <div className="text-center text-2xl font-semibold text-gray-900">
                   {value}
                 </div>
                 <div

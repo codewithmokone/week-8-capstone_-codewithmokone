@@ -7,9 +7,7 @@ import { LearnerContext } from "../context/LearnerContext";
 import { UsersIcon,ClockIcon,BarChartIcon,CalendarIcon } from 'lucide-react'
 
 export default function Dashboard() {
-    const {learners} = useContext(LearnerContext)
-
-    console.log(learners.length);
+    const {learners} = useContext(LearnerContext);
     
     return (
         <main className="space-y-6">
@@ -20,31 +18,32 @@ export default function Dashboard() {
                     today.
                 </p>
             </div>
+            {/* Stats Card */}
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 <StatsCard
                     title="Total Learners"
                     value={learners.length}
-                    description="+2 from last month"
-                    trend="up"
+                    // description="+2 from last month"
+                    // trend="up"
                     icon={<UsersIcon className="h-6 w-6 text-blue-600" />}
                     color="blue"
                 />
                 <StatsCard
-                    title="Check-ins Today"
+                    title="Total Employees"
                     value="38"
-                    description="91% attendance"
-                    trend="neutral"
+                    // description="91% attendance"
+                    // trend="neutral"
                     icon={<ClockIcon className="h-6 w-6 text-green-600" />}
                     color="green"
                 />
-                <StatsCard
+                {/* <StatsCard
                     title="Activities Planned"
                     value="8"
                     description="3 completed"
                     trend="neutral"
                     icon={<BarChartIcon className="h-6 w-6 text-purple-600" />}
                     color="purple"
-                />
+                /> */}
                 {/* <StatsCard
                     title="Parent Messages"
                     value="12"
@@ -54,8 +53,9 @@ export default function Dashboard() {
                     color="amber"
                 /> */}
             </div>
+            {/* Quick Actions */}
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-                <Card title="Announcements" className="lg:col-span-2">
+                {/* <Card title="Announcements" className="lg:col-span-2">
                     <div className="space-y-4">
                         <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-100">
                             <h3 className="font-medium text-yellow-900">
@@ -76,21 +76,21 @@ export default function Dashboard() {
                             </p>
                         </div>
                     </div>
-                </Card>
+                </Card> */}
                 <Card title="Quick Actions">
                     <div className="space-y-3">
-                        <button className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700">
+                        {/* <button className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700">
                             Take Attendance
+                        </button> */}
+                        <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                            Add New Learner
                         </button>
                         <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                            Add New Child
+                            Add New Employee
                         </button>
-                        <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                            Create Activity
-                        </button>
-                        <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        {/* <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                             Message Parents
-                        </button>
+                        </button> */}
                     </div>
                 </Card>
             </div>
