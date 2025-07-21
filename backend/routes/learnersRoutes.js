@@ -5,7 +5,7 @@ const router = express.Router();
 // Register
 router.get('/', learnerController.getAllLearners);
 router.post('/register', learnerController.createLearner);
-// router.post('/login', userController.loginUser);
-// router.get('/profile', userController.profile);
+router.put('/:id', learnerController.updateLearner);
+router.delete('/:id', learnerController.deleteLearner);
 
 module.exports = router;

@@ -48,8 +48,8 @@ export default function Staff() {
     const employeeFields = [
         { name: "fullName", placeholder: "Full Name", required: true },
         { name: "position", placeholder: "Position", required: true },
-        { name: "email", placeholder: "Email", type: "email" },
-        { name: "contactNumber", placeholder: "Contact", type: "number" },
+        { name: "email", placeholder: "Email", type: "email", required: true },
+        { name: "contactNumber", placeholder: "Contact", type: "number", required: true },
     ];
 
     const handleAddEmployee = async (data) => {

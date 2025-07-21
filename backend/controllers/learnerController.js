@@ -98,32 +98,32 @@ exports.createLearner = async (req, res) => {
 }
 
 // Update a post
-exports.updatePost = async (req, res) => {
+exports.updateLearner = async (req, res) => {
   console.log(req.body);
 
   try {
-    const updatedEmployee = await learnersModel.findByIdAndUpdate(
+    const updatedLearner = await learnersModel.findByIdAndUpdate(
       req.params.id,
       {
         featuredImage: req.file?.filename,
       },
       { new: true, runValidators: true }
     );
-    if (!updatedPost) return res.status(404).json({ message: 'Post not found' });
-    res.status(200).json(updatedPost);
+    if (!updatedLearner) return res.status(404).json({ message: 'Learner not found' });
+    res.status(200).json(updatedLearner);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 };
 
 // Delete a post
-exports.deletePost = async (req, res) => {
+exports.deleteLearner = async (req, res) => {
   console.log(req.params.id);
 
   try {
-    const deletedEmployee = await learnersModel.findByIdAndDelete(req.params.id);
-    if (!deletedPost) return res.status(404).json({ message: 'Post not found' });
-    res.status(200).json({ message: 'Post deleted successfully' });
+    const deletedLearner = await learnersModel.findByIdAndDelete(req.params.id);
+    if (!deletedLearner) return res.status(404).json({ message: 'Learner not found' });
+    res.status(200).json({ message: 'Learner deleted successfully' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

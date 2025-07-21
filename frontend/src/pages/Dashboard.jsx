@@ -5,7 +5,7 @@ import { Card } from '../components/Card'
 import { useContext, useEffect, useState } from "react";
 import { LearnerContext } from "../context/LearnerContext";
 import { UsersIcon,ClockIcon,BarChartIcon,CalendarIcon } from 'lucide-react'
-import { UsersContext } from "../context/userContext";
+import { UsersContext } from "../context/UserContext";
 
 export default function Dashboard() {
     const [numberOfLearners, setNumberOfLearners] = useState('');

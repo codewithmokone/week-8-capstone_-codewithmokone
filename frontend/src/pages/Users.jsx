@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { PlusIcon } from 'lucide-react';
 import AddModal from "../components/AddModal";
 import axios from "axios";
-import { UsersContext } from "../context/userContext";
+import { UsersContext } from "../context/UserContext";
 import ViewModal from "../components/ViewModal";
 
 export default function Users() {

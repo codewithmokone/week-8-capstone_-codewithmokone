@@ -15,9 +15,6 @@ export default function Learners() {
 
     console.log(learnersData);
 
-
-    // const { addLearner, learnersData } = useContext(LearnerContext);
-
     const learnerFields = [
         { name: "fullName", placeholder: "Full Name", required: true },
         { name: "dateOfBirth", placeholder: "Date oF Birth", required: true, type: "date" },

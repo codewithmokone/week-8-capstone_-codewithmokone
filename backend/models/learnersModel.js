@@ -14,7 +14,6 @@ const LearnerSchema = new mongoose.Schema({
 
   gender: {
     type: String,
-    enum: ['Male', 'Female', 'Other'],
   },
 
   guardianName: {
