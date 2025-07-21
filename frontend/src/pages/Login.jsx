@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import mainImage from '../assets/images/login-image.jpg'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { UsersContext } from '../context/userContext';
+// import { UsersContext } from '../context/userContext';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });

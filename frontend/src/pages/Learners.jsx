@@ -194,13 +194,13 @@ export default function Learners() {
                                         >
                                             View
                                         </a>
-                                        <span className="mx-2 text-gray-300">|</span>
+                                        {/* <span className="mx-2 text-gray-300">|</span>
                                         <a
                                             href="#"
                                             className="text-blue-600 hover:text-blue-900"
                                         >
                                             Edit
-                                        </a>
+                                        </a> */}
                                     </td>
                                 </tr>
                             )) : (<tr><td>No added learners.</td></tr>)}
