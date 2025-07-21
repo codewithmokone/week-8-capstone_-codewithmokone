@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { X } from "lucide-react";
+import { EmployeeContext } from "../context/employeeContext";
 
 export default function ViewModal({ isOpen, onClose, data, type }) {
+  const {deleteEmployee} = useContext(EmployeeContext);
   if (!isOpen || !data) return null;
 
   console.log(data,type);
+
+  // Handles delete item
+  const handleDelete = (id) => {
+    console.log(id);
+    
+    deleteEmployee(id);
+    alert("Deleted succefully.");
+    onClose();
+  }
   
 
   const renderDetails = () => {
@@ -15,7 +26,7 @@ export default function ViewModal({ isOpen, onClose, data, type }) {
             <p><strong>Name:</strong> {data.fullName}</p>
             <p><strong>Age:</strong> {data.age}</p>
             <p><strong>Gender:</strong> {data.gender}</p>
-            <p><strong>Attendance:</strong> {data.attendance}</p>
+            {/* <p><strong>Attendance:</strong> {data.attendance}</p> */}
             <p><strong>Guardian Name:</strong> {data.guardianName}</p>
             <p><strong>Contact Info:</strong> +27 {data.contactNumber}</p>
           </>
@@ -51,6 +62,10 @@ export default function ViewModal({ isOpen, onClose, data, type }) {
         </button>
         <h2 className="text-xl font-semibold capitalize mb-4">View {type}</h2>
         <div className="space-y-2 text-gray-700">{renderDetails()}</div>
+        <div className="flex gap-6">
+          <button className="text-blue-500">Edit</button>
+          <button className="text-red-600" onClick={()=>handleDelete(data._id)}>Delete</button>
+        </div>
       </div>
     </div>
   );

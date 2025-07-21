@@ -106,7 +106,7 @@ exports.createEmployees = async (req, res) => {
 }
 
 // Update a post
-exports.updatePost = async (req, res) => {
+exports.updateEmployee = async (req, res) => {
   console.log(req.body);
 
   try {
@@ -125,13 +125,13 @@ exports.updatePost = async (req, res) => {
 };
 
 // Delete a post
-exports.deletePost = async (req, res) => {
+exports.deleteEmployee = async (req, res) => {
   console.log(req.params.id);
 
   try {
     const deletedEmployee = await employeeModel.findByIdAndDelete(req.params.id);
-    if (!deletedPost) return res.status(404).json({ message: 'Post not found' });
-    res.status(200).json({ message: 'Post deleted successfully' });
+    if (!deletedEmployee) return res.status(404).json({ message: 'User not found' });
+    res.status(200).json({ message: 'User deleted successfully' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

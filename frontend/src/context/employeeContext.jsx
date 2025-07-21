@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 
 export const EmployeeContext = createContext();
@@ -30,7 +31,7 @@ export const EmployeeProvider = ({children}) => {
 
     const addEmployee = async (data) => {
     try {
-      const res = await axios.post('/employees', data);
+      const res = await axios.post('http://localhost:4000/api/employees/', data);
       setEmployees((prev) => [...prev, res.data]);
     } catch (err) {
       console.error('Failed to add employee', err);
@@ -39,7 +40,7 @@ export const EmployeeProvider = ({children}) => {
 
   const updateEmployee = async (id, data) => {
     try {
-      const res = await axios.put(`/employees/${id}`, data);
+      const res = await axios.put(`http://localhost:4000/api/employees/${id}`, data);
       setEmployees((prev) =>
         prev.map((e) => (e._id === id ? res.data : e))
       );
@@ -50,7 +51,7 @@ export const EmployeeProvider = ({children}) => {
 
   const deleteEmployee = async (id) => {
     try {
-      await axios.delete(`/employees/${id}`);
+      await axios.delete(`http://localhost:4000/api/employees/${id}`);
       setEmployees((prev) => prev.filter((e) => e._id !== id));
     } catch (err) {
       console.error('Failed to delete employee', err);
