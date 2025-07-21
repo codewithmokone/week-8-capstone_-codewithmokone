@@ -16,8 +16,8 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors(
     {
-        origin: 'https://week-8-capstone-codewithmokone-xjut-d8vfwwx2t.vercel.app/',
-        credentials: true,
+        // origin: 'https://week-8-capstone-codewithmokone-xjut-d8vfwwx2t.vercel.app/',
+        // credentials: true,
     }
 ));
 app.use(logger);
