@@ -122,6 +122,19 @@ exports.loginUser = async (req, res) => {
   }
 }
 
+// Delete a post
+exports.deleteUser = async (req, res) => {
+  console.log(req.params.id);
+
+  try {
+    const deletedUser = await userModel.findByIdAndDelete(req.params.id);
+    if (!deletedUser) return res.status(404).json({ message: 'User not found' });
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // Middleware to verify token
 const authenticate = (req, res, next) => {
   const token = req.header("Authorization");

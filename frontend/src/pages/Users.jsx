@@ -3,9 +3,13 @@ import { PlusIcon } from 'lucide-react';
 import AddModal from "../components/AddModal";
 import axios from "axios";
 import { UsersContext } from "../context/userContext";
+import ViewModal from "../components/ViewModal";
 
 export default function Users() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+    const [selectedData, setSelectedData] = useState(null);
+    const [modalType, setModalType] = useState(null);
 
     const { addUser, usersData, error } = useContext(UsersContext);
 
@@ -37,7 +41,14 @@ export default function Users() {
             console.error("Error adding user:", err.response?.data || err.message);
             alert("Failed to add user.");
         }
-    };    
+    };
+
+    // Function for view modal inputs
+    const handleView = (type, data) => {
+        setModalType(type);
+        setSelectedData(data);
+        setIsViewModalOpen(true);
+    };
 
     return (
         <main className="space-y-6">
@@ -138,6 +149,7 @@ export default function Users() {
                                         <a
                                             href="#"
                                             className="text-purple-600 hover:text-purple-900"
+                                            onClick={() => handleView('user', user)}
                                         >
                                             View
                                         </a>
@@ -250,6 +262,12 @@ export default function Users() {
                 onSubmit={handleAddUser}
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
+            />
+            <ViewModal
+                isOpen={isViewModalOpen}
+                onClose={() => setIsViewModalOpen(false)}
+                type={'user'}
+                data={selectedData}
             />
         </main>
     )

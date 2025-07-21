@@ -90,8 +90,8 @@ export const UsersProvider = ({ children }) => {
     // Delete
     const deleteUser = async (id) => {
         try {
-            await axios.delete(`/users/${id}`);
-            setLearners((prev) => prev.filter((l) => l._id !== id));
+            await axios.delete(`http://localhost:4000/api/user/${id}`);
+            setUsersData((prev) => prev.filter((l) => l._id !== id));
         } catch (err) {
             console.error('Failed to delete user', err);
         }

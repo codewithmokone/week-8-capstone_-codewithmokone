@@ -1,20 +1,41 @@
 import React, { useContext } from "react";
 import { X } from "lucide-react";
 import { EmployeeContext } from "../context/employeeContext";
+import { UsersContext } from "../context/UserContext";
+import { LearnerContext } from "../context/LearnerContext";
 
 export default function ViewModal({ isOpen, onClose, data, type }) {
   const {deleteEmployee} = useContext(EmployeeContext);
+  const {deleteUser} = useContext(UsersContext);
+  const {deleteLearner} = useContext(LearnerContext);
   if (!isOpen || !data) return null;
 
   console.log(data,type);
 
   // Handles delete item
-  const handleDelete = (id) => {
-    console.log(id);
-    
-    deleteEmployee(id);
-    alert("Deleted succefully.");
-    onClose();
+  const handleDelete = async (id) => {
+    try {
+      switch (type) {
+        case "learner":
+          await deleteLearner(id);
+          break;
+        case "employee":
+          await deleteEmployee(id);
+          break;
+        case "user":
+          await deleteUser(id);
+          break;
+        default:
+          alert("Unknown type");
+          return;
+      }
+
+      alert("Deleted successfully.");
+      onClose();
+    } catch (error) {
+      console.error("Delete failed:", error);
+      alert("Failed to delete. Please try again.");
+    }
   }
   
 
