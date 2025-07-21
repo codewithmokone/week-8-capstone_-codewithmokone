@@ -284,7 +284,7 @@ export default function Staff() {
             <ViewModal
                 isOpen={isViewModalOpen}
                 onClose={() => setIsViewModalOpen(false)}
-                type={'learner'}
+                type={'employee'}
                 data={selectedData}
             />
         </main>

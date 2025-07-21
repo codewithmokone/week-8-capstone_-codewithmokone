@@ -1,16 +1,27 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { EmployeeContext } from "../context/employeeContext";
 import { UsersContext } from "../context/UserContext";
 import { LearnerContext } from "../context/LearnerContext";
 
 export default function ViewModal({ isOpen, onClose, data, type }) {
-  const {deleteEmployee} = useContext(EmployeeContext);
-  const {deleteUser} = useContext(UsersContext);
-  const {deleteLearner} = useContext(LearnerContext);
-  if (!isOpen || !data) return null;
+  const { deleteEmployee, updateEmployee } = useContext(EmployeeContext);
+  const { deleteUser, updateUser } = useContext(UsersContext);
+  const { deleteLearner, updateLearner } = useContext(LearnerContext);
 
-  console.log(data,type);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState();
+
+  useEffect(() => {
+    const updatedData = () => {
+      setFormData(data);
+      setIsEditing(false);
+    }
+    updatedData();
+   
+  }, [data]);
+
+  if (!isOpen || !data) return null;
 
   // Handles delete item
   const handleDelete = async (id) => {
@@ -37,12 +48,53 @@ export default function ViewModal({ isOpen, onClose, data, type }) {
       alert("Failed to delete. Please try again.");
     }
   }
-  
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleUpdate = async () => {
+    try {
+      if (type === "employee") {
+        await updateEmployee(formData._id, formData);
+        alert("Employee updated successfully.");
+        setIsEditing(false);
+      }
+
+      if (type === "learner") {
+        await updateLearner(formData._id, formData);
+        alert("Learner updated successfully.");
+        setIsEditing(false);
+      }
+
+      if (type === "user") {
+        await updateUser(formData._id, formData);
+        alert("User updated successfully.");
+        setIsEditing(false);
+      }
+    } catch (error) {
+      console.error("Update failed:", error);
+      alert("Failed to update.");
+    }
+  };
+
+  console.log(data);
 
   const renderDetails = () => {
+    console.log("Render data: ", formData);
+
     switch (type) {
       case "learner":
-        return (
+        return isEditing ? (
+          <>
+            <input type="text" name="fullName" value={formData?.fullName || ""} onChange={handleChange} placeholder="Full Name" className="input" />
+            <input type="number" name="age" value={formData?.age || ""} onChange={handleChange} placeholder="Age" className="input" />
+            <input type="text" name="gender" value={formData?.gender || ""} onChange={handleChange} placeholder="Gender" className="input" />
+            <input type="text" name="guardianName" value={formData?.guardianName || ""} onChange={handleChange} placeholder="Guardian Name" className="input" />
+            <input type="text" name="contactNumber" value={formData?.contactNumber || ""} onChange={handleChange} placeholder="Contact Number" className="input" />
+          </>
+        ) : (
           <>
             <p><strong>Name:</strong> {data.fullName}</p>
             <p><strong>Age:</strong> {data.age}</p>
@@ -55,10 +107,22 @@ export default function ViewModal({ isOpen, onClose, data, type }) {
       case "employee":
         return (
           <>
-            <p><strong>Name:</strong> {data.name}</p>
+            {data.image && (
+              <div className="mb-4">
+                <img
+                  src={data.image}
+                  alt={`${data.name}'s profile`}
+                  className="w-24 h-24 object-cover rounded-full border"
+                />
+              </div>
+            )}
+            <p><strong>Name:</strong> {data.fullName}</p>
             <p><strong>Position:</strong> {data.position}</p>
+            <p><strong>Department:</strong> {data.department}</p>
             <p><strong>Email:</strong> {data.email}</p>
-            <p><strong>Phone:</strong> {data.phone}</p>
+            <p><strong>Phone:</strong>+27 {data.contactNumber}</p>
+            <p><strong>Address:</strong> {data.address}</p>
+            <p><strong>Start Date:</strong> {data.startDate ? new Date(data.startDate).toLocaleDateString() : 'N/A'}</p>
           </>
         );
       case "user":
@@ -75,6 +139,8 @@ export default function ViewModal({ isOpen, onClose, data, type }) {
     }
   };
 
+  
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-white rounded-2xl shadow-lg p-6 w-[90%] max-w-md relative">
@@ -82,11 +148,24 @@ export default function ViewModal({ isOpen, onClose, data, type }) {
           <X />
         </button>
         <h2 className="text-xl font-semibold capitalize mb-4">View {type}</h2>
-        <div className="space-y-2 text-gray-700">{renderDetails()}</div>
-        <div className="flex gap-6">
-          <button className="text-blue-500">Edit</button>
-          <button className="text-red-600" onClick={()=>handleDelete(data._id)}>Delete</button>
+        <div className="flex flex-col space-y-2 text-gray-700">{renderDetails()}</div>
+        <div className="flex gap-4 mt-6 justify-end">
+          {["employee", "learner", "user"].includes(type) && (
+            isEditing ? (
+              <>
+                <button onClick={handleUpdate} className="text-green-600">Save</button>
+                <button onClick={() => setIsEditing(false)} className="text-gray-500">Cancel</button>
+              </>
+            ) : (
+              <button onClick={() => setIsEditing(true)} className="text-white bg-blue-600 px-6 rounded">Edit</button>
+            )
+          )}
+          <button className="text-white bg-red-600 px-6 rounded" onClick={() => handleDelete(data._id)}>Delete</button>
         </div>
+        {/* <div className="flex gap-6 mt-4">
+          <button className="text-white bg-blue-600 px-6 rounded">Edit</button>
+          <button className="text-white bg-red-600 px-3 rounded" onClick={() => handleDelete(data._id)}>Delete</button>
+        </div> */}
       </div>
     </div>
   );

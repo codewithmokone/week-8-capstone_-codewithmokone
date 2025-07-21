@@ -102,11 +102,17 @@ exports.updateLearner = async (req, res) => {
   console.log(req.body);
 
   try {
+    const updateData = {
+      ...req.body,
+    }
+
+    if(req.file?.filename){
+        updateData.featuredImage = req.file?.filename;
+      }
+
     const updatedLearner = await learnersModel.findByIdAndUpdate(
       req.params.id,
-      {
-        featuredImage: req.file?.filename,
-      },
+      updateData,
       { new: true, runValidators: true }
     );
     if (!updatedLearner) return res.status(404).json({ message: 'Learner not found' });

@@ -23,8 +23,6 @@ export default function Learners() {
     const currentLearners = learnersData?.slice(indexOfFirstLearner, indexOfLastLearner);
     const totalPages = Math.ceil((learnersData?.length || 0) / learnersPerPage);
 
-    console.log(learnersData);
-
     const learnerFields = [
         { name: "fullName", placeholder: "Full Name", required: true },
         { name: "dateOfBirth", placeholder: "Date oF Birth", required: true, type: "date" },
