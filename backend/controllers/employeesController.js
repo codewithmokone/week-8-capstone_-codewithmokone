@@ -76,12 +76,6 @@ exports.createEmployees = async (req, res) => {
     address,
     dateHired } = req.body;
 
-  console.log(fullName,
-    email,
-    position,
-    contactNumber);
-
-
   try {
     // const imageData = req.file ? fs.readFileSync(path.join(__dirname + '../../uploads/' + req.file.filename)) : null;
 
@@ -90,15 +84,13 @@ exports.createEmployees = async (req, res) => {
       email,
       position,
       contactNumber,
-      // tags,
-      // author,
-      // excerpt,
-      // tags,
+      department,
+      address,
+      dateHired,
       // featuredImage: {
       //   data: imageData,
       //   contentType: 'image/png'
       // },
-      // isPublished
     });
 
     const employee = await employeeModel.create(newEmployee)
@@ -113,15 +105,21 @@ exports.updateEmployee = async (req, res) => {
   console.log(req.body);
 
   try {
+    const updateData = {
+      ...req.body,
+    }
+
+    if(req.file?.filename){
+        updateData.featuredImage = req.file?.filename;
+      }
+
     const updatedEmployee = await employeeModel.findByIdAndUpdate(
       req.params.id,
-      {
-        featuredImage: req.file?.filename,
-      },
+      updateData,
       { new: true, runValidators: true }
     );
-    if (!updatedPost) return res.status(404).json({ message: 'Post not found' });
-    res.status(200).json(updatedPost);
+    if (!updatedEmployee) return res.status(404).json({ message: 'Employee not found' });
+    res.status(200).json(updatedEmployee);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
