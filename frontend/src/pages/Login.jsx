@@ -9,7 +9,7 @@ export default function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const { login } = useContext(UsersContext);
+  // const { login } = useContext(UsersContext);
 
 
   const handleChange = (e) => {
@@ -51,7 +51,7 @@ export default function Login() {
               className="border p-1 rounded"
               type="email"
               name='email'
-              placeholder="Enter email..."
+              placeholder="Enter email"
               value={formData.email}
               onChange={handleChange}
             />
@@ -60,7 +60,7 @@ export default function Login() {
               className="border p-1 rounded"
               type="password"
               name='password'
-              placeholder="Enter password..."
+              placeholder="Enter password"
               value={formData.password}
               onChange={handleChange}
             />
