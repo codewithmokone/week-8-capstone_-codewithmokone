@@ -28,6 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/employees', require('./routes/employeesRoutes'));
 app.use('/api/learners', require('./routes/learnersRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));
+app.use('/api/activities', require('./routes/activityRoutes'));
 
 // Root route
 app.get('/', (req, res) => {

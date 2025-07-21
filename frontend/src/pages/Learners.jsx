@@ -147,8 +147,8 @@ export default function Learners() {
                                 >
                                     Contact No.
                                 </th>
-                                <th scope="col" className="relative px-6 py-3">
-                                    <span className="sr-only">Actions</span>
+                                <th scope="col" className="relative px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions
                                 </th>
                             </tr>
                         </thead>
@@ -184,7 +184,7 @@ export default function Learners() {
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {child.contactNumber ? (<>+27 {child.contactNumber}</>) : ('')}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <a
                                             href="#"
                                             className="text-blue-600 hover:text-blue-900"

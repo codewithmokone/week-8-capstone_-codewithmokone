@@ -136,6 +136,12 @@ export default function Staff() {
                                     scope="col"
                                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                 >
+                                    Department
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                >
                                     Position
                                 </th>
                                 <th
@@ -156,7 +162,7 @@ export default function Staff() {
                                     >
                                         Parent/Guardian
                                     </th> */}
-                                 <th
+                                <th
                                     scope="col"
                                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                 >
@@ -176,7 +182,6 @@ export default function Staff() {
                                 </th>
                                 <th scope="col" className="relative px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                 >
-
                                     Actions
                                 </th>
                             </tr>
@@ -202,21 +207,29 @@ export default function Staff() {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {employee.department}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {employee.position}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {employee.email}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {employee.dateHired}
+                                        {/* {employee.dateHired} */}
+                                        {new Date(employee.dateHired).toLocaleDateString('en-GB', {
+                                            day: '2-digit',
+                                            month: 'long',
+                                            year: 'numeric'
+                                        })}
                                     </td>
-                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {employee.address}
                                     </td>
-                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {employee.contactNumber}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <a
                                             href="#"
                                             className="text-blue-600 hover:text-blue-900"

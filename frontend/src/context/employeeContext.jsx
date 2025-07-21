@@ -30,6 +30,7 @@ export const EmployeeProvider = ({ children }) => {
     fetchData()
   }, []); 
 
+  // Function for creating a new employee
   const addEmployee = async (data) => {
     try {
       const res = await axios.post(`${API}/employees/`, data);
@@ -39,9 +40,10 @@ export const EmployeeProvider = ({ children }) => {
     }
   };
 
+  // Function for updating employee 
   const updateEmployee = async (id, data) => {
 
-    // console.log("Context update: ", id, data);
+    console.log("Context update: ", id, data);
     
 
     try {
@@ -54,6 +56,7 @@ export const EmployeeProvider = ({ children }) => {
     }
   };
 
+  // Function for deleting an employee
   const deleteEmployee = async (id) => {
     try {
       await axios.delete(`${API}/employees/${id}`);

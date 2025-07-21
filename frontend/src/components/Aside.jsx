@@ -8,7 +8,10 @@ import {
     SettingsIcon,
     HelpCircleIcon,
     LogOutIcon,
+    PersonStanding,
+    BriefcaseBusiness
 } from 'lucide-react'
+
 import { useEffect } from "react";
 import { useState } from "react";
 
@@ -29,17 +32,18 @@ export default function Aside() {
 
     const adminlinks = [
         { to: "/dashboard", label: "Dashboard", icon: HomeIcon, },
-        { to: "/learners", label: "Learners", icon: UsersIcon, },
-        { to: "/staff", label: "Staff", icon: UsersIcon, },
-        // { to: "/activities", label: "Activities", icon: ActivityIcon, },
+        { to: "/learners", label: "Learners", icon: PersonStanding, },
+        { to: "/staff", label: "Staff", icon: BriefcaseBusiness, },
+        { to: "/users", label: "Users", icon: UsersIcon, },
+        { to: "/activities", label: "Activities", icon: ActivityIcon, },
         // { to: "/accounts", label: "Accounts", icon: HomeIcon, },
-        { to: "/users", label: "Users", icon: CalendarIcon, },
         // { to: "/settings", label: "Settings", icon: SettingsIcon, },
     ]
 
     const links = [
         { to: "/dashboard", label: "Dashboard", icon: HomeIcon, },
         { to: "/learners", label: "Learners", icon: UsersIcon, },
+        { to: "/activities", label: "Activities", icon: ActivityIcon, },
     ]
 
     // Handles links based on user role

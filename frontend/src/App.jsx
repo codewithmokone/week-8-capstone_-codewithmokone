@@ -5,6 +5,7 @@ import Learners from './pages/Learners'
 import Staff from './pages/Staff'
 import Users from './pages/Users'
 import DashboardLayout from './layouts/DashboardLayout'
+import { ActivityTracker } from './pages/Activities'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
         <Route path='/learners' element={<Learners />} />
         <Route path='/users' element={<Users />} />
         <Route path='/staff' element={<Staff />} />
+        <Route path='/activities' element={<ActivityTracker />} />
       </Route>
     </Routes>
   )
