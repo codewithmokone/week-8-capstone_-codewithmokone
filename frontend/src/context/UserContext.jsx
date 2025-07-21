@@ -31,30 +31,30 @@ export const UsersProvider = ({ children }) => {
         }
 
         fetchData();
-        fetchUserProfile();
+        // fetchUserProfile();
     }, []);
 
     // Fetching user profile
-    const fetchUserProfile = async () => {
-        setLoading(true);
-        try {
-            const token = localStorage.getItem("token"); // or from cookies/context
-            const response = await fetch('http://localhost:4000/api/user/profile', {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
+    // const fetchUserProfile = async () => {
+    //     setLoading(true);
+    //     try {
+    //         const token = localStorage.getItem("token"); // or from cookies/context
+    //         const response = await fetch('http://localhost:4000/api/user/profile', {
+    //             headers: {
+    //                 'Authorization': `Bearer ${token}`,
+    //                 'Content-Type': 'application/json'
+    //             }
+    //         });
 
-            if (!response.ok) throw new Error("Failed to fetch user profile");
-            const profile = await response.json();
-            setUserProfile(profile);
-        } catch (error) {
-            setError(error.message || 'Failed to fetch user profile.');
-        } finally {
-            setLoading(false);
-        }
-    }
+    //         if (!response.ok) throw new Error("Failed to fetch user profile");
+    //         const profile = await response.json();
+    //         setUserProfile(profile);
+    //     } catch (error) {
+    //         setError(error.message || 'Failed to fetch user profile.');
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // }
 
 
     // Create
@@ -73,7 +73,7 @@ export const UsersProvider = ({ children }) => {
     // Update
     const updateUser = async (id, updatedData) => {
         try {
-            const res = await axios.put(`/users/${id}`, updatedData);
+            const res = await axios.put(`https://week-8-capstone-codewithmokone.onrender.com/api/users/${id}`, updatedData);
             setLearners((prev) =>
                 prev.map((l) => (l._id === id ? res.data : l))
             );
@@ -85,7 +85,7 @@ export const UsersProvider = ({ children }) => {
     // Delete
     const deleteUser = async (id) => {
         try {
-            await axios.delete(`http://localhost:4000/api/user/${id}`);
+            await axios.delete(`https://week-8-capstone-codewithmokone.onrender.com/api/user/${id}`);
             setUsersData((prev) => prev.filter((l) => l._id !== id));
         } catch (err) {
             console.error('Failed to delete user', err);
