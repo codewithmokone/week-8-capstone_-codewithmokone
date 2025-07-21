@@ -9,8 +9,6 @@ import {
     HelpCircleIcon,
     LogOutIcon,
 } from 'lucide-react'
-import { useContext } from "react";
-import { UsersContext } from "../context/userContext";
 import { useEffect } from "react";
 import { useState } from "react";
 
