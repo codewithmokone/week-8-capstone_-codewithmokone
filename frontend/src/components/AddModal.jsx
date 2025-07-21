@@ -46,7 +46,7 @@ export default function AddModal({ title, fields, onSubmit, isOpen, onClose }) {
                         <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
                             Cancel
                         </button>
-                        <button type="submit" className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">
+                        <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                             Add
                         </button>
                     </div>

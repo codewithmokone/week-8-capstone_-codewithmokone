@@ -12,7 +12,7 @@ export const EmployeeProvider = ({children}) => {
         const fetchData = async () => {
             setLoading(true)
             try {
-                const response = await fetch('http://localhost:4000/api/employees/');
+                const response = await fetch('https://week-8-capstone-codewithmokone.onrender.com/api/employees/');
                 const json = await response.json();
                
                 if(response.ok) {
@@ -31,7 +31,7 @@ export const EmployeeProvider = ({children}) => {
 
     const addEmployee = async (data) => {
     try {
-      const res = await axios.post('http://localhost:4000/api/employees/', data);
+      const res = await axios.post('https://week-8-capstone-codewithmokone.onrender.com/api/employees/', data);
       setEmployees((prev) => [...prev, res.data]);
     } catch (err) {
       console.error('Failed to add employee', err);
@@ -40,7 +40,7 @@ export const EmployeeProvider = ({children}) => {
 
   const updateEmployee = async (id, data) => {
     try {
-      const res = await axios.put(`http://localhost:4000/api/employees/${id}`, data);
+      const res = await axios.put(`https://week-8-capstone-codewithmokone.onrender.com/api/employees/${id}`, data);
       setEmployees((prev) =>
         prev.map((e) => (e._id === id ? res.data : e))
       );
@@ -51,7 +51,7 @@ export const EmployeeProvider = ({children}) => {
 
   const deleteEmployee = async (id) => {
     try {
-      await axios.delete(`http://localhost:4000/api/employees/${id}`);
+      await axios.delete(`https://week-8-capstone-codewithmokone.onrender.com/api/employees/${id}`);
       setEmployees((prev) => prev.filter((e) => e._id !== id));
     } catch (err) {
       console.error('Failed to delete employee', err);

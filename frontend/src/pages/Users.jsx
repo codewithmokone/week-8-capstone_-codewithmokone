@@ -18,6 +18,7 @@ export default function Users() {
         { name: "fullname", placeholder: "Full Name", required: true },
         { name: "email", placeholder: "Email", required: true, type: "email" },
         { name: "password", placeholder: "Password", required: true, type: "password" },
+        { name: "contactNumber", placeholder: "Contact", required: true, type: "number" },
     ];
 
     // Function for adding a new learner
@@ -27,7 +28,7 @@ export default function Users() {
 
         try {
 
-            const response = await axios.post("http://localhost:4000/api/user/register", data); // <-- your endpoint
+            const response = await axios.post("https://week-8-capstone-codewithmokone.onrender.com/api/user/register", data); // <-- your endpoint
             const newUser = response.data;
 
             // Optionally: add to local state if backend doesn’t return full list
@@ -63,34 +64,13 @@ export default function Users() {
                     <button
                         type="button"
                         onClick={() => setIsModalOpen(true)}
-                        className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                        className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                     >
                         <PlusIcon className="h-4 w-4 mr-2" />
                         Add User
                     </button>
                 </div>
             </div>
-            {/* <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                <div className="flex-1 relative rounded-md shadow-sm">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <SearchIcon className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                        type="text"
-                        className="focus:ring-purple-500 focus:border-purple-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
-                        placeholder="Search userren..."
-                    />
-                </div>
-                <div>
-                    <button
-                        type="button"
-                        className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-                    >
-                        <FilterIcon className="h-4 w-4 mr-2 text-gray-500" />
-                        Filter
-                    </button>
-                </div>
-            </div> */}
             <div className="bg-white shadow overflow-hidden rounded-lg">
                 <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
@@ -124,8 +104,8 @@ export default function Users() {
                                 <tr key={user._id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
-                                            <div className="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
-                                                <span className="font-medium text-xs text-purple-800">
+                                            <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                                <span className="font-medium text-xs text-blue-800">
                                                     {user.fullname
                                                         .split(' ')
                                                         .map((n) => n[0])
@@ -148,7 +128,7 @@ export default function Users() {
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <a
                                             href="#"
-                                            className="text-purple-600 hover:text-purple-900"
+                                            className="text-blue-600 hover:text-blue-900"
                                             onClick={() => handleView('user', user)}
                                         >
                                             View
@@ -156,7 +136,7 @@ export default function Users() {
                                         <span className="mx-2 text-gray-300">|</span>
                                         <a
                                             href="#"
-                                            className="text-purple-600 hover:text-purple-900"
+                                            className="text-blue-600 hover:text-blue-900"
                                         >
                                             Edit
                                         </a>
@@ -222,7 +202,7 @@ export default function Users() {
                                 </a>
                                 <a
                                     href="#"
-                                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-purple-50 text-sm font-medium text-purple-600 hover:bg-gray-50"
+                                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600 hover:bg-gray-50"
                                 >
                                     2
                                 </a>

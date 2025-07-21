@@ -24,12 +24,14 @@ export default function Login() {
 
     console.log(formData);
 
+    if (!formData.email || !formData.password) {
+      setError("Please enter both email and password");
+      return;
+    }
 
     try {
-      const res = await axios.post('http://localhost:4000/api/user/login', formData);
+      const res = await axios.post('https://week-8-capstone-codewithmokone.onrender.com/api/user/login', formData);
 
-      console.log(res.data);
-      
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
 
@@ -50,19 +52,24 @@ export default function Login() {
             <input
               className="border p-1 rounded"
               type="email"
+              id='email'
               name='email'
               placeholder="Enter email"
               value={formData.email}
               onChange={handleChange}
+              aria-required="true"
+              autoFocus
             />
             <label className="mt-4" htmlFor="password">Password:</label>
             <input
               className="border p-1 rounded"
               type="password"
+              id='password'
               name='password'
               placeholder="Enter password"
               value={formData.password}
               onChange={handleChange}
+              aria-required="true"
             />
             <button className="bg-blue-600 text-white rounded py-1 mt-4">Login</button>
           </form>

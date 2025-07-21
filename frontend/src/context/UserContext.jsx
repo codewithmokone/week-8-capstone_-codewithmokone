@@ -15,15 +15,13 @@ export const UsersProvider = ({ children }) => {
         const fetchData = async () => {
             setLoading(true)
             try {
-                // const res = await axios.get('/learners');
-                const response = await fetch('http://localhost:4000/api/user/');
-                const json = await response.json();
+                const response = await axios('https://week-8-capstone-codewithmokone.onrender.com/api/user/');
+               
+                const userList = response.data;
 
-                if (response.ok) {
-                    setUsersData(json);
-                    localStorage.setItem('numberOfUsers', json.length);
-                    console.log(json.length);
-                }
+                setUsersData(userList);
+
+                localStorage.setItem('numberOfUsers', userList.length);
 
             } catch (error) {
                 setError(error.message || 'Failed to fetch users.')
@@ -35,9 +33,6 @@ export const UsersProvider = ({ children }) => {
         fetchData();
         fetchUserProfile();
     }, []);
-
-    console.log(usersData);
-    
 
     // Fetching user profile
     const fetchUserProfile = async () => {
@@ -67,7 +62,7 @@ export const UsersProvider = ({ children }) => {
         console.log("add User: ", data);
 
         try {
-            const response = await axios.post("http://localhost:4000/api/users/register", data);
+            const response = await axios.post("https://week-8-capstone-codewithmokone.onrender.com/api/users/register", data);
             // const res = await axios.post('http://localhost:4000/api/learners/register', data);
             setUsers((prev) => [...prev, response.data]);
         } catch (err) {
@@ -98,7 +93,7 @@ export const UsersProvider = ({ children }) => {
     };
 
     return (
-        <UsersContext.Provider value={{ addUser, userProfile ,usersData, updateUser, deleteUser, loading, error }}>
+        <UsersContext.Provider value={{ addUser, userProfile, usersData, updateUser, deleteUser, loading, error }}>
             {children}
         </UsersContext.Provider>
     )

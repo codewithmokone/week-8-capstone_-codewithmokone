@@ -41,8 +41,17 @@ export default function Staff() {
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [selectedData, setSelectedData] = useState(null);
     const [modalType, setModalType] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const { employees, setEmployees } = useContext(EmployeeContext)
+
+    const EmployeePerPage = 8;
+
+    // Calculate pagination
+    const indexOfLastEmployee = currentPage * EmployeePerPage;
+    const indexOfFirstEmployee = indexOfLastEmployee - EmployeePerPage;
+    const currentEmployees = employees?.slice(indexOfFirstEmployee, indexOfLastEmployee);
+    const totalPages = Math.ceil((employees?.length || 0) / EmployeePerPage);
 
 
     const employeeFields = [
@@ -56,11 +65,11 @@ export default function Staff() {
         console.log(data);
 
         try {
-            const response = await axios.post("http://localhost:4000/api/employees/register", data); // <-- your endpoint
-            const newLearner = response.data;
+            const response = await axios.post("https://week-8-capstone-codewithmokone.onrender.com/api/employees/register", data); // <-- your endpoint
+            const newEmployee = response.data;
 
             // Optionally: add to local state if backend doesn’t return full list
-            setEmployees((prev) => [...prev, newLearner]);
+            setEmployees((prev) => [...prev, newEmployee]);
 
             // Or: refetch the full list instead
             // fetchChildren();
@@ -77,6 +86,18 @@ export default function Staff() {
         setIsViewModalOpen(true);
     };
 
+    const goToNextPage = () => {
+        if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+    };
+
+    const goToPrevPage = () => {
+        if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+    };
+
+    const goToPage = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
     return (
         <main className="space-y-6">
             <div className="sm:flex sm:items-center sm:justify-between">
@@ -90,7 +111,7 @@ export default function Staff() {
                     <button
                         type="button"
                         onClick={() => setIsModalOpen(true)}
-                        className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                        className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                     >
                         <PlusIcon className="h-4 w-4 mr-2" />
                         Add employee
@@ -104,14 +125,14 @@ export default function Staff() {
                         </div>
                         <input
                             type="text"
-                            className="focus:ring-purple-500 focus:border-purple-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
+                            className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
                             placeholder="Search Employees..."
                         />
                     </div>
                     <div>
                         <button
                             type="button"
-                            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                         >
                             <FilterIcon className="h-4 w-4 mr-2 text-gray-500" />
                             Filter
@@ -167,12 +188,12 @@ export default function Staff() {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {employees.map((employee) => (
+                            {currentEmployees.map((employee) => (
                                 <tr key={employee._id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
-                                            <div className="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
-                                                <span className="font-medium text-xs text-purple-800">
+                                            <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                                <span className="font-medium text-xs text-blue-800">
                                                     {employee.fullName
                                                         .split(' ')
                                                         .map((n) => n[0])
@@ -209,15 +230,15 @@ export default function Staff() {
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <a
                                             href="#"
-                                            className="text-purple-600 hover:text-purple-900"
-                                            onClick={()=>handleView('employee',employee)}
+                                            className="text-blue-600 hover:text-blue-900"
+                                            onClick={() => handleView('employee', employee)}
                                         >
                                             View
                                         </a>
                                         <span className="mx-2 text-gray-300">|</span>
                                         <a
                                             href="#"
-                                            className="text-purple-600 hover:text-purple-900"
+                                            className="text-blue-600 hover:text-blue-900"
                                         >
                                             Edit
                                         </a>
@@ -229,7 +250,7 @@ export default function Staff() {
                 </div>
                 {/* Pagination */}
                 <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-                    <div className="flex-1 flex justify-between sm:hidden">
+                    {/* <div className="flex-1 flex justify-between sm:hidden">
                         <a
                             href="#"
                             className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
@@ -283,7 +304,7 @@ export default function Staff() {
                                 </a>
                                 <a
                                     href="#"
-                                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-purple-50 text-sm font-medium text-purple-600 hover:bg-gray-50"
+                                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600 hover:bg-gray-50"
                                 >
                                     2
                                 </a>
@@ -314,7 +335,40 @@ export default function Staff() {
                                 </a>
                             </nav>
                         </div>
-                    </div>
+                    </div> */}
+                    <button
+                        onClick={goToPrevPage}
+                        disabled={currentPage === 1}
+                        className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                    >
+                        <span className="sr-only">Previous</span>
+                        &lt;
+                    </button>
+
+                    {[...Array(totalPages).keys()].map((num) => {
+                        const pageNum = num + 1;
+                        return (
+                            <button
+                                key={pageNum}
+                                onClick={() => goToPage(pageNum)}
+                                className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${pageNum === currentPage
+                                    ? 'bg-blue-50 border-blue-500 text-blue-600'
+                                    : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                                    }`}
+                            >
+                                {pageNum}
+                            </button>
+                        );
+                    })}
+
+                    <button
+                        onClick={goToNextPage}
+                        disabled={currentPage === totalPages}
+                        className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                    >
+                        <span className="sr-only">Next</span>
+                        &gt;
+                    </button>
                 </div>
             </div>
             <AddModal

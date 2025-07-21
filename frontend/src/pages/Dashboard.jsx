@@ -4,25 +4,28 @@ import { StatsCard } from '../components/StatsCard';
 import { Card } from '../components/Card'
 import { useContext, useEffect, useState } from "react";
 import { LearnerContext } from "../context/LearnerContext";
-import { UsersIcon,ClockIcon,BarChartIcon,CalendarIcon } from 'lucide-react'
+import { UsersIcon, ClockIcon, BarChartIcon, CalendarIcon } from 'lucide-react'
 import { UsersContext } from "../context/UserContext";
 
 export default function Dashboard() {
+    const [role, setRole] = useState('');
     const [numberOfLearners, setNumberOfLearners] = useState('');
     const [numberOfemployees, setNumberOfEmployees] = useState('');
     const [numberOfUsers, setNumberOfUsers] = useState('');
-    
-    const {learnersData} = useContext(LearnerContext);
-    const {usersData} = useContext(UsersContext);
+
+    const { learnersData } = useContext(LearnerContext);
+    const { usersData } = useContext(UsersContext);
 
     useEffect(() => {
         const fetchLocalData = () => {
+            const user = JSON.parse(localStorage.getItem('user'));
             const userCount = localStorage.getItem('numberOfUsers');
             const learnerCount = localStorage.getItem('numberOfLearners');
             const emplyeeCount = localStorage.getItem('numberOfEmployees');
             setNumberOfUsers(userCount);
             setNumberOfEmployees(emplyeeCount);
             setNumberOfLearners(learnerCount);
+            setRole(user.role);
         }
 
         fetchLocalData();
@@ -37,8 +40,8 @@ export default function Dashboard() {
 
     console.log(numberOfLearners);
     console.log(usersData);
-    
-    
+
+
     return (
         <main className="space-y-6">
             <div>
@@ -50,7 +53,36 @@ export default function Dashboard() {
             </div>
             {/* Stats Card */}
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                <StatsCard
+                {role === 'admin' ? (
+                    <>
+                        <StatsCard
+                            title="Total Learners"
+                            value={numberOfLearners}
+                            icon={<UsersIcon className="h-6 w-6 text-blue-600" />}
+                            color="blue"
+                        />
+                        <StatsCard
+                            title="Total Employees"
+                            value={numberOfemployees}
+                            icon={<ClockIcon className="h-6 w-6 text-green-600" />}
+                            color="green"
+                        />
+                        <StatsCard
+                            title="Total Users"
+                            value={numberOfUsers}
+                            icon={<ClockIcon className="h-6 w-6 text-green-600" />}
+                            color="green"
+                        />
+                    </>
+                ) : (<>
+                    <StatsCard
+                        title="Total Learners"
+                        value={numberOfLearners}
+                        icon={<UsersIcon className="h-6 w-6 text-blue-600" />}
+                        color="blue"
+                    />
+                </>)}
+                {/* <StatsCard
                     title="Total Learners"
                     value={numberOfLearners}
                     icon={<UsersIcon className="h-6 w-6 text-blue-600" />}
@@ -67,7 +99,7 @@ export default function Dashboard() {
                     value={numberOfUsers}
                     icon={<ClockIcon className="h-6 w-6 text-green-600" />}
                     color="green"
-                />
+                /> */}
                 {/* <StatsCard
                     title="Activities Planned"
                     value="8"
