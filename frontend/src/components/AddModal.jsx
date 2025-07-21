@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { LearnerContext } from "../context/LearnerContext";
 
 export default function AddModal({ title, fields, onSubmit, isOpen, onClose }) {
+    const {addLearner} = useContext(LearnerContext);
     const [formData, setFormData] = useState({});
 
     useEffect(() => {
@@ -19,8 +21,18 @@ export default function AddModal({ title, fields, onSubmit, isOpen, onClose }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit(formData);
-        onClose();
+
+        try {
+            addLearner(formData);
+
+            onSubmit(formData);
+            onClose();
+            alert="Learner added."
+        } catch (error) {
+            console.log(error);
+            
+        }
+        
     };
 
     if (!isOpen) return null;

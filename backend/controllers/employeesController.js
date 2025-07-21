@@ -71,13 +71,16 @@ exports.createEmployees = async (req, res) => {
   const { fullName,
     email,
     position,
-    contactNumber, } = req.body;
+    contactNumber,
+    department,
+    address,
+    dateHired } = req.body;
 
-    console.log( fullName,
+  console.log(fullName,
     email,
     position,
     contactNumber);
-    
+
 
   try {
     // const imageData = req.file ? fs.readFileSync(path.join(__dirname + '../../uploads/' + req.file.filename)) : null;

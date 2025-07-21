@@ -21,17 +21,16 @@ const employeeSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  // department: {
-  //   type: String,
-  // },
-  // salary: {
-  //   type: Number,
-  //   min: 0,
-  // },
-  // dateHired: {
-  //   type: Date,
-  //   default: Date.now,
-  // },
+  department: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  dateHired: {
+    type: Date,
+    default: Date.now,
+  },
   // isActive: {
   //   type: Boolean,
   //   default: true,

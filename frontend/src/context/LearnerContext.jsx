@@ -34,8 +34,11 @@ export const LearnerProvider = ({ children }) => {
     }, []);
 
 
-    // Create
+    // Function for creating a new learner
     const addLearner = async (data) => {
+
+        console.log(data);
+        
 
         try {
             const response = await axios.post(`${API}/learners/register`, data);
@@ -47,14 +50,12 @@ export const LearnerProvider = ({ children }) => {
         }
     };
 
-    // Update
+    // Function for updating a learner
     const updateLearner = async (id, updatedData) => {
-        // console.log("Context update: ", id, updatedData);
 
         try {
             const res = await axios.put(`${API}/learners/${id}`, updatedData);
             const updatedLearner = res.data;
-            console.log(updatedLearner);
             
             setLearnersData((prev) =>
                 prev.map((l) => (l._id === id ? res.data : l))
@@ -64,11 +65,11 @@ export const LearnerProvider = ({ children }) => {
         }
     };
 
-    // Delete
+    // Function for delete a learner
     const deleteLearner = async (id) => {
         try {
             await axios.delete(`${API}/learners/${id}`);
-            setLearners((prev) => prev.filter((l) => l._id !== id));
+            setLearnersData((prev) => prev.filter((l) => l._id !== id));
         } catch (err) {
             console.error('Failed to delete learner', err);
         }

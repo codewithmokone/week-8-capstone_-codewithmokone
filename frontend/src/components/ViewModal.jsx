@@ -18,7 +18,7 @@ export default function ViewModal({ isOpen, onClose, data, type }) {
       setIsEditing(false);
     }
     updatedData();
-   
+
   }, [data]);
 
   if (!isOpen || !data) return null;
@@ -49,29 +49,34 @@ export default function ViewModal({ isOpen, onClose, data, type }) {
     }
   }
 
+  // Handle value change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // function for updating 
   const handleUpdate = async () => {
     try {
       if (type === "employee") {
         await updateEmployee(formData._id, formData);
         alert("Employee updated successfully.");
         setIsEditing(false);
+        onClose();
       }
 
       if (type === "learner") {
         await updateLearner(formData._id, formData);
         alert("Learner updated successfully.");
         setIsEditing(false);
+        onClose();
       }
 
       if (type === "user") {
         await updateUser(formData._id, formData);
         alert("User updated successfully.");
         setIsEditing(false);
+        onClose();
       }
     } catch (error) {
       console.error("Update failed:", error);
@@ -79,8 +84,7 @@ export default function ViewModal({ isOpen, onClose, data, type }) {
     }
   };
 
-  console.log(data);
-
+  // Render details function
   const renderDetails = () => {
     console.log("Render data: ", formData);
 
@@ -105,28 +109,47 @@ export default function ViewModal({ isOpen, onClose, data, type }) {
           </>
         );
       case "employee":
-        return (
+        return isEditing ? (
           <>
-            {data.image && (
-              <div className="mb-4">
-                <img
-                  src={data.image}
-                  alt={`${data.name}'s profile`}
-                  className="w-24 h-24 object-cover rounded-full border"
-                />
-              </div>
-            )}
+            <input type="text" name="image" value={formData.image || ""} onChange={handleChange} placeholder="Image URL" className="input" />
+            <input type="text" name="name" value={formData.fullName || ""} onChange={handleChange} placeholder="Name" className="input" />
+            <input type="text" name="position" value={formData.position || ""} onChange={handleChange} placeholder="Position" className="input" />
+            <input type="text" name="department" value={formData.department || ""} onChange={handleChange} placeholder="Department" className="input" />
+            <input type="email" name="email" value={formData.email || ""} onChange={handleChange} placeholder="Email" className="input" />
+            <input type="text" name="phone" value={formData.phone || ""} onChange={handleChange} placeholder="Phone" className="input" />
+            <input type="text" name="address" value={formData.address || ""} onChange={handleChange} placeholder="Address" className="input" />
+            <input type="date" name="startDate" value={formData.startDate?.split("T")[0] || ""} onChange={handleChange} className="input" />
+          </>
+        ) : (
+          <>
+            {data.image && <img src={data.image} alt="Profile" className="w-24 h-24 object-cover rounded-full border" />}
             <p><strong>Name:</strong> {data.fullName}</p>
             <p><strong>Position:</strong> {data.position}</p>
             <p><strong>Department:</strong> {data.department}</p>
             <p><strong>Email:</strong> {data.email}</p>
-            <p><strong>Phone:</strong>+27 {data.contactNumber}</p>
+            <p><strong>Phone:</strong> {data.contactNumber}</p>
             <p><strong>Address:</strong> {data.address}</p>
             <p><strong>Start Date:</strong> {data.startDate ? new Date(data.startDate).toLocaleDateString() : 'N/A'}</p>
           </>
         );
       case "user":
-        return (
+        return isEditing ? (
+          <>
+            <input type="text" name="username" value={formData.username || ""} onChange={handleChange} placeholder="Username" className="input" />
+            <input type="email" name="email" value={formData.email || ""} onChange={handleChange} placeholder="Email" className="input" />
+            <select name="role" value={formData.role || ""} onChange={handleChange} className="input">
+              <option value="">Select Role</option>
+              <option value="admin">Admin</option>
+              <option value="teacher">Teacher</option>
+              <option value="student">Student</option>
+            </select>
+            <select name="status" value={formData.status || ""} onChange={handleChange} className="input">
+              <option value="">Select Status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </>
+        ) : (
           <>
             <p><strong>Username:</strong> {data.username}</p>
             <p><strong>Email:</strong> {data.email}</p>
@@ -138,8 +161,6 @@ export default function ViewModal({ isOpen, onClose, data, type }) {
         return <p>No data available</p>;
     }
   };
-
-  
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
