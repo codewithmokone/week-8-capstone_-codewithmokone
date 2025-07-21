@@ -2,14 +2,11 @@ import { useContext, useState } from 'react';
 import mainImage from '../assets/images/login-image.jpg'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-// import { UsersContext } from '../context/userContext';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
-  // const { login } = useContext(UsersContext);
 
 
   const handleChange = (e) => {
