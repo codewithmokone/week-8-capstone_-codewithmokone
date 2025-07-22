@@ -6,15 +6,25 @@ import { useContext, useEffect, useState } from "react";
 import { LearnerContext } from "../context/LearnerContext";
 import { UsersIcon, ClockIcon, BarChartIcon, CalendarIcon } from 'lucide-react'
 import { UsersContext } from "../context/UserContext";
+import axios from 'axios';
+import { EventsContext } from "../context/EventContext";
+import { EmployeeContext } from "../context/employeeContext";
 
 export default function Dashboard() {
     const [role, setRole] = useState('');
-    const [numberOfLearners, setNumberOfLearners] = useState('');
-    const [numberOfemployees, setNumberOfEmployees] = useState('');
-    const [numberOfUsers, setNumberOfUsers] = useState('');
+    // const [numberOfLearners, setNumberOfLearners] = useState('');
+    // const [numberOfemployees, setNumberOfEmployees] = useState('');
+    // const [numberOfUsers, setNumberOfUsers] = useState('');
+    // const [events,setEvents] = useState([]);
 
     const { learnersData } = useContext(LearnerContext);
     const { usersData } = useContext(UsersContext);
+    const { events } = useContext(EventsContext);
+    const { employees } = useContext(EmployeeContext);
+
+    const numberOfLearners = learnersData?.length;
+    const numberOfemployees = employees?.length;
+    const numberOfUsers = usersData?.length;
 
     useEffect(() => {
         const fetchLocalData = () => {
@@ -22,25 +32,14 @@ export default function Dashboard() {
             const userCount = localStorage.getItem('numberOfUsers');
             const learnerCount = localStorage.getItem('numberOfLearners');
             const emplyeeCount = localStorage.getItem('numberOfEmployees');
-            setNumberOfUsers(userCount);
-            setNumberOfEmployees(emplyeeCount);
-            setNumberOfLearners(learnerCount);
+            // setNumberOfUsers(userCount);
+            // setNumberOfEmployees(emplyeeCount);
+            // setNumberOfLearners(learnerCount);
             setRole(user.role);
         }
 
         fetchLocalData();
     }, []);
-    // if(learnersData){
-    //     setNumberOfLearners(learnersData.length);
-    // }
-
-    // if(usersData){
-    //     setNumberOfUsers(usersData.length);
-    // }
-
-    console.log(numberOfLearners);
-    console.log(usersData);
-
 
     return (
         <main className="space-y-6">
@@ -157,6 +156,39 @@ export default function Dashboard() {
                         </button>
                     </div>
                 </Card> */}
+            </div>
+            <div className="bg-white shadow overflow-hidden rounded-lg">
+                <div className="px-4 py-5 sm:px-6">
+                    <h3 className="text-lg leading-6 font-medium text-gray-900">
+                        Upcoming Events
+                    </h3>
+                </div>
+                <div className="border-t border-gray-200">
+                    <ul className="divide-y divide-gray-200">
+                        {events?.length > 0 ? events.map((event) => (
+                            <li key={event._id} className="px-4 py-4 sm:px-6 hover:bg-gray-50">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center">
+                                        <div
+                                            className={`h-2 w-2 rounded-full mr-3
+                      ${event.type === 'meeting' ? 'bg-blue-500' : event.type === 'field-trip' ? 'bg-green-500' : event.type === 'staff' ? 'bg-yellow-500' : 'bg-purple-500'}`}
+                                        />
+                                        <p className="text-sm font-medium text-gray-900">
+                                            {event.name}
+                                        </p>
+                                    </div>
+                                    <div className="ml-2 flex-shrink-0 flex">
+                                        <p className="text-sm text-gray-500">{new Date(event.date).toLocaleDateString('en-GB', {
+                                            day: '2-digit',
+                                            month: 'short',
+                                            year: 'numeric',
+                                        })}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        )):(<li className="px-4 py-4 sm:px-6">No events.</li>)}
+                    </ul>
+                </div>
             </div>
         </main>
     )

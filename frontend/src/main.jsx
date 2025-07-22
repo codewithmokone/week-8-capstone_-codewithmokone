@@ -7,6 +7,7 @@ import { LearnerProvider } from './context/LearnerContext.jsx'
 import { EmployeeProvider } from './context/employeeContext.jsx'
 import { UsersProvider } from './context/UserContext.jsx'
 import { ActivityProvider } from './context/activityContext.jsx'
+import { EventsProvider } from './context/EventContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -14,9 +15,11 @@ createRoot(document.getElementById('root')).render(
       <EmployeeProvider>
         <UsersProvider>
           <ActivityProvider>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
+            <EventsProvider>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </EventsProvider>
           </ActivityProvider>
         </UsersProvider>
       </EmployeeProvider>
