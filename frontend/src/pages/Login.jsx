@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import mainImage from '../assets/images/login-image.jpg'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -20,17 +21,18 @@ export default function Login() {
 
     console.log(formData);
 
-    if (!formData.email || !formData.password) {
-      setError("Please enter both email and password");
-      return;
-    }
-
     try {
+      if (!formData.email || !formData.password) {
+        setError("Please enter both email and password");
+        return;
+      }
+
       const res = await axios.post('https://week-8-capstone-codewithmokone.onrender.com/api/user/login', formData);
 
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
 
+      toast.success('Logged in successfully!');
       navigate('/dashboard'); // redirect on success
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');

@@ -48,9 +48,6 @@ export default function Learners() {
         } catch (error) {
             error
         }
-
-
-
         // try {
 
         //     const response = await axios.post("http://localhost:4000/api/learners/register", data); // <-- your endpoint

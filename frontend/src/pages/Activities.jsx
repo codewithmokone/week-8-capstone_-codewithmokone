@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Card } from '../components/Card'
 import {
   PlusIcon,
@@ -9,55 +9,44 @@ import {
   HeartIcon,
   UsersIcon,
 } from 'lucide-react'
-export const Activities = () => {
-  const activities = [
-    {
-      id: 1,
-      name: 'Morning Circle Time',
-      category: 'Education',
-      icon: BookOpenIcon,
-      color: 'blue',
-      description:
-        'Daily gathering to greet each other and discuss the day ahead',
-      time: '9:00 AM - 9:30 AM',
-      group: 'All Groups',
-      status: 'Completed',
-    },
-    {
-      id: 2,
-      name: 'Art Project: Finger Painting',
-      category: 'Art',
-      icon: PaletteIcon,
-      color: 'blue',
-      description:
-        'Creative expression through finger painting with washable paints',
-      time: '10:00 AM - 11:00 AM',
-      group: 'Butterflies',
-      status: 'In Progress',
-    },
-    {
-      id: 3,
-      name: 'Music and Movement',
-      category: 'Music',
-      icon: MusicIcon,
-      color: 'blue',
-      description: 'Dancing and singing to develop motor skills and rhythm',
-      time: '11:00 AM - 11:30 AM',
-      group: 'Bumblebees',
-      status: 'Upcoming',
-    },
-    {
-      id: 4,
-      name: 'Outdoor Play',
-      category: 'Physical',
-      icon: HeartIcon,
-      color: 'green',
-      description: 'Free play in the playground to develop gross motor skills',
-      time: '3:00 PM - 4:00 PM',
-      group: 'All Groups',
-      status: 'Upcoming',
-    },
-  ]
+import { ActivityContext } from "../context/activityContext";
+import AddModal from '../components/AddModal';
+import axios from 'axios';
+
+export default function Activities() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activityList, setActivityList] = useState([]);
+  const { activities, addActivity } = useContext(ActivityContext)
+
+  useEffect(() => {
+    setActivityList(activities);
+  }, [activities]);
+
+  if (!activities) return null;
+
+  const activityFields = [
+    { name: "title", placeholder: "Title", required: true },
+    { name: "category", placeholder: "Category", required: true },
+    { name: "description", placeholder: "Description", required: true },
+    { name: "time", placeholder: "Time", required: true},
+    { name: "status", placeholder: "Status", required: true },
+  ];
+
+  // Function for adding a new learner
+  const handleAddActivity = async (data) => {
+    console.log(data);
+
+    try {
+      // const res = await axios.post('http://localhost:4000/api/activities/', data);
+      // const newActivity = res.data;
+      // console.log(newActivity);
+      
+      addActivity({ data });
+    } catch (error) {
+      console.log(error);
+       
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -73,6 +62,7 @@ export const Activities = () => {
         <div className="mt-4 sm:mt-0">
           <button
             type="button"
+            onClick={() => setIsModalOpen(true)}
             className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             <PlusIcon className="h-4 w-4 mr-2" />
@@ -80,7 +70,7 @@ export const Activities = () => {
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {/* <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         <div className="bg-white overflow-hidden shadow rounded-lg border border-gray-200">
           <div className="p-5">
             <div className="flex items-center">
@@ -157,24 +147,24 @@ export const Activities = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="bg-white shadow overflow-hidden sm:rounded-md">
         <ul className="divide-y divide-gray-200">
-          {activities.map((activity) => (
-            <li key={activity.id}>
+          {activityList?.length > 0 ? activityList.map((activity) => (
+            <li key={activity._id}>
               <div className="px-4 py-5 sm:px-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <div
+                    {/* <div
                       className={`flex-shrink-0 h-10 w-10 rounded-md bg-${activity.color}-100 flex items-center justify-center`}
                     >
                       <activity.icon
                         className={`h-6 w-6 text-${activity.color}-600`}
                       />
-                    </div>
+                    </div> */}
                     <div className="ml-4">
                       <div className="text-sm font-medium text-gray-900">
-                        {activity.name}
+                        {activity.title}
                       </div>
                       <div className="text-sm text-gray-500">
                         {activity.category}
@@ -201,14 +191,14 @@ export const Activities = () => {
                       <p>{activity.group}</p>
                     </div>
                   </div>
-                  <div className="mt-2 flex items-center text-sm sm:mt-0">
+                  {/* <div className="mt-2 flex items-center text-sm sm:mt-0">
                     <a
                       href="#"
                       className="font-medium text-blue-600 hover:text-blue-500"
                     >
                       View details
                     </a>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="mt-2">
                   <p className="text-sm text-gray-500">
@@ -217,10 +207,11 @@ export const Activities = () => {
                 </div>
               </div>
             </li>
-          ))}
+          ))
+            : (<div className="p-4 text-gray-500">No activities available.</div>)}
         </ul>
       </div>
-      <Card title="Weekly Activity Planning">
+      {/* <Card title="Weekly Activity Planning">
         <div className="space-y-4">
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="font-medium text-gray-900">
@@ -271,7 +262,14 @@ export const Activities = () => {
             </div>
           </div>
         </div>
-      </Card>
+      </Card> */}
+      <AddModal
+        title="Add Activity"
+        fields={activityFields}
+        onSubmit={handleAddActivity}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   )
 }

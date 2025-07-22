@@ -36,6 +36,7 @@ export default function Aside() {
         { to: "/staff", label: "Staff", icon: BriefcaseBusiness, },
         { to: "/users", label: "Users", icon: UsersIcon, },
         { to: "/activities", label: "Activities", icon: ActivityIcon, },
+        { to: "/calendar", label: "Calendar", icon: CalendarIcon, },
         // { to: "/accounts", label: "Accounts", icon: HomeIcon, },
         // { to: "/settings", label: "Settings", icon: SettingsIcon, },
     ]
@@ -44,6 +45,7 @@ export default function Aside() {
         { to: "/dashboard", label: "Dashboard", icon: HomeIcon, },
         { to: "/learners", label: "Learners", icon: UsersIcon, },
         { to: "/activities", label: "Activities", icon: ActivityIcon, },
+        { to: "/calendar", label: "Calendar", icon: CalendarIcon, },
     ]
 
     // Handles links based on user role

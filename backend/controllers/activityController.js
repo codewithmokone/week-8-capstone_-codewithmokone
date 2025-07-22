@@ -1,7 +1,7 @@
-import Activity from '../models/Activity.js'
+const Activity = require('../models/activityModel');
 
 // GET all activities
-export const getActivities = async (req, res) => {
+exports.getActivities = async (req, res) => {
   try {
     const activities = await Activity.find()
     res.json(activities)
@@ -11,12 +11,23 @@ export const getActivities = async (req, res) => {
 }
 
 // POST create new activity
-export const createActivity = async (req, res) => {
+exports.createActivity = async (req, res) => {
+  console.log(req.body);
+
   try {
-    const newActivity = new Activity(req.body)
-    const saved = await newActivity.save()
-    res.status(201).json(saved)
-  } catch (err) {
-    res.status(400).json({ message: err.message })
+    const { title, category, description, time, status } = req.body;
+
+    const newActivity = new Activity({
+      title,
+      category,
+      description,
+      time,
+      status,
+    });
+
+    const activity = await Activity.create(newActivity)
+    res.status(201).json(activity);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 }

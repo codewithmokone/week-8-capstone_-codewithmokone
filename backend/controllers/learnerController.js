@@ -74,7 +74,6 @@ exports.createLearner = async (req, res) => {
 
   console.log("Controller", fullName, dateOfBirth, gender,guardianName,contactNumber);
   
-
   try {
     // const imageData = req.file ? fs.readFileSync(path.join(__dirname + '../../uploads/' + req.file.filename)) : null;
 

@@ -5,24 +5,30 @@ import Learners from './pages/Learners'
 import Staff from './pages/Staff'
 import Users from './pages/Users'
 import DashboardLayout from './layouts/DashboardLayout'
-import { ActivityTracker } from './pages/Activities'
+import Activities from './pages/Activities'
+import { Calendar } from './pages/Calendar'
+import { Toaster } from 'react-hot-toast';
 
 function App() {
 
   return (
-    <Routes>
-      {/* Public route */}
-      <Route path='/' element={<Login />}/>
+    <>
+      <Toaster position="top-center" />
+      <Routes>
+        {/* Public route */}
+        <Route path='/' element={<Login />} />
 
-      {/* Private (dashboard) routes wrapped in DashboardLayout */}
-      <Route path='/' element={<DashboardLayout />}>
-        <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/learners' element={<Learners />} />
-        <Route path='/users' element={<Users />} />
-        <Route path='/staff' element={<Staff />} />
-        <Route path='/activities' element={<ActivityTracker />} />
-      </Route>
-    </Routes>
+        {/* Private (dashboard) routes wrapped in DashboardLayout */}
+        <Route path='/' element={<DashboardLayout />}>
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/learners' element={<Learners />} />
+          <Route path='/users' element={<Users />} />
+          <Route path='/staff' element={<Staff />} />
+          <Route path='/activities' element={<Activities />} />
+          <Route path='/calendar' element={<Calendar />} />
+        </Route>
+      </Routes>
+    </>
   )
 }
 
