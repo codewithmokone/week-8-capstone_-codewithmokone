@@ -32,6 +32,7 @@ app.use('/api/learners', require('./routes/learnersRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api/activities', require('./routes/activitiesRoutes'));
 app.use('/api/events', require('./routes/eventRoutes'));
+app.use('/api/messages', require('./routes/messageRoutes'));
 
 // Root route
 app.get('/', (req, res) => {

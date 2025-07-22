@@ -15,6 +15,23 @@ const socket = io('http://localhost:4000');
 export const Messages = () => {
     const initialConversations = [
         {
+            id: 'announcement',
+            name: '📢 Announcement Group',
+            child: 'All Parents & Staff',
+            avatar: 'AG',
+            unread: false,
+            lastMessage: 'Welcome to the announcement channel.',
+            time: 'Just now',
+            messages: [
+                {
+                    id: 1,
+                    sender: 'staff',
+                    content: 'This is the official announcement channel.',
+                    time: '9:00 AM',
+                },
+            ],
+        },
+        {
             id: 1,
             name: 'Sarah Johnson',
             child: 'Emma Johnson',
@@ -43,7 +60,6 @@ export const Messages = () => {
                 },
             ],
         },
-        // ... Add more conversations if needed
     ]
 
     const [messageInput, setMessageInput] = useState('');
@@ -62,6 +78,8 @@ export const Messages = () => {
         messageEndRef.current?.scrollIntoView({ behavior: 'smooth' })
 
         socket.on('receiveMessage', (data) => {
+            console.log(data);
+            
             setConversations((prev) =>
                 prev.map((conv) =>
                     conv.id === data.conversationId
@@ -96,93 +114,18 @@ export const Messages = () => {
     const filteredConversations = conversations.filter((c) =>
         c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         c.child.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-
-    // const conversations = [
-    //     {
-    //         id: 1,
-    //         name: 'Sarah Johnson',
-    //         child: 'Emma Johnson',
-    //         avatar: 'SJ',
-    //         unread: true,
-    //         lastMessage: 'Will Emma be participating in the field trip next week?',
-    //         time: '10m',
-    //     },
-    //     {
-    //         id: 2,
-    //         name: 'Michael Smith',
-    //         child: 'Liam Smith',
-    //         avatar: 'MS',
-    //         unread: false,
-    //         lastMessage: 'Thanks for sending the photos from yesterday!',
-    //         time: '1h',
-    //     },
-    //     {
-    //         id: 3,
-    //         name: 'Jennifer Davis',
-    //         child: 'Olivia Davis',
-    //         avatar: 'JD',
-    //         unread: false,
-    //         lastMessage: 'Olivia has been enjoying the new art activities.',
-    //         time: '3h',
-    //     },
-    //     {
-    //         id: 4,
-    //         name: 'David Wilson',
-    //         child: 'Noah Wilson',
-    //         avatar: 'DW',
-    //         unread: false,
-    //         lastMessage: 'Noah will be absent tomorrow for a doctor appointment.',
-    //         time: '1d',
-    //     },
-    //     {
-    //         id: 5,
-    //         name: 'Jessica Thompson',
-    //         child: 'Ava Thompson',
-    //         avatar: 'JT',
-    //         unread: false,
-    //         lastMessage: 'What time is the parent meeting on Thursday?',
-    //         time: '2d',
-    //     },
-    // ]
-    // const activeConversation = {
-    //     id: 1,
-    //     name: 'Sarah Johnson',
-    //     child: 'Emma Johnson',
-    //     avatar: 'SJ',
-    //     online: true,
-    //     messages: [
-    //         {
-    //             id: 1,
-    //             sender: 'parent',
-    //             content:
-    //                 'Good morning! I was wondering if Emma will need to bring anything special for the art project tomorrow?',
-    //             time: '9:32 AM',
-    //         },
-    //         {
-    //             id: 2,
-    //             sender: 'staff',
-    //             content:
-    //                 "Good morning Sarah! Yes, we're doing a special t-shirt painting activity. If Emma has an old white t-shirt she doesn't mind getting paint on, that would be perfect!",
-    //             time: '9:45 AM',
-    //         },
-    //         {
-    //             id: 3,
-    //             sender: 'parent',
-    //             content:
-    //                 "Great! I'll send one with her tomorrow. Also, will Emma be participating in the field trip next week?",
-    //             time: '10:02 AM',
-    //         },
-    //     ],
-    // }
+    );
 
     // Handle send message
     const handleSend = () => {
+        // console.log(messageInput);
+        
         if (!messageInput.trim()) return;
 
         const newMessage = {
             id: uuidv4(),
             sender: 'staff',
+            senderRole: 'staff',
             content: messageInput,
             time: new Date().toLocaleTimeString([], {
                 hour: '2-digit',
@@ -194,6 +137,8 @@ export const Messages = () => {
         socket.emit('sendMessage', {
             conversationId: activeConversation.id,
             message: newMessage,
+            sender: "staff",
+            senderRole: 'staff',
         })
 
         setMessageInput('');
@@ -314,6 +259,7 @@ export const Messages = () => {
                                     <div
                                         className={`max-w-xs sm:max-w-md px-4 py-2 rounded-lg ${message.sender === 'staff' ? 'bg-purple-100 text-purple-900' : 'bg-gray-100 text-gray-900'}`}
                                     >
+                                        {/* <p className="text-sm">{message.sender}</p> */}
                                         <p className="text-sm">{message.content}</p>
                                         <p className="text-xs text-right mt-1 text-gray-500">
                                             {message.time}

@@ -1,5 +1,5 @@
 import {Routes, Route} from 'react-router-dom';
-import Messages from './pages/Messages';
+import ChatApp from './pages/ChatApp';
 import Login from './pages/Login';
 import { Toaster } from 'react-hot-toast';
 
@@ -10,7 +10,7 @@ function App() {
         <Toaster position="top-center" />
         <Routes>
           <Route path='/' element={<Login />} />
-          <Route path='/messages' element={<Messages />} />
+          <Route path='/chatapp' element={<ChatApp />} />
         </Routes>
       </>
     )

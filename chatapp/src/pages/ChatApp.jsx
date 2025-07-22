@@ -17,7 +17,7 @@ import { useEffect } from 'react';
 const socket = io('http://localhost:4000');
 
 
-function Messages() {
+export default function ChatApp() {
  
     const initialConversations = [
         {
@@ -127,7 +127,7 @@ function Messages() {
 
         const newMessage = {
             id: uuidv4(),
-            sender: 'staff',
+            sender: 'parent',
             content: messageInput,
             time: new Date().toLocaleTimeString([], {
                 hour: '2-digit',
@@ -313,4 +313,4 @@ function Messages() {
     )
 }
 
-export default Messages;
+// export default Messages;
