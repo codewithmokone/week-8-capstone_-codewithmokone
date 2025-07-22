@@ -8,6 +8,7 @@ import DashboardLayout from './layouts/DashboardLayout'
 import Activities from './pages/Activities'
 import { Calendar } from './pages/Calendar'
 import { Toaster } from 'react-hot-toast';
+import { Messages } from './pages/Messages'
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
           <Route path='/staff' element={<Staff />} />
           <Route path='/activities' element={<Activities />} />
           <Route path='/calendar' element={<Calendar />} />
+          <Route path='/messages' element={<Messages />} />
         </Route>
       </Routes>
     </>

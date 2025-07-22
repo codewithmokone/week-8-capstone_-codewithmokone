@@ -61,11 +61,11 @@ export const Calendar = () => {
             setEvents(prev => [...prev, response.data]);
 
             // Reset form
-            // setNewEvent({ name: '', date: '', type: 'Meeting', description: '' });
             toast.success('Event added successfully!');
         } catch (error) {
             console.error('Failed to add event:', error);
             // You can show a toast or error message here
+            toast.error('Failed to add event.');
         }
         setEvents(prev => [...prev, newEventObj]);
         setNewEvent({ name: '', date: '', type: 'Meeting', description: '' });
@@ -292,6 +292,7 @@ export const Calendar = () => {
                                     type="text"
                                     name="event-name"
                                     id="event-name"
+                                    required
                                     onChange={(e) => setNewEvent({ ...newEvent, name: e.target.value })}
                                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                                 />
@@ -310,6 +311,7 @@ export const Calendar = () => {
                                         id="event-date"
                                         onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
                                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                                        required
                                     />
                                 </div>
                                 <div>
@@ -324,6 +326,7 @@ export const Calendar = () => {
                                         name="event-type"
                                         onChange={(e) => setNewEvent({ ...newEvent, type: e.target.value })}
                                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                                        required
                                     >
                                         <option>Meeting</option>
                                         <option>Field Trip</option>
@@ -344,13 +347,14 @@ export const Calendar = () => {
                                     name="event-description"
                                     rows={3}
                                     onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
+                                    required
                                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                                 ></textarea>
                             </div>
                             <div>
                                 <button
                                     type="submit"
-                                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                                 >
                                     Add Event
                                 </button>

@@ -5,8 +5,6 @@ import {
     CalendarIcon,
     ActivityIcon,
     MessageCircleIcon,
-    SettingsIcon,
-    HelpCircleIcon,
     LogOutIcon,
     PersonStanding,
     BriefcaseBusiness
@@ -30,6 +28,7 @@ export default function Aside() {
         fetchLocalData();
     }, []);
 
+    // Admin links
     const adminlinks = [
         { to: "/dashboard", label: "Dashboard", icon: HomeIcon, },
         { to: "/learners", label: "Learners", icon: PersonStanding, },
@@ -37,33 +36,22 @@ export default function Aside() {
         { to: "/users", label: "Users", icon: UsersIcon, },
         { to: "/activities", label: "Activities", icon: ActivityIcon, },
         { to: "/calendar", label: "Calendar", icon: CalendarIcon, },
-        // { to: "/accounts", label: "Accounts", icon: HomeIcon, },
-        // { to: "/settings", label: "Settings", icon: SettingsIcon, },
+        { to: "/messages", label: "Messages", icon: MessageCircleIcon, },
     ]
 
+    // Other user links
     const links = [
         { to: "/dashboard", label: "Dashboard", icon: HomeIcon, },
         { to: "/learners", label: "Learners", icon: UsersIcon, },
         { to: "/activities", label: "Activities", icon: ActivityIcon, },
         { to: "/calendar", label: "Calendar", icon: CalendarIcon, },
+        { to: "/messages", label: "Messages", icon: MessageCircleIcon, },
     ]
 
     // Handles links based on user role
     const reservedLinks = user.role === 'admin' ? adminlinks : links;
 
-    // const secondaryNavigation = [
-    //     {
-    //         to: '/Settings',
-    //         href: '/settings',
-    //         icon: SettingsIcon,
-    //     },
-    //     {
-    //         name: 'Help',
-    //         href: '/help',
-    //         icon: HelpCircleIcon,
-    //     },
-    // ]
-
+    // Function to signing out
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -90,24 +78,12 @@ export default function Aside() {
                             }
                         >
                             <link.icon
-                            //     className={`mr-3 h-5 w-5 ${isActive ? 'text-purple-500' : 'text-gray-400'}`
-                            // }
                             />
                             {link.label}
                         </NavLink>
                     ))}
                 </nav>
                 <div className="px-2 py-4 space-y-1">
-                    {/* {secondaryNavigation.map((item) => (
-                    <NavLink
-                        key={item.name}
-                        to={item.href}
-                        className="flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700"
-                    >
-                        <item.icon className="mr-3 h-5 w-5 text-gray-400" />
-                        {item.name}
-                    </NavLink>
-                ))} */}
                     <button className="flex w-full items-center px-8 py-3 text-sm font-medium text-white rounded-lg hover:bg-purple-50 hover:text-gray-600"
                         onClick={handleLogout}
                     >

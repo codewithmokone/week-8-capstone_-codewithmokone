@@ -2,57 +2,37 @@
 // const express = require('express');
 const app = require("./app");
 const mongoose = require('mongoose');
-// const cors = require('cors');
-// const dotenv = require('dotenv');
-// const logger = require('./middleware/logger');
-// const path = require('path');
-// const bodyParser = require('body-parser');
+const http = require('http')
+const { Server } = require('socket.io')
 
-
-// Load environment variables
-// dotenv.config();
-
-// Initialize Express app
-// const app = express();
 const PORT = process.env.PORT || 5000;
+const server = http.createServer(app);
 
-// Middleware
-// app.use(cors());
-// app.use(logger);
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
-// app.use(bodyParser.urlencoded({ extended: false }))
-// app.use(bodyParser.json())
+// Socket.IO setup
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:5173', // Change this to your frontend URL
+    methods: ['GET', 'POST'],
+  },
+})
 
-// Serve uploaded files
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Socket.IO connection
+io.on('connection', (socket) => {
+  console.log('A user connected:', socket.id)
 
-// Log requests in development mode
-// if (process.env.NODE_ENV === 'development') {
-//   app.use((req, res, next) => {
-//     console.log(`${req.method} ${req.url}`);
-//     next();
-//   });
-// }
+  socket.on('sendMessage', ({ conversationId, message }) => {
+    console.log('New message received:', message)
 
-// API routes
-// app.use('/api/employees', require('./routes/employeesRoutes'));
-// app.use('/api/learners', require('./routes/learnersRoutes'));
-// app.use('/api/user', require('./routes/userRoutes'));
+    // Optionally save to database here...
 
-// Root route
-// app.get('/', (req, res) => {
-//   res.send('MERN Blog API is running');
-// });
+    // Broadcast to all clients
+    io.emit('receiveMessage', { conversationId, message })
+  })
 
-// Error handling middleware
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(err.statusCode || 500).json({
-//     success: false,
-//     error: err.message || 'Server Error',
-//   });
-// });
+  socket.on('disconnect', () => {
+    console.log('A user disconnected:', socket.id)
+  })
+})
 
 // Connect to MongoDB and start server
 mongoose
@@ -75,4 +55,6 @@ process.on('unhandledRejection', (err) => {
   process.exit(1);
 });
 
-// module.exports = app; 
+server.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`)
+})

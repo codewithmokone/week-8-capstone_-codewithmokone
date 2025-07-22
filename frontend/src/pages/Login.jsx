@@ -48,7 +48,7 @@ export default function Login() {
           <form className="w-full h-full flex flex-col gap-1" action="" onSubmit={handleLogin}>
             <label htmlFor="email">Email:</label>
             <input
-              className="border p-1 rounded"
+              className="border border-gray-500 p-1 rounded"
               type="email"
               id='email'
               name='email'
@@ -60,7 +60,7 @@ export default function Login() {
             />
             <label className="mt-4" htmlFor="password">Password:</label>
             <input
-              className="border p-1 rounded"
+              className="border border-gray-500 p-1 rounded"
               type="password"
               id='password'
               name='password'
