@@ -24,53 +24,43 @@ io.on('connection', (socket) => {
   // Join a global announcement group
   socket.join('announcement');
 
-  socket.on('sendMessage', async ({ conversationId, message, sender,senderRole }) => {
-    console.log(conversationId, message, senderRole);
+  // Handle joining specific group rooms
+  socket.on('joinRoom', (roomId) => {
+    if (roomId) {
+      socket.join(roomId.toString());
+      console.log(`Socket ${socket.id} joined room ${roomId}`);
+    }
+  });
 
-    // try {
-    //   const isAnnouncement = conversationId === 'announcement';
+  socket.on('createGroup', async (group) => {
+    try {
+      // Make sure group has a valid id
+      group.id = group._id?.toString() || group.id || Date.now().toString();
 
-    //   // Optionally save to database here...
-    //   const savedMessage = await Message.create({
-    //     conversationId: isAnnouncement ? undefined : conversationId,
-    //     sender: sender,
-    //     content: message.content,
-    //     time: message.time,
-    //     type: isAnnouncement ? 'announcement' : 'direct'
-    //   });
+      // Broadcast to other clients
+      socket.broadcast.emit('newGroupCreated', group);
 
-    //   // Add the database _id to the message being sent out
-    //   const messageToSend = {
-    //     ...message,
-    //     _id: savedMessage._id
-    //   };
+      // Join the group creator to the room
+      socket.join(group.id.toString());
 
-    //   if (conversationId === 'announcement') {
-    //     // Broadcast to everyone in the announcement room
-    //     io.to('announcement').emit('receiveMessage', {
-    //       conversationId,
-    //       message: messageToSend
-    //     });
-    //   } else {
-    //     // Handle normal one-to-one messages
-    //     io.to(conversationId.toString()).emit('receiveMessage', {
-    //       conversationId,
-    //       message: messageToSend
-    //     });
-    //   }
+      console.log('New group created:', group.name);
+    } catch (err) {
+      console.error('Error creating group:', err);
+    }
 
-    //   // Broadcast to all clients
-    //   // io.emit('receiveMessage', { conversationId, message })
-    // } catch (error) {
-    //   console.error('Error saving message:', error);
-    // }
+  });
+
+
+
+  socket.on('sendMessage', async ({ conversationId, message}) => {
+    console.log(conversationId, message);
 
     const isAnnouncement = conversationId === 'announcement';
 
     try {
       // Restrict announcement messages to staff/admin
-      if (isAnnouncement && senderRole !== 'staff' && senderRole !== 'admin') {
-        console.warn(`Unauthorized announcement attempt by ${senderRole}`);
+      if (isAnnouncement && message.role !== 'staff' && message.role !== 'admin') {
+        console.warn(`Unauthorized announcement attempt by ${message.role}`);
         return socket.emit('errorMessage', {
           error: 'Only staff or admin can send announcements.'
         });
@@ -81,15 +71,15 @@ io.on('connection', (socket) => {
       if (!isAnnouncement) {
         // Validate conversationId format
         const isValidId = mongoose.Types.ObjectId.isValid(conversationId);
-        if (!isValidId || !sender) {
+        if (!isValidId || !message.sender) {
           console.error('Invalid conversationId or missing sender');
           return;
         }
 
-        // Save to DB for direct messages
+        //Save to DB for direct messages
         savedMessage = await Message.create({
           conversationId,
-          sender,
+          sender: message.sender,
           content: message.content,
           time: message.time,
           type: 'direct'
@@ -99,7 +89,7 @@ io.on('connection', (socket) => {
       const messageToSend = {
         ...message,
         _id: savedMessage?._id || Date.now(),
-        sender: sender
+        sender: message.sender
       };
 
       // Emit to appropriate room
@@ -111,8 +101,6 @@ io.on('connection', (socket) => {
     } catch (error) {
       console.error('Error saving message:', error);
     }
-
-
   })
 
   socket.on('disconnect', () => {

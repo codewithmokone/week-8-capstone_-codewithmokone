@@ -10,8 +10,11 @@ const messageSchema = new mongoose.Schema({
   },
   sender: {
     type: String,
-    enum: ['staff', 'parent'],
     required: true
+  },
+  role: {
+    type:String,
+    enum: ['admin','staff', 'parent'],
   },
   content: {
     type: String,

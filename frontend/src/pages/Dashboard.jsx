@@ -1,24 +1,17 @@
-import Aside from "../components/Aside";
-import Header from "../components/Header";
 import { StatsCard } from '../components/StatsCard';
 import { Card } from '../components/Card'
 import { useContext, useEffect, useState } from "react";
 import { LearnerContext } from "../context/LearnerContext";
 import { UsersIcon, ClockIcon, BarChartIcon, CalendarIcon } from 'lucide-react'
 import { UsersContext } from "../context/UserContext";
-import axios from 'axios';
 import { EventsContext } from "../context/EventContext";
 import { EmployeeContext } from "../context/employeeContext";
 
 export default function Dashboard() {
     const [role, setRole] = useState('');
-    // const [numberOfLearners, setNumberOfLearners] = useState('');
-    // const [numberOfemployees, setNumberOfEmployees] = useState('');
-    // const [numberOfUsers, setNumberOfUsers] = useState('');
-    // const [events,setEvents] = useState([]);
 
     const { learnersData } = useContext(LearnerContext);
-    const { usersData } = useContext(UsersContext);
+    const { usersData, userProfile } = useContext(UsersContext);
     const { events } = useContext(EventsContext);
     const { employees } = useContext(EmployeeContext);
 
@@ -29,17 +22,11 @@ export default function Dashboard() {
     useEffect(() => {
         const fetchLocalData = () => {
             const user = JSON.parse(localStorage.getItem('user'));
-            const userCount = localStorage.getItem('numberOfUsers');
-            const learnerCount = localStorage.getItem('numberOfLearners');
-            const emplyeeCount = localStorage.getItem('numberOfEmployees');
-            // setNumberOfUsers(userCount);
-            // setNumberOfEmployees(emplyeeCount);
-            // setNumberOfLearners(learnerCount);
             setRole(user.role);
         }
 
         fetchLocalData();
-    }, []);
+    }, [events]);
 
     return (
         <main className="space-y-6">

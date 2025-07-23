@@ -31,8 +31,12 @@ export default function Login() {
       const res = await axios.post('http://localhost:4000/api/user/login', formData);
       //const res = await axios.post('https://week-8-capstone-codewithmokone.onrender.com/api/user/login', formData);
 
+      const user = res.data;
+      console.log(user);
+      console.log(user.role);
+      
       localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
+      localStorage.setItem('role', JSON.stringify(res.data.user));
 
       toast.success('Logged in successfully!');
       navigate('/chatapp');

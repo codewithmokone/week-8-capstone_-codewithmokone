@@ -3,12 +3,17 @@ import mainImage from '../assets/images/login-image.jpg'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { UsersContext } from '../context/UserContext';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
+
+  const { setUserProfile } = useContext(UsersContext);
+
   const navigate = useNavigate();
 
+  // Function for changing input values
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -16,24 +21,35 @@ export default function Login() {
     }));
   };
 
+  // Function for login in a user
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    console.log(formData);
-
     try {
+
+      // Check data if is valid
       if (!formData.email || !formData.password) {
         setError("Please enter both email and password");
         return;
       }
 
+      // Send login data to API
       const res = await axios.post('https://week-8-capstone-codewithmokone.onrender.com/api/user/login', formData);
+      
+      // Store API response
+      const userInfo = res.data.user;
 
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
+      // Save data to localstorage
+      localStorage.setItem('user', JSON.stringify(userInfo));
 
-      toast.success('Logged in successfully!');
-      navigate('/dashboard'); // redirect on success
+      // Send user profile to user context
+      setUserProfile(userInfo)
+
+      // Show success notification 
+      toast.success(`${userInfo.message}`);
+
+      // Navigate to dashboard
+      navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
     }

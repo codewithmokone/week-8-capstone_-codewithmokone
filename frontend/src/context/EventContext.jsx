@@ -14,7 +14,7 @@ export const EventsProvider = ({ children }) => {
             const eventList = await axios.get('http://localhost:4000/api/events/');
             const fetchedEvents = eventList.data;
             setEvents(fetchedEvents);
-            console.log(fetchedEvents)
+            // console.log(fetchedEvents)
         } catch (err) {
             console.error('Failed to fetch events.', err);
         } finally {

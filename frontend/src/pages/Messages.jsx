@@ -1,13 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react';
 import {
     SearchIcon,
     PlusIcon,
     PaperclipIcon,
     SmileIcon,
     SendIcon,
-} from 'lucide-react'
-import { io } from 'socket.io-client'
+} from 'lucide-react';
+import { io } from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 // Connect to backend Socket io
 const socket = io('http://localhost:4000');
@@ -15,7 +16,7 @@ const socket = io('http://localhost:4000');
 export const Messages = () => {
     const initialConversations = [
         {
-            id: 'announcement',
+            _id: 'announcement',
             name: '📢 Announcement Group',
             child: 'All Parents & Staff',
             avatar: 'AG',
@@ -31,55 +32,31 @@ export const Messages = () => {
                 },
             ],
         },
-        {
-            id: 1,
-            name: 'Sarah Johnson',
-            child: 'Emma Johnson',
-            avatar: 'SJ',
-            unread: true,
-            lastMessage: 'Will Emma be participating in the field trip next week?',
-            time: '10m',
-            messages: [
-                {
-                    id: 1,
-                    sender: 'parent',
-                    content: 'Good morning! I was wondering if Emma will need to bring anything...',
-                    time: '9:32 AM',
-                },
-                {
-                    id: 2,
-                    sender: 'staff',
-                    content: "Yes! We're doing a special t-shirt painting activity...",
-                    time: '9:45 AM',
-                },
-                {
-                    id: 3,
-                    sender: 'parent',
-                    content: "Great! I'll send one with her tomorrow...",
-                    time: '10:02 AM',
-                },
-            ],
-        },
     ]
 
+    const [role, setRole] = useState('');
     const [messageInput, setMessageInput] = useState('');
     const [conversations, setConversations] = useState(initialConversations)
-    const [activeConversation, setActiveConversation] = useState(initialConversations[0] || { messages: [] })
-    const [searchTerm, setSearchTerm] = useState('')
+    const [activeConversation, setActiveConversation] = useState(initialConversations[0])
+    const [user, setUser] = useState('')
 
     const messageEndRef = useRef(null);
 
-    // Scroll to bottom on new messages
-    // useEffect(() => {
-    //     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-    // }, [activeConversation.messages])
-
     useEffect(() => {
+        const userInfo = JSON.parse(localStorage.getItem('user'));
+        if (userInfo) {
+            setRole(userInfo.role);
+            setUser(userInfo);
+        }
+
         messageEndRef.current?.scrollIntoView({ behavior: 'smooth' })
 
+        socket.on('newGroupCreated', (group) => {
+            group.id = group.id || group._id || uuidv4();
+            setConversations((prev) => [group, ...prev]);
+        });
+
         socket.on('receiveMessage', (data) => {
-            console.log(data);
-            
             setConversations((prev) =>
                 prev.map((conv) =>
                     conv.id === data.conversationId
@@ -101,48 +78,109 @@ export const Messages = () => {
         });
 
         return () => {
-            socket.off('receiveMessage')
-        }
+            socket.off('receiveMessage');
+            socket.off('newGroupCreated');
+        };
 
     }, []);
+
+    useEffect(() => {
+        if (activeConversation?.id) {
+            socket.emit('joinRoom', activeConversation.id);
+        }
+    }, [activeConversation])
+
+    useEffect(() => {
+        if (!activeConversation) return;
+
+        axios.get(`http://localhost:4000/api/groups/${activeConversation.id}/messages`)
+            .then(response => {
+                setActiveConversation(prev => ({
+                    ...prev,
+                    messages: response.data.messages
+                }));
+                // Also update conversations list with latest message info if needed
+            })
+            .catch(err => console.error(err));
+    }, [activeConversation?.id]);
+
 
     if (!activeConversation) {
         return <div className="p-4">No conversation selected</div>
     }
 
-    // Filtering messages
-    const filteredConversations = conversations.filter((c) =>
-        c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        c.child.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
     // Handle send message
     const handleSend = () => {
-        // console.log(messageInput);
-        
         if (!messageInput.trim()) return;
+
+        console.log("Message input: ", messageInput);
+
 
         const newMessage = {
             id: uuidv4(),
-            sender: 'staff',
-            senderRole: 'staff',
+            // sender: user.fullname,
+            sender: "staff",
+            role: role,
             content: messageInput,
             time: new Date().toLocaleTimeString([], {
                 hour: '2-digit',
                 minute: '2-digit'
             })
-        }
+        };
+
+        console.log("Message to send: ", newMessage);
+        console.log("Active Conv: ", activeConversation);
+
 
         // Emit to server
         socket.emit('sendMessage', {
             conversationId: activeConversation.id,
             message: newMessage,
             sender: "staff",
-            senderRole: 'staff',
+            // senderRole: role,
         })
 
         setMessageInput('');
     }
+
+    // Function for creating a new group
+    const handleCreateGroup = async () => {
+        try {
+            const groupName = prompt("Enter group name:");
+            if (!groupName) return;
+
+            console.log(groupName);
+
+            const newGroup = {
+                name: groupName,
+                avatar: groupName.charAt(0).toUpperCase(),
+                createdBy: user.fullname,
+                time: 'Just now',
+                members: [],
+                messages: [],
+            };
+
+            const response = await axios.post('http://localhost:4000/api/groups', newGroup)
+
+            const savedGroup = await response?.data;
+
+            console.log("Saved group: ", savedGroup);
+
+
+            // Ensure `id` is always present
+            if (!savedGroup.id) savedGroup.id = savedGroup._id || uuidv4();
+
+            setConversations(prev => [savedGroup, ...prev]);
+            setActiveConversation(savedGroup);
+
+            // Optionally emit to server
+            socket.emit('joinRoom', savedGroup._id);
+            socket.emit('createGroup', savedGroup);
+        } catch (error) {
+            console.log(error);
+        }
+
+    };
 
     return (
         <div className="h-[calc(100vh-9rem)]">
@@ -155,24 +193,24 @@ export const Messages = () => {
                             Communicate with parents and staff
                         </p>
                     </div>
+                    {/* Create Group Button */}
                     <div className="p-4 border-b border-gray-200">
-                        <div className="relative rounded-md shadow-sm">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <SearchIcon className="h-5 w-5 text-gray-400" />
+                        {(user?.role === 'admin' || user?.role === 'staff') && (
+                            <div className="p-4">
+                                <button
+                                    className="w-full px-4 py-2 text-sm text-white bg-purple-600 hover:bg-purple-700 rounded-md"
+                                    onClick={handleCreateGroup}
+                                >
+                                    + Create Group
+                                </button>
                             </div>
-                            <input
-                                type="text"
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="focus:ring-purple-500 focus:border-purple-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
-                                placeholder="Search messages..."
-                            />
-                        </div>
+                        )}
                     </div>
                     <div className="overflow-y-auto h-[calc(100%-8rem)]">
                         <ul className="divide-y divide-gray-200">
                             {conversations.map((conversation) => (
                                 <li
-                                    key={conversation.id}
+                                    key={conversation.id || uuidv4()}
                                     onClick={() => setActiveConversation(conversation)}
                                     className={`hover:bg-gray-50 ${conversation.id === activeConversation.id ? 'bg-purple-50' : ''}`}
                                 >
@@ -199,7 +237,7 @@ export const Messages = () => {
                                                     </p>
                                                 </div>
                                                 <p className="text-xs text-gray-500 truncate">
-                                                    Parent of {conversation.child}
+                                                    {/* {conversation.child} */}
                                                 </p>
                                                 <p
                                                     className={`text-sm truncate ${conversation.unread ? 'font-medium text-gray-900' : 'text-gray-500'}`}
@@ -236,9 +274,6 @@ export const Messages = () => {
                             <div className="ml-3">
                                 <p className="text-sm font-medium text-gray-900">
                                     {activeConversation.name}
-                                </p>
-                                <p className="text-xs text-gray-500">
-                                    Parent of {activeConversation.child}
                                 </p>
                             </div>
                         </div>

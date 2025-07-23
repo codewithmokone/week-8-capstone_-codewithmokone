@@ -18,7 +18,7 @@ const socket = io('http://localhost:4000');
 
 
 export default function ChatApp() {
- 
+
     const initialConversations = [
         {
             id: 'announcement',
@@ -37,51 +37,32 @@ export default function ChatApp() {
                 },
             ],
         },
-        {
-            id: 1,
-            name: 'Sarah Johnson',
-            child: 'Emma Johnson',
-            avatar: 'SJ',
-            unread: true,
-            lastMessage: 'Will Emma be participating in the field trip next week?',
-            time: '10m',
-            messages: [
-                {
-                    id: 1,
-                    sender: 'parent',
-                    content: 'Good morning! I was wondering if Emma will need to bring anything...',
-                    time: '9:32 AM',
-                },
-                {
-                    id: 2,
-                    sender: 'staff',
-                    content: "Yes! We're doing a special t-shirt painting activity...",
-                    time: '9:45 AM',
-                },
-                {
-                    id: 3,
-                    sender: 'parent',
-                    content: "Great! I'll send one with her tomorrow...",
-                    time: '10:02 AM',
-                },
-            ],
-        },
     ]
 
     const [messageInput, setMessageInput] = useState('');
     const [conversations, setConversations] = useState(initialConversations)
     const [activeConversation, setActiveConversation] = useState(initialConversations[0] || { messages: [] })
-    const [searchTerm, setSearchTerm] = useState('')
 
     const messageEndRef = useRef(null);
 
-    // Scroll to bottom on new messages
-    // useEffect(() => {
-    //     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-    // }, [activeConversation.messages])
-
     useEffect(() => {
         messageEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+
+        socket.on('newGroupCreated', (group) => {
+            if (!group.id) {
+                group.id = group._id?.toString(); 
+            }
+
+            if (!group.id) {
+                group.id = uuidv4(); 
+            }
+
+            // Prevent duplicates (based on ID)
+            setConversations((prev) => {
+                const alreadyExists = prev.some((conv) => conv.id === group.id);
+                return alreadyExists ? prev : [group, ...prev];
+            });
+        });
 
         socket.on('receiveMessage', (data) => {
             setConversations((prev) =>
@@ -91,7 +72,6 @@ export default function ChatApp() {
                         : conv
                 )
             );
-
 
             setActiveConversation((prev) => {
                 if (prev.id === data.conversationId) {
@@ -105,21 +85,22 @@ export default function ChatApp() {
         });
 
         return () => {
-            socket.off('receiveMessage')
-        }
+            socket.off('receiveMessage');
+            socket.off('newGroupCreated');
+        };
 
     }, []);
+
+    useEffect(() => {
+        if (activeConversation?.id) {
+            socket.emit('joinRoom', activeConversation.id);
+        }
+    }, [activeConversation])
+
 
     if (!activeConversation) {
         return <div className="p-4">No conversation selected</div>
     }
-
-    // Filtering messages
-    const filteredConversations = conversations.filter((c) =>
-        c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        c.child.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-
 
     // Handle send message
     const handleSend = () => {
@@ -155,24 +136,11 @@ export default function ChatApp() {
                             Communicate with parents and staff
                         </p>
                     </div>
-                    <div className="p-4 border-b border-gray-200">
-                        <div className="relative rounded-md shadow-sm">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <SearchIcon className="h-5 w-5 text-gray-400" />
-                            </div>
-                            <input
-                                type="text"
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="focus:ring-purple-500 focus:border-purple-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
-                                placeholder="Search messages..."
-                            />
-                        </div>
-                    </div>
                     <div className="overflow-y-auto h-[calc(100%-8rem)]">
                         <ul className="divide-y divide-gray-200">
-                            {conversations.map((conversation) => (
+                            {conversations.map((conversation, index) => (
                                 <li
-                                    key={conversation.id}
+                                    key={conversation.id || index}
                                     onClick={() => setActiveConversation(conversation)}
                                     className={`hover:bg-gray-50 ${conversation.id === activeConversation.id ? 'bg-purple-50' : ''}`}
                                 >
@@ -198,9 +166,6 @@ export default function ChatApp() {
                                                         {conversation.time}
                                                     </p>
                                                 </div>
-                                                <p className="text-xs text-gray-500 truncate">
-                                                    Parent of {conversation.child}
-                                                </p>
                                                 <p
                                                     className={`text-sm truncate ${conversation.unread ? 'font-medium text-gray-900' : 'text-gray-500'}`}
                                                 >
@@ -237,27 +202,19 @@ export default function ChatApp() {
                                 <p className="text-sm font-medium text-gray-900">
                                     {activeConversation.name}
                                 </p>
-                                <p className="text-xs text-gray-500">
-                                    Parent of {activeConversation.child}
-                                </p>
+
                             </div>
                         </div>
-                        <button
-                            type="button"
-                            className="inline-flex items-center px-3 py-1 border border-gray-300 text-xs rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                        >
-                            View Profile
-                        </button>
                     </div>
                     <div className="flex-1 p-4 overflow-y-auto">
                         <div className="space-y-4">
                             {activeConversation.messages.map((message) => (
                                 <div
                                     key={message.id}
-                                    className={`flex ${message.sender === 'staff' ? 'justify-end' : 'justify-start'}`}
+                                    className={`flex ${message.sender === 'parent' ? 'justify-end' : 'justify-start'}`}
                                 >
                                     <div
-                                        className={`max-w-xs sm:max-w-md px-4 py-2 rounded-lg ${message.sender === 'staff' ? 'bg-purple-100 text-purple-900' : 'bg-gray-100 text-gray-900'}`}
+                                        className={`max-w-xs sm:max-w-md px-4 py-2 rounded-lg ${message.sender === 'parent' ? 'bg-purple-100 text-purple-900' : 'bg-gray-100 text-gray-900'}`}
                                     >
                                         <p className="text-sm">{message.content}</p>
                                         <p className="text-xs text-right mt-1 text-gray-500">
@@ -312,5 +269,3 @@ export default function ChatApp() {
         </div>
     )
 }
-
-// export default Messages;
