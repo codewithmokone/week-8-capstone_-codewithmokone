@@ -25,21 +25,21 @@ export const EventsProvider = ({ children }) => {
     };
 
     // Function for creating a activity
-    // const addActivity = async (data) => {
+    const addEvent = async (data) => {
 
-    //     console.log(data);
+        console.log(data);
 
-    //     try {
-    //         const res = await axios.post('http://localhost:4000/api/activities/', data);
-    //         const newActivity = res.data;
+        try {
+            const res = await axios.post(`${API}/events/`, data);
+            const newEvent = res?.data;
 
-    //         console.log(newActivity);
+            console.log(newEvent);
 
-    //         setActivities((prev) => [...prev, res.data]);
-    //     } catch (err) {
-    //         console.error('Failed to add activity', err);
-    //     }
-    // };
+            setEvents((prev) => [...prev, newEvent]);
+        } catch (err) {
+            console.error('Failed to add event', err);
+        }
+    };
 
     // Update
     // const updateActivity = async (id, updatedData) => {
@@ -68,7 +68,7 @@ export const EventsProvider = ({ children }) => {
     }, []);
 
     return (
-        <EventsContext.Provider value={{ events }}>
+        <EventsContext.Provider value={{ events, addEvent }}>
             {children}
         </EventsContext.Provider>
     );

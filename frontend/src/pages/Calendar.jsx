@@ -54,9 +54,16 @@ export const Calendar = () => {
         };
 
         try {
-            const response = await axios.post(`${API}/api/events`, newEventObj);
+            const response = await axios.post(`${API}/events`, newEventObj);
 
             setEvents(prev => [...prev, response.data]);
+
+            setNewEvent({
+                name: '',
+                date: '',
+                type: 'Meeting',
+                description: ''
+            });
 
             toast.success('Event added successfully!');
         } catch (error) {
@@ -176,9 +183,9 @@ export const Calendar = () => {
                     </div>
                 </div>
                 <div className="grid grid-cols-7 gap-px bg-gray-200">
-                    {days.map((day, dayIdx) => (
+                    {days.map((day, index) => (
                         <div
-                            key={dayIdx}
+                            key={index}
                             className={`bg-white px-2 py-2 h-28 ${!day.isCurrentMonth ? 'bg-gray-50 text-gray-400' : ''}`}
                         >
                             <div className="flex items-center">
@@ -192,7 +199,7 @@ export const Calendar = () => {
                             <div className="mt-1 space-y-1">
                                 {day.events.map((event) => (
                                     <div
-                                        key={event.id}
+                                        key={event._id}
                                         className={`px-2 py-1 text-xs rounded-lg overflow-hidden 
                       ${event.type === 'meeting' ? 'bg-blue-100 text-blue-800' : event.type === 'field-trip' ? 'bg-green-100 text-green-800' : event.type === 'staff' ? 'bg-yellow-100 text-yellow-800' : 'bg-purple-100 text-purple-800'}`}
                                     >
