@@ -4,7 +4,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import {Link} from 'react-router-dom';
 
-// const API = import.meta.env.VITE_API_URL;
+const API = import.meta.env.VITE_API_URL;
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -31,7 +31,7 @@ export default function Login() {
         return;
       }
 
-      const res = await axios.post('http://localhost:4000/api/user/login', formData);
+      const res = await axios.post(`${API}/chat/login`, formData);
       //const res = await axios.post(`${API}/user/login`, formData);
 
       const user = res.data;

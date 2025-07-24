@@ -4,7 +4,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import {Link} from 'react-router-dom';
 
-// const API = import.meta.env.VITE_API_URL;
+const API = import.meta.env.VITE_API_URL;
 
 export default function Register() {
   const [formData, setFormData] = useState({ fullname: "",email: '', password: '' });
@@ -31,11 +31,10 @@ export default function Register() {
         return;
       }
 
-      const res = await axios.post('http://localhost:4000/api/user/register',{
+      const res = await axios.post(`${API}/chat/register`,{
          ...formData,
          role:'user',
         });
-      //const res = await axios.post(`${API}/user/register', formData);
 
       const user = res.data;
 
@@ -44,7 +43,6 @@ export default function Register() {
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
       console.log(err);
-      
       toast.error('Registration failed!');
     }
   };
