@@ -1,36 +1,8 @@
-// const mongoose = require('mongoose');
-// const Employee = require('./employee.model');
-
-// Connect to MongoDB (replace with your connection string)
-// mongoose.connect('mongodb://localhost:27017/yourdb', { useNewUrlParser: true, useUnifiedTopology: true });
-
-// Example: Create a new employee
-// exports.createEmployee = async () => {
-
-//     try {
-//         const emp = new Employee({
-//             firstName: 'Jane',
-//             lastName: 'Doe',
-//             email: 'jane.doe@example.com',
-//             position: 'Developer',
-//             department: 'Engineering',
-//             salary: 70000,
-//         });
-
-//         await emp.save();
-//         console.log('Employee saved:', emp);
-//         res.status(201).json({ message: "Employee added successfully" });
-//     } catch (error) {
-//         console.log('Employee saved:', emp);
-//     }
-// }
-
 const learnersModel = require('../models/learnersModel');
 // const upload = require('../middleware/uploads');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
-// const { log } = require('console');
 
 //Get all employees
 exports.getAllLearners = async (req, res) => {

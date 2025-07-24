@@ -12,7 +12,10 @@ const server = http.createServer(app);
 // Socket.IO setup
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:5173', 'http://localhost:5174'], // Change this to your frontend URL
+    origin: [
+      'http://https://week-8-capstone-codewithmokone-zd6x.vercel.app/', 
+      'https://week-8-capstone-codewithmokone.vercel.app/'
+    ],
     methods: ['GET', 'POST'],
   },
 })
@@ -111,6 +114,7 @@ io.on('connection', (socket) => {
 // Connect to MongoDB and start server
 mongoose
   .connect(process.env.MONGODB_URI)
+  // .connect(process.env.MONGODB_URI_ATLAS)
   .then(() => {
     console.log('Connected to MongoDB');
     app.listen(PORT, () => {

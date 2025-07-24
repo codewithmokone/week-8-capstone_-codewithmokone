@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { LearnerContext } from "../context/LearnerContext";
+import toast from 'react-hot-toast';
 
 export default function AddModal({ title, fields, onSubmit, isOpen, onClose }) {
     // const {addLearner} = useContext(LearnerContext);
@@ -25,6 +26,8 @@ export default function AddModal({ title, fields, onSubmit, isOpen, onClose }) {
         try {
             // addLearner(formData);
             onSubmit(formData);
+            // Show success notification 
+            toast.success('Learner Added.');
             onClose();
         } catch (error) {
             console.log(error);

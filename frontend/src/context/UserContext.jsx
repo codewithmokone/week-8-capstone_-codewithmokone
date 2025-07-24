@@ -35,7 +35,6 @@ export const UsersProvider = ({ children }) => {
     }, []);
 
     console.log(userProfile);
-    
 
     // Create
     const addUser = async (data) => {

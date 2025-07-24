@@ -13,7 +13,7 @@ export default function Learners() {
     const [currentPage, setCurrentPage] = useState(1);
 
 
-    const { addLearner, learnersData, error } = useContext(LearnerContext);
+    const { addLearner, learnersData, setLearnersData } = useContext(LearnerContext);
 
     const learnersPerPage = 8;
 
@@ -40,28 +40,20 @@ export default function Learners() {
 
     // Function for adding a new learner
     const handleAddChild = async (data) => {
-        console.log(data);
+        console.log("New Learner",data);
 
         try {
-            addLearner({ data });
+            // const response = await axios.post("https://week-8-capstone-codewithmokone.onrender.com/api/learners/register", data);
+            // const response = await axios.post("http://localhost:4000/api/learners/register", data);
+            // const newLearner = response.data;
+            // setLearnersData((prev) => [...prev, newLearner]);
+            
+            addLearner(data);
         } catch (error) {
+            console.log("Failed to add learner: ",error);
             error
         }
-        // try {
-
-        //     const response = await axios.post("http://localhost:4000/api/learners/register", data); // <-- your endpoint
-        //     const newLearner = response.data;
-
-        //     // Optionally: add to local state if backend doesn’t return full list
-        //     setLearners((prev) => [...prev, newLearner]);
-
-        //     // Or: refetch the full list instead
-        //     // fetchChildren();
-
-        // } catch (err) {
-        //     console.error("Error adding learner:", err.response?.data || err.message);
-        //     alert("Failed to add learner.");
-        // }
+       
     };
 
     const handleView = (type, data) => {

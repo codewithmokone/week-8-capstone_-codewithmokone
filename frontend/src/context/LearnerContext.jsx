@@ -30,20 +30,20 @@ export const LearnerProvider = ({ children }) => {
             }
         }
 
-        fetchData()
+        fetchData();
     }, []);
-
 
     // Function for creating a new learner
     const addLearner = async (data) => {
-
+        
         try {
             const response = await axios.post(`${API}/learners/register`, data);
+            
             const newLearner = response.data;
 
             setLearnersData((prev) => [...prev, newLearner]);
         } catch (err) {
-            console.error('Failed to add learner', err);
+            console.error('Failed to add learner', err.response?.data || err.message);
         }
     };
 
@@ -73,7 +73,7 @@ export const LearnerProvider = ({ children }) => {
     };
 
     return (
-        <LearnerContext.Provider value={{ learnersData, addLearner, updateLearner, deleteLearner, loading, error }}>
+        <LearnerContext.Provider value={{ learnersData, addLearner, updateLearner, deleteLearner,setLearnersData, loading, error }}>
             {children}
         </LearnerContext.Provider>
     )
