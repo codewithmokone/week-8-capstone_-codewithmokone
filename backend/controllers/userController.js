@@ -59,7 +59,7 @@ exports.getUserProfile = async (req, res) => {
 // Register a new user
 exports.registerUser = async (req, res) => {
   try {
-    const { fullname, email, password,role } = req.body;
+    const { fullname, email, password,role} = req.body;
 
     console.log("User: ", fullname, email, password,role);
 

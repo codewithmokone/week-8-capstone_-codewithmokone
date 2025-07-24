@@ -5,7 +5,7 @@ const ChatUserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    parentOf: {
+    role: {
         type: String,
         required: true
     },

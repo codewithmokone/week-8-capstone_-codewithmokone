@@ -19,7 +19,7 @@ export default function Header () {
             </div>
            <div className="flex items-center gap-4">
                 <p className="text-white">{user?.fullname}</p>
-                <img className="w-8 h-8 bg-gray-600 rounded-[100%]" src="#" alt="" />
+                {/* <img className="w-8 h-8 bg-gray-600 rounded-[100%]" src="#" alt="" /> */}
            </div>
         </header>
     )

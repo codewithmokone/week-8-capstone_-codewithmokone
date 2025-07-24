@@ -59,10 +59,9 @@ exports.getUserProfile = async (req, res) => {
 // Register a new user
 exports.registerUser = async (req, res) => {
   try {
-    const { fullname, email, password } = req.body;
+    const { fullname, email, password,role } = req.body;
 
-    console.log("User: ", fullname, email, password);
-
+    console.log("User: ", fullname, email, password, role);
 
     // Check if the user already exits
     const userExists = await ChatUser.findOne({ email });
@@ -74,21 +73,21 @@ exports.registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user
-    const newUser = new User({
+    const newUser = new ChatUser({
       fullname,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      role
     })
 
-    // const token = generateToken(newUser._id);
-
-    // console.log("New User: ", newUser);
-
-
+    const token = generateToken(newUser._id);
+    
     await newUser.save();
     res.status(201).json({ message: "User registered successfully",token });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error });
+    console.log(error);
+    
   }
 }
 
