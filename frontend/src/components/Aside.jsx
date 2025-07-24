@@ -36,7 +36,7 @@ export default function Aside() {
         { to: "/users", label: "Users", icon: UsersIcon, },
         { to: "/activities", label: "Activities", icon: ActivityIcon, },
         { to: "/calendar", label: "Calendar", icon: CalendarIcon, },
-        { to: "/messages", label: "Messages", icon: MessageCircleIcon, },
+        // { to: "/messages", label: "Messages", icon: MessageCircleIcon, },
     ]
 
     // Other user links
@@ -45,7 +45,7 @@ export default function Aside() {
         { to: "/learners", label: "Learners", icon: UsersIcon, },
         { to: "/activities", label: "Activities", icon: ActivityIcon, },
         { to: "/calendar", label: "Calendar", icon: CalendarIcon, },
-        { to: "/messages", label: "Messages", icon: MessageCircleIcon, },
+        // { to: "/messages", label: "Messages", icon: MessageCircleIcon, },
     ]
 
     // Handles links based on user role

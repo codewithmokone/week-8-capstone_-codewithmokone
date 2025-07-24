@@ -9,7 +9,7 @@ const groupSchema = new mongoose.Schema({
         type: String,
         default: 'G',
     },
-        createdBy: {
+    createdBy: {
         type: String, // user ID or role (e.g. 'admin')
     },
     members: {

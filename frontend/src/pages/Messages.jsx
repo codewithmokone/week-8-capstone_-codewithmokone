@@ -137,7 +137,7 @@ export const Messages = () => {
             conversationId: activeConversation.id,
             message: newMessage,
             sender: "staff",
-            // senderRole: role,
+            senderRole: role,
         })
 
         setMessageInput('');
@@ -155,7 +155,7 @@ export const Messages = () => {
                 name: groupName,
                 avatar: groupName.charAt(0).toUpperCase(),
                 createdBy: user.fullname,
-                time: 'Just now',
+                // time: 'Just now',
                 members: [],
                 messages: [],
             };

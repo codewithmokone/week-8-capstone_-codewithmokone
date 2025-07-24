@@ -10,15 +10,19 @@ const PORT = process.env.PORT || 5000;
 const server = http.createServer(app);
 
 // Socket.IO setup
-const io = new Server(server, {
-  cors: {
-    origin: [
-      'http://https://week-8-capstone-codewithmokone-zd6x.vercel.app', 
-      'https://week-8-capstone-codewithmokone.vercel.app'
-    ],
-    methods: ['GET', 'POST'],
-  },
-})
+// const io = new Server(server, {
+//   cors: {
+//     origin: [
+//       'http://https://week-8-capstone-codewithmokone-zd6x.vercel.app', 
+//       'https://week-8-capstone-codewithmokone.vercel.app'
+//     ],
+//     methods: ['GET', 'POST'],
+//   },
+// })
+
+const io = new Server(server);
+
+
 
 // Socket.IO connection
 io.on('connection', (socket) => {
