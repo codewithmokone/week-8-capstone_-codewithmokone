@@ -118,7 +118,6 @@ export const Messages = () => {
 
         const newMessage = {
             id: uuidv4(),
-            // sender: user.fullname,
             sender: "staff",
             role: role,
             content: messageInput,

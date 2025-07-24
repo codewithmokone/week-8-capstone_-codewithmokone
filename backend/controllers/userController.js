@@ -59,10 +59,9 @@ exports.getUserProfile = async (req, res) => {
 // Register a new user
 exports.registerUser = async (req, res) => {
   try {
-    const { fullname, email, password } = req.body;
+    const { fullname, email, password,role } = req.body;
 
-    console.log("User: ", fullname, email, password);
-
+    console.log("User: ", fullname, email, password,role);
 
     // Check if the user already exits
     const userExists = await userModel.findOne({ email });

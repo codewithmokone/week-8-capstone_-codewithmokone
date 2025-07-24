@@ -24,8 +24,25 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Wait for MongoDB
+        run: |
+          for i in {1..30}; do
+            nc -z localhost 27017 && echo "MongoDB is up!" && exit 0
+            echo "Waiting for MongoDB..."
+            sleep 2
+          done
+          echo "MongoDB failed to start." && exit 1
 
       - name: Run tests
         run: npm test
@@ -39,22 +56,56 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Node
+
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-      - name: Install deps and build
+
+      - name: Install and Build Frontend App
         run: |
-          cd client
-          npm install
+          cd chatapp
+          npm ci
           npm run build
-      - name: Deploy to Vercel
+
+      - name: Deploy Frontend to Vercel
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: ./client
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_CHATAPP }}
+          working-directory: ./chatapp
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+  deploy-admin:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install and Build Admin App
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+
+      - name: Deploy Admin to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_ADMIN }}
+          working-directory: ./frontend
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
   deploy-backend:
     needs: build-and-test
@@ -63,5 +114,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Deploy backend to Render
-        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          RESPONSE=$(curl -s -w "%{http_code}" -o /dev/null -X POST ${{ secrets.RENDER_DEPLOY_HOOK }})
+          if [ "$RESPONSE" -ne 200 ]; then
+            echo "Render deploy failed with status $RESPONSE"
+            exit 1
+          else
+            echo "Render deploy triggered successfully."
+          fi

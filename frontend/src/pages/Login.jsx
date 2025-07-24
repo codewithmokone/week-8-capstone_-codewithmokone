@@ -1,20 +1,20 @@
 import { useContext, useState } from 'react';
-import mainImage from '../assets/images/login-image.jpg'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+
+import mainImage from '../assets/images/login-image.jpg'
 import { UsersContext } from '../context/UserContext';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
-
-  const { setUserProfile } = useContext(UsersContext);
-
   const navigate = useNavigate();
+  const { setUserProfile } = useContext(UsersContext);
 
   // Function for changing input values
   const handleChange = (e) => {
+
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value
@@ -25,17 +25,16 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    // Check data if is valid
+    if (!formData.email || !formData.password) {
+      setError("Please enter both email and password");
+      return;
+    }
+
     try {
-
-      // Check data if is valid
-      if (!formData.email || !formData.password) {
-        setError("Please enter both email and password");
-        return;
-      }
-
       // Send login data to API
       const res = await axios.post('https://week-8-capstone-codewithmokone.onrender.com/api/user/login', formData);
-      
+
       // Store API response
       const userInfo = res.data.user;
 
