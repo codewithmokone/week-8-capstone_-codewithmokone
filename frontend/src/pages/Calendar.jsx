@@ -3,6 +3,8 @@ import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+const API = import.meta.env.VITE_API_URL;
+
 export const Calendar = () => {
     const [events, setEvents] = useState([]);
     const [currentDate, setCurrentDate] = useState(new Date(2023, 5, 1));
@@ -16,7 +18,7 @@ export const Calendar = () => {
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const eventList = await axios.get('http://localhost:4000/api/events/');
+                const eventList = await axios.get(`${API}/events/`);
                 const fetchedEvents = eventList.data;
                 setEvents(fetchedEvents);
                 console.log(fetchedEvents);
@@ -28,9 +30,6 @@ export const Calendar = () => {
 
         fetchEvents();
     }, [])
-
-
-    const baseDate = new Date(2023, 5, 1); // June 2023
 
     const days = Array.from({ length: 35 }, (_, i) => {
         const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1 - 4 + i);
@@ -55,16 +54,13 @@ export const Calendar = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:4000/api/events', newEventObj);
+            const response = await axios.post(`${API}/api/events`, newEventObj);
 
-            // Optionally update local state with the response (e.g., if the API returns the created event)
             setEvents(prev => [...prev, response.data]);
 
-            // Reset form
             toast.success('Event added successfully!');
         } catch (error) {
             console.error('Failed to add event:', error);
-            // You can show a toast or error message here
             toast.error('Failed to add event.');
         }
         setEvents(prev => [...prev, newEventObj]);

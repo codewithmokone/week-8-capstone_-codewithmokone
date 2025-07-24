@@ -5,35 +5,7 @@ import { SearchIcon, FilterIcon, PlusIcon } from 'lucide-react'
 import { EmployeeContext } from "../context/employeeContext";
 import ViewModal from "../components/ViewModal";
 
-// const employeesList = [
-//     {
-//         id: 1,
-//         name: 'Emma Johnson',
-//         age: '4 years',
-//         group: 'Butterflies',
-//         attendance: '95%',
-//         parentName: 'Sarah Johnson',
-//         contactInfo: '(555) 123-4567',
-//     },
-//     {
-//         id: 2,
-//         name: 'Liam Smith',
-//         age: '3 years',
-//         group: 'Bumblebees',
-//         attendance: '92%',
-//         parentName: 'Michael Smith',
-//         contactInfo: '(555) 234-5678',
-//     },
-//     {
-//         id: 2,
-//         name: 'Liam Smith',
-//         age: '3 years',
-//         group: 'Bumblebees',
-//         attendance: '92%',
-//         parentName: 'Michael Smith',
-//         contactInfo: '(555) 234-5678',
-//     },
-// ]
+const API = import.meta.env.VITE_API_URL;
 
 export default function Staff() {
     // const [employees, setEmployees] = useState([]);
@@ -68,14 +40,10 @@ export default function Staff() {
         console.log(data);
 
         try {
-            const response = await axios.post("https://week-8-capstone-codewithmokone.onrender.com/api/employees/register", data); // <-- your endpoint
+            const response = await axios.post(`${API}/employees/register`, data); // <-- your endpoint
             const newEmployee = response.data;
 
-            // Optionally: add to local state if backend doesn’t return full list
             setEmployees((prev) => [...prev, newEmployee]);
-
-            // Or: refetch the full list instead
-            // fetchChildren();
 
         } catch (err) {
             console.error("Error adding employee:", err.response?.data || err.message);
@@ -150,18 +118,6 @@ export default function Staff() {
                                 >
                                     Email
                                 </th>
-                                {/* <th
-                                        scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Contact
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Parent/Guardian
-                                    </th> */}
                                 <th
                                     scope="col"
                                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -237,13 +193,6 @@ export default function Staff() {
                                         >
                                             View
                                         </a>
-                                        {/* <span className="mx-2 text-gray-300">|</span>
-                                        <a
-                                            href="#"
-                                            className="text-blue-600 hover:text-blue-900"
-                                        >
-                                            Edit
-                                        </a> */}
                                     </td>
                                 </tr>
                             ))}

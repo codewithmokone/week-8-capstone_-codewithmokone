@@ -37,9 +37,6 @@ export const LearnerProvider = ({ children }) => {
     // Function for creating a new learner
     const addLearner = async (data) => {
 
-        console.log(data);
-        
-
         try {
             const response = await axios.post(`${API}/learners/register`, data);
             const newLearner = response.data;

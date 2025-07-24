@@ -5,6 +5,8 @@ import axios from "axios";
 import { UsersContext } from "../context/UserContext";
 import ViewModal from "../components/ViewModal";
 
+const API = import.meta.env.VITE_API_URL;
+
 export default function Users() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -37,15 +39,11 @@ export default function Users() {
 
         try {
 
-            const response = await axios.post("https://week-8-capstone-codewithmokone.onrender.com/api/user/register", data); // <-- your endpoint
+            const response = await axios.post(`${API}/user/register`, data);
             const newUser = response.data;
 
-            // Optionally: add to local state if backend doesn’t return full list
             setUser((prev) => [...prev, newUser]);
             alert("New user added.");
-
-            // Or: refetch the full list instead
-            // fetchuserren();
 
         } catch (err) {
             console.error("Error adding user:", err.response?.data || err.message);
@@ -156,13 +154,6 @@ export default function Users() {
                                         >
                                             View
                                         </a>
-                                        {/* <span className="mx-2 text-gray-300">|</span> */}
-                                        {/* <a
-                                            href="#"
-                                            className="text-blue-600 hover:text-blue-900"
-                                        >
-                                            Edit
-                                        </a> */}
                                     </td>
                                 </tr>
                             )) : (<p className="text-center">No added learners.</p>)}

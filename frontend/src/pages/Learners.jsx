@@ -27,7 +27,6 @@ export default function Learners() {
         { name: "fullName", placeholder: "Full Name", required: true },
         { name: "dateOfBirth", placeholder: "Date oF Birth", required: true, type: "date" },
         { name: "gender", placeholder: "Gender", required: true },
-        // { name: "attendance", placeholder: "Attendance" },
         { name: "guardianName", placeholder: "Parent/Guardian Name", required: true },
         { name: "contactNumber", placeholder: "Contact Number", required: true, type: 'number' },
     ];

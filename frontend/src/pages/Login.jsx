@@ -6,6 +6,8 @@ import toast from 'react-hot-toast';
 import mainImage from '../assets/images/login-image.jpg'
 import { UsersContext } from '../context/UserContext';
 
+const API = import.meta.env.VITE_API_URL;
+
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
@@ -33,7 +35,7 @@ export default function Login() {
 
     try {
       // Send login data to API
-      const res = await axios.post('https://week-8-capstone-codewithmokone.onrender.com/api/user/login', formData);
+      const res = await axios.post(`${API}/user/login`, formData);
 
       // Store API response
       const userInfo = res.data.user;
@@ -45,7 +47,7 @@ export default function Login() {
       setUserProfile(userInfo)
 
       // Show success notification 
-      toast.success(`${userInfo.message}`);
+      toast.success('Logged in Success.');
 
       // Navigate to dashboard
       navigate('/dashboard');
