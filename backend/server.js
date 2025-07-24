@@ -13,8 +13,8 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-      'http://https://week-8-capstone-codewithmokone-zd6x.vercel.app/', 
-      'https://week-8-capstone-codewithmokone.vercel.app/'
+      'http://https://week-8-capstone-codewithmokone-zd6x.vercel.app', 
+      'https://week-8-capstone-codewithmokone.vercel.app'
     ],
     methods: ['GET', 'POST'],
   },
