@@ -14,7 +14,7 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 
 // Connect to backend Socket io
-const socket = io(`${import.meta.env.VITE_API_URL}`);
+// const socket = io(`${import.meta.env.VITE_API_URL}`);
 // const API = import.meta.env.VITE_API_URL;
 
 export default function ChatApp() {
@@ -48,52 +48,52 @@ export default function ChatApp() {
     useEffect(() => {
         messageEndRef.current?.scrollIntoView({ behavior: 'smooth' })
 
-        socket.on('newGroupCreated', (group) => {
-            if (!group.id) {
-                group.id = group._id?.toString(); 
-            }
+        // socket.on('newGroupCreated', (group) => {
+        //     if (!group.id) {
+        //         group.id = group._id?.toString(); 
+        //     }
 
-            if (!group.id) {
-                group.id = uuidv4(); 
-            }
+        //     if (!group.id) {
+        //         group.id = uuidv4(); 
+        //     }
 
-            // Prevent duplicates (based on ID)
-            setConversations((prev) => {
-                const alreadyExists = prev.some((conv) => conv.id === group.id);
-                return alreadyExists ? prev : [group, ...prev];
-            });
-        });
+        //     // Prevent duplicates (based on ID)
+        //     setConversations((prev) => {
+        //         const alreadyExists = prev.some((conv) => conv.id === group.id);
+        //         return alreadyExists ? prev : [group, ...prev];
+        //     });
+        // });
 
-        socket.on('receiveMessage', (data) => {
-            setConversations((prev) =>
-                prev.map((conv) =>
-                    conv.id === data.conversationId
-                        ? { ...conv, messages: [...conv.messages, data.message] }
-                        : conv
-                )
-            );
+        // socket.on('receiveMessage', (data) => {
+        //     setConversations((prev) =>
+        //         prev.map((conv) =>
+        //             conv.id === data.conversationId
+        //                 ? { ...conv, messages: [...conv.messages, data.message] }
+        //                 : conv
+        //         )
+        //     );
 
-            setActiveConversation((prev) => {
-                if (prev.id === data.conversationId) {
-                    return {
-                        ...prev,
-                        messages: [...prev.messages, data.message]
-                    };
-                }
-                return prev;
-            });
-        });
+        //     setActiveConversation((prev) => {
+        //         if (prev.id === data.conversationId) {
+        //             return {
+        //                 ...prev,
+        //                 messages: [...prev.messages, data.message]
+        //             };
+        //         }
+        //         return prev;
+        //     });
+        // });
 
-        return () => {
-            socket.off('receiveMessage');
-            socket.off('newGroupCreated');
-        };
+        // return () => {
+        //     socket.off('receiveMessage');
+        //     socket.off('newGroupCreated');
+        // };
 
     }, []);
 
     useEffect(() => {
         if (activeConversation?.id) {
-            socket.emit('joinRoom', activeConversation.id);
+            // socket.emit('joinRoom', activeConversation.id);
         }
     }, [activeConversation])
 
@@ -117,10 +117,10 @@ export default function ChatApp() {
         }
 
         // Emit to server
-        socket.emit('sendMessage', {
-            conversationId: activeConversation.id,
-            message: newMessage,
-        })
+        // socket.emit('sendMessage', {
+        //     conversationId: activeConversation.id,
+        //     message: newMessage,
+        // })
 
         setMessageInput('');
     }

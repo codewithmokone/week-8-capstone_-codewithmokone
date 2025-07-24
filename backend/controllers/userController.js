@@ -59,9 +59,9 @@ exports.getUserProfile = async (req, res) => {
 // Register a new user
 exports.registerUser = async (req, res) => {
   try {
-    const { fullname, email, password,role} = req.body;
+    const { fullName, email, password, contactNumber} = req.body;
 
-    console.log("User: ", fullname, email, password,role);
+    console.log("User: ", fullName, email, password,);
 
     // Check if the user already exits
     const userExists = await userModel.findOne({ email });
@@ -74,15 +74,11 @@ exports.registerUser = async (req, res) => {
 
     // Create a new user
     const newUser = new User({
-      fullname,
+      fullName,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      contactNumber
     })
-
-    // const token = generateToken(newUser._id);
-
-    // console.log("New User: ", newUser);
-
 
     await newUser.save();
     res.status(201).json({ message: "User registered successfully",token });

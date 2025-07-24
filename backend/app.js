@@ -5,15 +5,12 @@ const logger = require('./middleware/logger');
 // const path = require('path');
 // const bodyParser = require('body-parser');
 
-
 // Load environment variables
 dotenv.config();
 
 // Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 5000;
-
-
 
 // Middleware
 app.use(cors());

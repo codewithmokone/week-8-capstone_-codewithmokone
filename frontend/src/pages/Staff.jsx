@@ -52,6 +52,22 @@ export default function Staff() {
         }
     };
 
+    // Function for updating employee 
+    const updateEmployee = async (id, data) => {
+
+        console.log("Context update: ", id, data);
+
+
+        try {
+            const res = await axios.put(`${API}/employees/${id}`, data);
+            setEmployees((prev) =>
+                prev.map((e) => (e._id === id ? res.data : e))
+            );
+        } catch (err) {
+            console.error('Failed to update employee', err);
+        }
+    };
+
     const handleView = (type, data) => {
         setModalType(type);
         setSelectedData(data);
@@ -247,6 +263,7 @@ export default function Staff() {
             <ViewModal
                 isOpen={isViewModalOpen}
                 onClose={() => setIsViewModalOpen(false)}
+                onSubmit={handleAddEmployee}
                 type={'employee'}
                 data={selectedData}
             />

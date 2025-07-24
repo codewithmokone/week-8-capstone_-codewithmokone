@@ -26,7 +26,7 @@ export default function Users() {
 
 
     const userFields = [
-        { name: "fullname", placeholder: "Full Name", required: true },
+        { name: "fullName", placeholder: "Full Name", required: true },
         { name: "email", placeholder: "Email", required: true, type: "email" },
         { name: "password", placeholder: "Password", required: true, type: "password" },
         { name: "contactNumber", placeholder: "Contact", required: true, type: "number" },
@@ -35,16 +35,15 @@ export default function Users() {
     // Function for adding a new learner
     const handleAddUser = async (data) => {
         // e.preventDefault()
+
         console.log(data);
-
+        
         try {
-
             const response = await axios.post(`${API}/user/register`, data);
             const newUser = response.data;
 
             setUser((prev) => [...prev, newUser]);
             alert("New user added.");
-
         } catch (err) {
             console.error("Error adding user:", err.response?.data || err.message);
             alert("Failed to add user.");
@@ -69,8 +68,6 @@ export default function Users() {
     const goToPage = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
-
-
 
     return (
         <main className="space-y-6">
@@ -127,7 +124,7 @@ export default function Users() {
                                         <div className="flex items-center">
                                             <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
                                                 <span className="font-medium text-xs text-blue-800">
-                                                    {user.fullname
+                                                    {user.fullName
                                                         .split(' ')
                                                         .map((n) => n[0])
                                                         .join('')}
@@ -135,7 +132,7 @@ export default function Users() {
                                             </div>
                                             <div className="ml-4">
                                                 <div className="text-sm font-medium text-gray-900">
-                                                    {user.fullname}
+                                                    {user.fullName}
                                                 </div>
                                             </div>
                                         </div>

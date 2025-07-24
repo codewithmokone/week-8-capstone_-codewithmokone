@@ -151,10 +151,10 @@ export default function ViewModal({ isOpen, onClose, data, type }) {
           </>
         ) : (
           <>
-            <p><strong>Username:</strong> {data.username}</p>
+            <p><strong>Username:</strong> {data.fullName}</p>
             <p><strong>Email:</strong> {data.email}</p>
             <p><strong>Role:</strong> {data.role}</p>
-            <p><strong>Status:</strong> {data.status}</p>
+            <p><strong>Contact:</strong> {data.contactNumber}</p>
           </>
         );
       default:

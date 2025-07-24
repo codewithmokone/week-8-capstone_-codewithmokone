@@ -27,8 +27,6 @@ export const EventsProvider = ({ children }) => {
     // Function for creating a activity
     const addEvent = async (data) => {
 
-        console.log(data);
-
         try {
             const res = await axios.post(`${API}/events/`, data);
             const newEvent = res?.data;

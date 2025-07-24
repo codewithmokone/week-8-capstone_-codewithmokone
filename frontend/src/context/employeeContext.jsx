@@ -48,8 +48,11 @@ export const EmployeeProvider = ({ children }) => {
 
     try {
       const res = await axios.put(`${API}/employees/${id}`, data);
+
+      const updatedInfo = res?.data;
+
       setEmployees((prev) =>
-        prev.map((e) => (e._id === id ? res.data : e))
+        prev.map((e) => (e._id === id ? updatedInfo : e))
       );
     } catch (err) {
       console.error('Failed to update employee', err);

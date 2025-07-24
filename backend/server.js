@@ -20,100 +20,100 @@ const server = http.createServer(app);
 //   },
 // })
 
-const io = new Server(server);
+// const io = new Server(server);
 
 
 
 // Socket.IO connection
-io.on('connection', (socket) => {
-  console.log('A user connected:', socket.id);
+// io.on('connection', (socket) => {
+//   console.log('A user connected:', socket.id);
 
-  // Join a global announcement group
-  socket.join('announcement');
+//   // Join a global announcement group
+//   socket.join('announcement');
 
-  // Handle joining specific group rooms
-  socket.on('joinRoom', (roomId) => {
-    if (roomId) {
-      socket.join(roomId.toString());
-      console.log(`Socket ${socket.id} joined room ${roomId}`);
-    }
-  });
+//   // Handle joining specific group rooms
+//   socket.on('joinRoom', (roomId) => {
+//     if (roomId) {
+//       socket.join(roomId.toString());
+//       console.log(`Socket ${socket.id} joined room ${roomId}`);
+//     }
+//   });
 
-  socket.on('createGroup', async (group) => {
-    try {
-      // Make sure group has a valid id
-      group.id = group._id?.toString() || group.id || Date.now().toString();
+//   socket.on('createGroup', async (group) => {
+//     try {
+//       // Make sure group has a valid id
+//       group.id = group._id?.toString() || group.id || Date.now().toString();
 
-      // Broadcast to other clients
-      socket.broadcast.emit('newGroupCreated', group);
+//       // Broadcast to other clients
+//       socket.broadcast.emit('newGroupCreated', group);
 
-      // Join the group creator to the room
-      socket.join(group.id.toString());
+//       // Join the group creator to the room
+//       socket.join(group.id.toString());
 
-      console.log('New group created:', group.name);
-    } catch (err) {
-      console.error('Error creating group:', err);
-    }
+//       console.log('New group created:', group.name);
+//     } catch (err) {
+//       console.error('Error creating group:', err);
+//     }
 
-  });
+//   });
 
 
 
-  socket.on('sendMessage', async ({ conversationId, message}) => {
-    console.log(conversationId, message);
+//   socket.on('sendMessage', async ({ conversationId, message}) => {
+//     console.log(conversationId, message);
 
-    const isAnnouncement = conversationId === 'announcement';
+//     const isAnnouncement = conversationId === 'announcement';
 
-    try {
-      // Restrict announcement messages to staff/admin
-      if (isAnnouncement && message.role !== 'staff' && message.role !== 'admin') {
-        console.warn(`Unauthorized announcement attempt by ${message.role}`);
-        return socket.emit('errorMessage', {
-          error: 'Only staff or admin can send announcements.'
-        });
-      }
+//     try {
+//       // Restrict announcement messages to staff/admin
+//       if (isAnnouncement && message.role !== 'staff' && message.role !== 'admin') {
+//         console.warn(`Unauthorized announcement attempt by ${message.role}`);
+//         return socket.emit('errorMessage', {
+//           error: 'Only staff or admin can send announcements.'
+//         });
+//       }
 
-      let savedMessage = null;
+//       let savedMessage = null;
 
-      if (!isAnnouncement) {
-        // Validate conversationId format
-        const isValidId = mongoose.Types.ObjectId.isValid(conversationId);
-        if (!isValidId || !message.sender) {
-          console.error('Invalid conversationId or missing sender');
-          return;
-        }
+//       if (!isAnnouncement) {
+//         // Validate conversationId format
+//         const isValidId = mongoose.Types.ObjectId.isValid(conversationId);
+//         if (!isValidId || !message.sender) {
+//           console.error('Invalid conversationId or missing sender');
+//           return;
+//         }
 
-        //Save to DB for direct messages
-        savedMessage = await Message.create({
-          conversationId,
-          sender: message.sender,
-          content: message.content,
-          time: message.time,
-          type: 'direct'
-        });
-      }
+//         //Save to DB for direct messages
+//         savedMessage = await Message.create({
+//           conversationId,
+//           sender: message.sender,
+//           content: message.content,
+//           time: message.time,
+//           type: 'direct'
+//         });
+//       }
 
-      const messageToSend = {
-        ...message,
-        _id: savedMessage?._id || Date.now(),
-        sender: message.sender
-      };
+//       const messageToSend = {
+//         ...message,
+//         _id: savedMessage?._id || Date.now(),
+//         sender: message.sender
+//       };
 
-      // Emit to appropriate room
-      io.to(isAnnouncement ? 'announcement' : conversationId.toString()).emit('receiveMessage', {
-        conversationId,
-        message: messageToSend
-      });
+//       // Emit to appropriate room
+//       io.to(isAnnouncement ? 'announcement' : conversationId.toString()).emit('receiveMessage', {
+//         conversationId,
+//         message: messageToSend
+//       });
 
-    } catch (error) {
-      console.error('Error saving message:', error);
-    }
-  })
+//     } catch (error) {
+//       console.error('Error saving message:', error);
+//     }
+//   })
 
-  socket.on('disconnect', () => {
-    console.log('A user disconnected:', socket.id)
-  })
-})
+//   socket.on('disconnect', () => {
+//     console.log('A user disconnected:', socket.id)
+//   })
+// })
 
 // Connect to MongoDB and start server
 mongoose

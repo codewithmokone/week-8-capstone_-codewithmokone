@@ -34,8 +34,6 @@ export const UsersProvider = ({ children }) => {
         fetchData();
     }, []);
 
-    console.log(userProfile);
-
     // Create
     const addUser = async (data) => {
         console.log("add User: ", data);
