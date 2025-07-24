@@ -7,7 +7,7 @@ const API = import.meta.env.VITE_API_URL;
 
 export const Calendar = () => {
     const [events, setEvents] = useState([]);
-    const [currentDate, setCurrentDate] = useState(new Date(2023, 5, 1));
+    const [currentDate, setCurrentDate] = useState(new Date());
     const [newEvent, setNewEvent] = useState({
         name: '',
         date: '',

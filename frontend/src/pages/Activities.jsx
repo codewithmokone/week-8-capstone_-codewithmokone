@@ -10,11 +10,16 @@ import AddModal from '../components/AddModal';
 export default function Activities() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activityList, setActivityList] = useState([]);
+
   const { activities, addActivity } = useContext(ActivityContext)
 
+  
+  
   useEffect(() => {
     setActivityList(activities);
   }, [activities]);
+
+  console.log(activities);
 
   if (!activities) return null;
 
@@ -29,8 +34,7 @@ export default function Activities() {
   // Function for adding a new learner
   const handleAddActivity = async (data) => {
     try {
-      
-      addActivity({ data });
+      addActivity(data);
     } catch (error) {
       console.log(error);
     }

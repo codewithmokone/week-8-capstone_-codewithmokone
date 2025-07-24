@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { createContext, useEffect, useState } from 'react';
 
+const API = import.meta.env.VITE_API_URL;
+
 export const EventsContext = createContext();
 
 export const EventsProvider = ({ children }) => {
@@ -11,10 +13,10 @@ export const EventsProvider = ({ children }) => {
     // Fetch activities from db
     const fetchEvents = async () => {
         try {
-            const eventList = await axios.get('http://localhost:4000/api/events/');
-            const fetchedEvents = eventList.data;
+            const eventList = await axios.get(`${API}/events/`);
+            const fetchedEvents = eventList?.data;
+
             setEvents(fetchedEvents);
-            // console.log(fetchedEvents)
         } catch (err) {
             console.error('Failed to fetch events.', err);
         } finally {

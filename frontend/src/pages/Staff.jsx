@@ -4,6 +4,7 @@ import axios from "axios";
 import { SearchIcon, FilterIcon, PlusIcon } from 'lucide-react'
 import { EmployeeContext } from "../context/employeeContext";
 import ViewModal from "../components/ViewModal";
+import toast from 'react-hot-toast';
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -44,7 +45,7 @@ export default function Staff() {
             const newEmployee = response.data;
 
             setEmployees((prev) => [...prev, newEmployee]);
-
+            toast.success('Employee Added.');
         } catch (err) {
             console.error("Error adding employee:", err.response?.data || err.message);
             alert("Failed to add employee.");

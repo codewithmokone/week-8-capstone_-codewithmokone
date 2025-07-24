@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
 
+const API = import.meta.env.VITE_API_URL;
+
 export const ActivityContext = createContext();
 
 export const ActivityProvider = ({ children }) => {
@@ -11,8 +13,9 @@ export const ActivityProvider = ({ children }) => {
   // Fetch activities from db
   const fetchActivities = async () => {
     try {
-      const res = await axios.get('http://localhost:4000/api/activities');
-      setActivities(res.data); 
+      const res = await axios.get(`${API}/activities/`);
+      const activitiesList = res?.data;
+      setActivities(activitiesList); 
     } catch (err) {
       console.error('Failed to fetch activities', err);
     } finally {
@@ -26,12 +29,10 @@ export const ActivityProvider = ({ children }) => {
     console.log(data);
     
     try {
-      const res = await axios.post('http://localhost:4000/api/activities/', data);
-      const newActivity = res.data;
+      const res = await axios.post(`${API}/activities/`, data);
+      const newActivity = res?.data;
 
-      console.log(newActivity);
-
-      setActivities((prev) => [...prev, res.data]);
+      setActivities((prev) => [...prev, newActivity]);
     } catch (err) {
       console.error('Failed to add activity', err);
     }
