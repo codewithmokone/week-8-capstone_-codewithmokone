@@ -50,3 +50,8 @@ Your project will be automatically submitted when you push to your GitHub Classr
 - [React Documentation](https://react.dev/)
 - [Node.js Documentation](https://nodejs.org/en/docs/)
 - [GitHub Classroom Guide](https://docs.github.com/en/education/manage-coursework-with-github-classroom) 
+
+## Live Demo:
+- Frontend Admin: https://week-8-capstone-codewithmokone.vercel.app/
+- Chat App: https://week-8-capstone-codewithmokone-zd6x.vercel.app/
+- Backend: https://week-8-capstone-codewithmokone.onrender.com

@@ -53,6 +53,7 @@ export default function Login() {
       navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
+      console.log(err.response?.data?.message);
     }
   };
 
@@ -90,8 +91,8 @@ export default function Login() {
           </form>
         </div>
       </div>
-      <div className='w-[50%] h-fit'>
-        <img className='h-screen ' src={mainImage} alt="main_image" />
+      <div className='w-[50%] h-fit object-fill'>
+        <img className='w-full h-screen ' src={mainImage} alt="main_image" />
       </div>
     </main>
   )

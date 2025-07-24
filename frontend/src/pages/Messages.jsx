@@ -11,7 +11,8 @@ import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 
 // Connect to backend Socket io
-const socket = io('http://localhost:4000');
+const socket = io(`${import.meta.env.VITE_SOCKET_URL}`);
+const API = import.meta.env.VITE_API_URL;
 
 export const Messages = () => {
     const initialConversations = [
@@ -159,7 +160,7 @@ export const Messages = () => {
                 messages: [],
             };
 
-            const response = await axios.post('http://localhost:4000/api/groups', newGroup)
+            const response = await axios.post(`${API}/api/groups`, newGroup)
 
             const savedGroup = await response?.data;
 

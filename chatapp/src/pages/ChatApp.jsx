@@ -14,8 +14,8 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 
 // Connect to backend Socket io
-const socket = io('http://localhost:4000');
-
+const socket = io(`${import.meta.env.VITE_API_URL}`);
+// const API = import.meta.env.VITE_API_URL;
 
 export default function ChatApp() {
 
