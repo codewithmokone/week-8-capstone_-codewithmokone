@@ -199,6 +199,6 @@ DELETE	/api/items/:id	Delete item by ID
 - Frontend Admin: https://week-8-capstone-codewithmokone.vercel.app/
 - Backend: https://week-8-capstone-codewithmokone.onrender.com
 
-### Demo account:
+## Demo account:
 - Email: admin@admin.com
 - Password: admin
