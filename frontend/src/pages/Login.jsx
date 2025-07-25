@@ -52,7 +52,7 @@ export default function Login() {
       // Navigate to dashboard
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
+      setError(err.response?.data?.message || 'Invalid credentials');
       console.log(err.response?.data?.message);
     }
   };
