@@ -22,12 +22,10 @@ export const Calendar = () => {
                 const fetchedEvents = eventList.data;
                 setEvents(fetchedEvents);
                 console.log(fetchedEvents);
-
             } catch (error) {
                 console.log(error);
             }
         }
-
         fetchEvents();
     }, [])
 
@@ -120,26 +118,6 @@ export const Calendar = () => {
                         className="inline-flex items-center p-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
                     >
                         <ChevronRightIcon className="h-5 w-5" />
-                    </button>
-                </div>
-                <div className="flex ml-4 space-x-2">
-                    <button
-                        type="button"
-                        className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-                    >
-                        Month
-                    </button>
-                    <button
-                        type="button"
-                        className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100"
-                    >
-                        Week
-                    </button>
-                    <button
-                        type="button"
-                        className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-                    >
-                        Day
                     </button>
                 </div>
             </div>
