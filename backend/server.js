@@ -118,7 +118,7 @@ const server = http.createServer(app);
 // Connect to MongoDB and start server
 mongoose
   // .connect(process.env.MONGODB_URI)
-  .connect(process.env.MONGODB_URI_ATLAS)
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('Connected to MongoDB');
     app.listen(PORT, () => {
