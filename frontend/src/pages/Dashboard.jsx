@@ -114,46 +114,6 @@ export default function Dashboard() {
                 /> */}
             </div>
             {/* Quick Actions */}
-            <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-                {/* <Card title="Announcements" className="lg:col-span-2">
-                    <div className="space-y-4">
-                        <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-100">
-                            <h3 className="font-medium text-yellow-900">
-                                Parent-Teacher Conference
-                            </h3>
-                            <p className="mt-1 text-sm text-yellow-800">
-                                Reminder: Parent-teacher conferences are scheduled for next
-                                Friday. Please prepare progress reports for each child.
-                            </p>
-                        </div>
-                        <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
-                            <h3 className="font-medium text-blue-900">
-                                Field Trip Permission
-                            </h3>
-                            <p className="mt-1 text-sm text-blue-800">
-                                Permission slips for the zoo field trip are due by Wednesday. 15
-                                forms have been received so far.
-                            </p>
-                        </div>
-                    </div>
-                </Card> */}
-                {/* <Card title="Quick Actions">
-                    <div className="space-y-3">
-                        <button className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700">
-                            Take Attendance
-                        </button>
-                        <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                            Add New Learner
-                        </button>
-                        <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                            Add New Employee
-                        </button>
-                        <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                            Message Parents
-                        </button>
-                    </div>
-                </Card> */}
-            </div>
             <div className="bg-white shadow overflow-hidden rounded-lg">
                 <div className="px-4 py-5 sm:px-6">
                     <h3 className="text-lg leading-6 font-medium text-gray-900">
