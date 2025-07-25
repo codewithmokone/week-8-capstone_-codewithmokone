@@ -51,7 +51,154 @@ Your project will be automatically submitted when you push to your GitHub Classr
 - [Node.js Documentation](https://nodejs.org/en/docs/)
 - [GitHub Classroom Guide](https://docs.github.com/en/education/manage-coursework-with-github-classroom) 
 
+## Features
+- User authentication and authorization
+- CRUD operations with MongoDB
+- RESTful API built with Express and Node.js
+- Responsive frontend built with React
+- State management with Context API or Redux (optional)
+- Form validation and error handling
+- Environment variables for configuration
+- Deployment-ready setup
+
+## Technologies Used
+- Frontend: React, React Router, Axios, CSS/SCSS
+- Backend: Node.js, Express.js
+
+- Database: MongoDB (using Mongoose ORM)
+
+- Other: JWT for authentication, dotenv for environment variables
+
+## Getting Started
+### Prerequisites
+- Node.js (v14 or higher recommended)
+
+- npm or yarn
+
+- MongoDB instance (local or cloud, e.g., MongoDB Atlas)
+
+## Installation
+1. Clone the repo
+
+```
+bash
+Copy
+Edit
+git clone https://github.com/your-username/mern-project.git
+cd mern-project
+```
+
+2. Setup backend
+```
+bash
+Copy
+Edit
+cd backend
+npm install
+```
+
+
+3. Setup frontend
+```
+bash
+Copy
+Edit
+cd ../frontend
+npm install
+```
+
+
+## Environment Variables
+- Create a .env file in the backend directory:
+```
+env
+Copy
+Edit
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+```
+
+## Running the Application
+- Open two terminal windows or tabs:
+
+1. Run the backend server:
+```
+bash
+Copy
+Edit
+cd backend
+npm run dev   # or `npm start` depending on your setup
+```
+
+2. Run the frontend development server:
+```
+bash
+Copy
+Edit
+cd frontend
+npm start
+```
+
+## Project Structure
+```
+bash
+Copy
+Edit
+/backend
+  ├── controllers
+  ├── models
+  ├── routes
+  ├── middleware
+  ├── server.js
+  └── .env
+
+/frontend
+  ├── public
+  ├── src
+      ├── components
+      ├── context
+      ├── pages
+      ├── utils
+      └── App.js
+```
+Available Scripts
+Backend
+npm run dev - Start backend with nodemon (development)
+
+npm start - Start backend (production)
+
+Frontend
+npm start - Start React development server
+
+npm run build - Build React app for production
+
+API Endpoints (Example)
+Method	Endpoint	Description
+GET	/api/users	Get all users
+POST	/api/users/register	Register a new user
+POST	/api/users/login	User login
+GET	/api/items	Get all items (example)
+POST	/api/items	Create new item
+PUT	/api/items/:id	Update item by ID
+DELETE	/api/items/:id	Delete item by ID
+
+## Contributing
+### Contributions are welcome! Please:
+1. Fork the repository
+2. Create your feature branch (git checkout -b feature/your-feature)
+3. Commit your changes (git commit -m 'Add some feature')
+4. Push to the branch (git push origin feature/your-feature)
+5. Open a pull request
+
+## License
+- This project is licensed under the MIT License - see the LICENSE file for details.
+
+
 ## Live Demo:
 - Frontend Admin: https://week-8-capstone-codewithmokone.vercel.app/
-- Chat App: https://week-8-capstone-codewithmokone-zd6x.vercel.app/
 - Backend: https://week-8-capstone-codewithmokone.onrender.com
+
+### Demo account:
+- Email: admin@admin.com
+- Password: admin
