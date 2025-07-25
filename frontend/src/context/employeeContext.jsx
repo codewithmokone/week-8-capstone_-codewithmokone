@@ -47,9 +47,12 @@ export const EmployeeProvider = ({ children }) => {
     
 
     try {
-      const res = await axios.put(`${API}/employees/${id}`, data);
-
+      // const res = await axios.put(`${API}/employees/${id}`, data);
+      const res = await axios.put(`http://localhost:4000/api/employees/${id}`, data);
       const updatedInfo = res?.data;
+
+      console.log(updatedInfo);
+      
 
       setEmployees((prev) =>
         prev.map((e) => (e._id === id ? updatedInfo : e))

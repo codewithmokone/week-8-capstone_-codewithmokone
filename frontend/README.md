@@ -14,5 +14,4 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## Live Demo:
 - Frontend Admin: https://week-8-capstone-codewithmokone.vercel.app/
-- Chat App: https://week-8-capstone-codewithmokone-zd6x.vercel.app/
 - Backend: https://week-8-capstone-codewithmokone.onrender.com

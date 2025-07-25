@@ -135,19 +135,9 @@ export default function ViewModal({ isOpen, onClose, data, type }) {
       case "user":
         return isEditing ? (
           <>
-            <input type="text" name="username" value={formData.username || ""} onChange={handleChange} placeholder="Username" className="input" />
+            <input type="text" name="fullName" value={formData.fullName || ""} onChange={handleChange} placeholder="Username" className="input" />
             <input type="email" name="email" value={formData.email || ""} onChange={handleChange} placeholder="Email" className="input" />
-            <select name="role" value={formData.role || ""} onChange={handleChange} className="input">
-              <option value="">Select Role</option>
-              <option value="admin">Admin</option>
-              <option value="teacher">Teacher</option>
-              <option value="student">Student</option>
-            </select>
-            <select name="status" value={formData.status || ""} onChange={handleChange} className="input">
-              <option value="">Select Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
+            <input type="text" name="contact" value={formData.contactNumber || ""} onChange={handleChange} placeholder="Contact" className="input" />
           </>
         ) : (
           <>

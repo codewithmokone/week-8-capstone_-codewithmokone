@@ -56,10 +56,10 @@ exports.getAllEmployees = async (req, res) => {
 };
 
 // Get a single post
-exports.getPostById = async (req, res) => {
+exports.getEmplyeeById = async (req, res) => {
   try {
     const post = await employeeModel.findById(req.params.id);
-    if (!post) return res.status(404).json({ message: 'Post not found' });
+    if (!post) return res.status(404).json({ message: 'Employee not found' });
     res.status(200).json(post);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -79,7 +79,7 @@ exports.createEmployees = async (req, res) => {
   try {
     // const imageData = req.file ? fs.readFileSync(path.join(__dirname + '../../uploads/' + req.file.filename)) : null;
 
-    const newEmployee = new employeeModel({
+    const newEmployee = await employeeModel.create({
       fullName,
       email,
       position,
@@ -87,14 +87,9 @@ exports.createEmployees = async (req, res) => {
       department,
       address,
       dateHired,
-      // featuredImage: {
-      //   data: imageData,
-      //   contentType: 'image/png'
-      // },
     });
 
-    const employee = await employeeModel.create(newEmployee)
-    res.status(201).json(employee);
+    res.status(201).json(newEmployee);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -102,16 +97,12 @@ exports.createEmployees = async (req, res) => {
 
 // Update a post
 exports.updateEmployee = async (req, res) => {
-  console.log(req.body);
+  console.log("Info to update: ",req.body);
 
   try {
     const updateData = {
       ...req.body,
     }
-
-    if(req.file?.filename){
-        updateData.featuredImage = req.file?.filename;
-      }
 
     const updatedEmployee = await employeeModel.findByIdAndUpdate(
       req.params.id,
@@ -137,34 +128,3 @@ exports.deleteEmployee = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-// POST /api/posts/:postId/comments
-// exports.addComment = async (req, res) => {
-//   const { id } = req.params;
-
-//   const { userId, content } = req.body;
-
-//   console.log("User Id:", userId);
-//   console.log("Content:", content);
-//   console.log("Post Id:", id);
-
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res.status(400).json({ error: 'Invalid post ID' });
-//   }
-
-//   if (!userId || !content) {
-//     return res.status(400).json({ error: 'User ID and comment content are required' });
-//   }
-
-//   try {
-//     const post = await Post.findById(id);
-//     if (!post) return res.status(404).json({ error: 'Post not found' });
-
-//     await post.addComment(userId, content);
-
-//     res.status(200).json({ message: 'Comment added successfully', comments: post.comments });
-//   } catch (error) {
-//     console.error('Error adding comment:', error);
-//     res.status(500).json({ error: 'Internal server error' });
-//   }
-// };

@@ -86,3 +86,8 @@ Feel free to come up with your own idea that demonstrates your skills and intere
    - Screenshots of key features
 8. Your final submission will be automatically graded based on the criteria in the autograding configuration
 9. The instructor will review your complete project after the final push 
+
+
+## Live Demo:
+- Frontend Admin: https://week-8-capstone-codewithmokone.vercel.app/
+- Backend: https://week-8-capstone-codewithmokone.onrender.com

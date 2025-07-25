@@ -24,7 +24,6 @@ export default function Users() {
     const currentUsers = usersData?.slice(indexOfFirstUser, indexOfLastUser);
     const totalPages = Math.ceil((usersData?.length || 0) / usersPerPage);
 
-
     const userFields = [
         { name: "fullName", placeholder: "Full Name", required: true },
         { name: "email", placeholder: "Email", required: true, type: "email" },
@@ -35,18 +34,18 @@ export default function Users() {
     // Function for adding a new learner
     const handleAddUser = async (data) => {
         // e.preventDefault()
-
-        console.log(data);
+        console.log("New user: ",data);
         
         try {
             const response = await axios.post(`${API}/user/register`, data);
-            const newUser = response.data;
+            const newUser = response?.data;
 
             setUser((prev) => [...prev, newUser]);
+            
             alert("New user added.");
         } catch (err) {
             console.error("Error adding user:", err.response?.data || err.message);
-            alert("Failed to add user.");
+            // alert("Failed to add user.");
         }
     };
 

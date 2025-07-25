@@ -26,53 +26,6 @@ const LearnerSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-
-  // guardians: [
-  //   {
-  //     name: { type: String, required: true },
-  //     relationship: { type: String, required: true },
-  //     phone: { type: String, required: true },
-  //     email: { type: String },
-  //   },
-  // ],
-
-  // emergencyContacts: [
-  //   {
-  //     name: { type: String, required: true },
-  //     phone: { type: String, required: true },
-  //     relationship: { type: String },
-  //   },
-  // ],
-
-  // allergies: {
-  //   type: [String], // list of allergy names
-  //   default: [],
-  // },
-
-  // specialNeeds: {
-  //   type: String,
-  // },
-
-  // enrollmentDate: {
-  //   type: Date,
-  //   default: Date.now,
-  // },
-
-  // attendanceRecords: [
-  //   {
-  //     date: { type: Date, required: true },
-  //     present: { type: Boolean, required: true },
-  //   },
-  // ],
-
-  // notes: {
-  //   type: String,
-  // },
-
-  // isActive: {
-  //   type: Boolean,
-  //   default: true,
-  // },
-});
+},{timestamps: true});
 
 module.exports = mongoose.model('Learner', LearnerSchema);

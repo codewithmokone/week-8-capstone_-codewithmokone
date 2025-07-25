@@ -13,21 +13,16 @@ exports.getActivities = async (req, res) => {
 // POST create new activity
 exports.createActivity = async (req, res) => {
   console.log(req.body);
-
   try {
     const { title, category, description, time, status } = req.body;
 
-    const newActivity = new Activity({
-      title,
-      category,
-      description,
-      time,
-      status,
-    });
+    const activityData = {title, category, description, time, status };
 
-    const activity = await Activity.create(newActivity)
+    const activity = await Activity.create(activityData)
     res.status(201).json(activity);
   } catch (error) {
+    console.log("Failed to create the  activity.", error);
+    
     res.status(400).json({ message: error.message });
   }
 }

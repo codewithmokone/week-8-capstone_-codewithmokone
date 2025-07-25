@@ -30,11 +30,11 @@ exports.getAllLearners = async (req, res) => {
 };
 
 // Get a single post
-exports.getPostById = async (req, res) => {
+exports.getLearnerById = async (req, res) => {
   try {
-    const post = await employeeModel.findById(req.params.id);
-    if (!post) return res.status(404).json({ message: 'Post not found' });
-    res.status(200).json(post);
+    const learner = await learnersModel.findById(req.params.id);
+    if (!learner) return res.status(404).json({ message: 'Learner not found' });
+    res.status(200).json(learner);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -49,7 +49,7 @@ exports.createLearner = async (req, res) => {
   try {
     // const imageData = req.file ? fs.readFileSync(path.join(__dirname + '../../uploads/' + req.file.filename)) : null;
 
-    const newLearner = new learnersModel({
+    const newLearner = {
       fullName,
       dateOfBirth,
       gender,
@@ -59,7 +59,7 @@ exports.createLearner = async (req, res) => {
       //   data: imageData,
       //   contentType: 'image/png'
       // }
-    });
+    };
 
     const learner = await learnersModel.create(newLearner)
     res.status(201).json(learner);
