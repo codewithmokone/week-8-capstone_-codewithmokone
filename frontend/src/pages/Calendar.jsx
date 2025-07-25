@@ -87,7 +87,6 @@ export const Calendar = () => {
         setCurrentDate(new Date(today.getFullYear(), today.getMonth(), 1));
     };
 
-
     return (
         <div className="space-y-6">
             <div>

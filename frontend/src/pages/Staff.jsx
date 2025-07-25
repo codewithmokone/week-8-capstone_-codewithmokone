@@ -41,8 +41,8 @@ export default function Staff() {
         console.log(data);
 
         try {
-            // const response = await axios.post(`${API}/employees/register`, data); // <-- your endpoint
-            const response = await axios.post(`http://localhost:4000/api/employees/register`, data); // <-- your endpoint
+            const response = await axios.post(`${API}/employees/register`, data); // <-- your endpoint
+        
             const newEmployee = response.data;
 
             setEmployees((prev) => [...prev, newEmployee]);

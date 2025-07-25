@@ -13,8 +13,6 @@ export default function Activities() {
 
   const { activities, addActivity } = useContext(ActivityContext)
 
-  
-  
   useEffect(() => {
     setActivityList(activities);
   }, [activities]);
