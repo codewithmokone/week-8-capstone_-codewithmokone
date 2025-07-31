@@ -9,6 +9,7 @@ import Activities from './pages/Activities'
 import { Calendar } from './pages/Calendar'
 import { Toaster } from 'react-hot-toast';
 import { Messages } from './pages/Messages'
+import UserProfile from './pages/UserProfile'
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
           <Route path='/staff' element={<Staff />} />
           <Route path='/activities' element={<Activities />} />
           <Route path='/calendar' element={<Calendar />} />
+          <Route path='/profile' element={<UserProfile />} />
           {/* <Route path='/messages' element={<Messages />} /> */}
         </Route>
       </Routes>

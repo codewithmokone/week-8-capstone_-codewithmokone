@@ -77,11 +77,6 @@ export const UsersProvider = ({ children }) => {
         try {
             const res = await axios.post('https://week-8-capstone-codewithmokone.onrender.com/api/user/login', formData);
 
-            // if (res.ok) {
-            //     const userInfo = res.data;
-            //     setUserProfile(userInfo);
-            //     console.log(userInfo);
-            // }
               const userInfo = res.data;
             //   setUserProfile(userInfo);
               console.log(userInfo);

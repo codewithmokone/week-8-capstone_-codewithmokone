@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
     HomeIcon,
     UsersIcon,
+    UserIcon,
     CalendarIcon,
     ActivityIcon,
     MessageCircleIcon,
@@ -84,6 +85,18 @@ export default function Aside() {
                     ))}
                 </nav>
                 <div className="px-2 py-4 space-y-1">
+                    <NavLink
+                            to={'/profile'}
+                            className={({ isActive }) =>
+                                `px-7 py-2 rounded transition-colors flex gap-3 ${isActive
+                                    ? "text-gray-600 font-semibold bg-white"
+                                    : "text-gray-700 dark:text-gray-200 hover:text-blue-500"
+                                }`
+                            }
+                        >
+                            <UserIcon/>
+                            Profile
+                        </NavLink>
                     <button className="flex w-full items-center px-8 py-3 text-sm font-medium text-white rounded-lg hover:bg-purple-50 hover:text-gray-600"
                         onClick={handleLogout}
                     >

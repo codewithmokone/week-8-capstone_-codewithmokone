@@ -137,6 +137,7 @@ export default function ViewModal({ isOpen, onClose, data, type }) {
           <>
             <input type="text" name="fullName" value={formData.fullName || ""} onChange={handleChange} placeholder="Username" className="input" />
             <input type="email" name="email" value={formData.email || ""} onChange={handleChange} placeholder="Email" className="input" />
+            <input type="role" name="role" value={formData.role || ""} onChange={handleChange} placeholder="Email" className="input" />
             <input type="text" name="contact" value={formData.contactNumber || ""} onChange={handleChange} placeholder="Contact" className="input" />
           </>
         ) : (

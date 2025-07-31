@@ -44,7 +44,7 @@ export default function Login() {
       localStorage.setItem('user', JSON.stringify(userInfo));
 
       // Send user profile to user context
-      setUserProfile(userInfo)
+      setUserProfile(userInfo);
 
       // Show success notification 
       toast.success('Logged in Success.');
