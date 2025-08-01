@@ -198,6 +198,7 @@ DELETE	/api/items/:id	Delete item by ID
 ## Live Demo:
 - Frontend Admin: https://week-8-capstone-codewithmokone.vercel.app/
 - Backend: https://week-8-capstone-codewithmokone.onrender.com
+- Figma: https://www.figma.com/design/tKxNXgKp7QVTH4ZMCv4cUs/PLP-MERN?node-id=0-1&t=rfPfi8Tc6dd3mrB9-1
 
 ## Demo account:
 - Email: admin@admin.com
