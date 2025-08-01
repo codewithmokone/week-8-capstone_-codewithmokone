@@ -4,6 +4,7 @@ import AddModal from "../components/AddModal";
 import axios from "axios";
 import { UsersContext } from "../context/UserContext";
 import ViewModal from "../components/ViewModal";
+import toast from "react-hot-toast";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -14,7 +15,7 @@ export default function Users() {
     const [modalType, setModalType] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
 
-    const { addUser, usersData, error } = useContext(UsersContext);
+    const { addUser, usersData, error,setUsersData } = useContext(UsersContext);
 
     const usersPerPage = 8;
 
@@ -33,19 +34,18 @@ export default function Users() {
 
     // Function for adding a new learner
     const handleAddUser = async (data) => {
-        // e.preventDefault()
-        console.log("New user: ",data);
         
         try {
             const response = await axios.post(`${API}/user/register`, data);
             const newUser = response?.data;
 
-            setUser((prev) => [...prev, newUser]);
+            setUsersData((prev) => [...prev, newUser]);
             
-            alert("New user added.");
+            // inside handleAddUser
+            toast.success("New user added!");
         } catch (err) {
             console.error("Error adding user:", err.response?.data || err.message);
-            // alert("Failed to add user.");
+            toast.error("Failed to add user!");
         }
     };
 
