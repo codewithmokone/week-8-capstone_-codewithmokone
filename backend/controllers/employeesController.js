@@ -1,30 +1,3 @@
-// const mongoose = require('mongoose');
-// const Employee = require('./employee.model');
-
-// Connect to MongoDB (replace with your connection string)
-// mongoose.connect('mongodb://localhost:27017/yourdb', { useNewUrlParser: true, useUnifiedTopology: true });
-
-// Example: Create a new employee
-// exports.createEmployee = async () => {
-
-//     try {
-//         const emp = new Employee({
-//             firstName: 'Jane',
-//             lastName: 'Doe',
-//             email: 'jane.doe@example.com',
-//             position: 'Developer',
-//             department: 'Engineering',
-//             salary: 70000,
-//         });
-
-//         await emp.save();
-//         console.log('Employee saved:', emp);
-//         res.status(201).json({ message: "Employee added successfully" });
-//     } catch (error) {
-//         console.log('Employee saved:', emp);
-//     }
-// }
-
 const employeeModel = require('../models/employeesModel');
 // const upload = require('../middleware/uploads');
 // const fs = require('fs');
@@ -55,7 +28,7 @@ exports.getAllEmployees = async (req, res) => {
   }
 };
 
-// Get a single post
+// Get a single employee
 exports.getEmplyeeById = async (req, res) => {
   try {
     const post = await employeeModel.findById(req.params.id);
@@ -66,7 +39,7 @@ exports.getEmplyeeById = async (req, res) => {
   }
 };
 
-// Create a new post
+// Create a new employee
 exports.createEmployees = async (req, res) => {
   const { fullName,
     email,
@@ -95,7 +68,7 @@ exports.createEmployees = async (req, res) => {
   }
 }
 
-// Update a post
+// Update a employee
 exports.updateEmployee = async (req, res) => {
   console.log("Info to update: ",req.body);
 

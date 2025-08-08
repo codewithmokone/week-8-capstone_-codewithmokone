@@ -11,11 +11,11 @@ const JWT_SECRET = process.env.JWT_SECRET || 'asdgtevdseewffgdbbt';
 // Function to generate token
 const generateToken = (userId) => {
   console.log(userId);
-  
+
   const token = jwt.sign({ id: userId }, JWT_SECRET, { expiresIn: '30d' });
-  
+
   console.log(token);
-  
+
   return token;
 };
 
@@ -49,8 +49,8 @@ exports.getUserProfile = async (req, res) => {
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     res.json(user);
-    console.log("User profile: ",user);
-    
+    console.log("User profile: ", user);
+
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -59,7 +59,7 @@ exports.getUserProfile = async (req, res) => {
 // Register a new user
 exports.registerUser = async (req, res) => {
   try {
-    const { fullName, email, password, contactNumber} = req.body;
+    const { fullName, email, password, role, contactNumber } = req.body;
 
     console.log("User: ", fullName, email, password,);
 
@@ -84,7 +84,7 @@ exports.registerUser = async (req, res) => {
 
     const token = jwt.sign({ id: newUser._id }, JWT_SECRET, { expiresIn: '30d' });
 
-    res.status(201).json({ message: "User registered successfully",token });
+    res.status(201).json({ message: "User registered successfully", token });
   } catch (error) {
     console.error("Register error:", error);
     res.status(500).json({ message: "Server error", error: error });
@@ -112,16 +112,50 @@ exports.loginUser = async (req, res) => {
 
     // Generate JWT token
     const token = generateToken(userId);
-    
+
 
     // console.log("User Info: ", user);
-    res.json({ message: "Login successful", user: user, token:token});
+    res.json({ message: "Login successful", user: user, token: token });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error });
   }
 }
 
-// Delete a post
+// Update a user
+exports.updateUser = async (req, res) => {
+  console.log("Info to update: ", req.body);
+  const { fullName, email, password,role, contactNumber } = req.body;
+
+  try {
+    // Hash the password
+    const updateData = {
+      fullName,
+      email,
+      role,
+      contactNumber
+    }
+
+    // Only hash and include password if it's provided and not empty
+    if (password && password.trim() !== "") {
+      updateData.password = await bcrypt.hash(password, 10);
+    }
+
+    const updatedUser = await userModel.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) return res.status(404).json({ message: 'User not found' });
+
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    console.error("Error updating user:", err);
+    res.status(400).json({ message: err.message });
+  }
+};
+
+// Delete a user
 exports.deleteUser = async (req, res) => {
   console.log(req.params.id);
 
