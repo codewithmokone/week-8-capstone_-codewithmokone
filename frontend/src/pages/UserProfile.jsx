@@ -14,41 +14,12 @@ export default function UserProfile() {
 
     const { userProfile, error } = useContext(UsersContext);
 
-    const userFields = [
-        { name: "fullName", placeholder: "Full Name", required: true },
-        { name: "email", placeholder: "Email", required: true, type: "email" },
-        { name: "role", placeholder: "Role", required: true, type: "text" },
-        { name: "contactNumber", placeholder: "Contact", required: true, type: "number" },
-    ];
-
-    // Function for adding a new learner
-    const handleAddUser = async (data) => {
-        // e.preventDefault()
-        console.log("New user: ", data);
-
-        try {
-            const response = await axios.post(`${API}/user/register`, data);
-            const newUser = response?.data;
-
-            setUser((prev) => [...prev, newUser]);
-
-            alert("New user added.");
-        } catch (err) {
-            console.error("Error adding user:", err.response?.data || err.message);
-            // alert("Failed to add user.");
-        }
-    };
-
     // Function for view modal inputs
     const handleEditClick = () => {
         setModalType('user');
         setSelectedData(userProfile);
         setIsViewModalOpen(true);
     };
-
-    console.log(userProfile);
-
-
 
     return (
         <main className="space-y-6">

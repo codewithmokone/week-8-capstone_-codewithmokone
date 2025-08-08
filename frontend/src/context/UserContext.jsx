@@ -51,11 +51,10 @@ export const UsersProvider = ({ children }) => {
     const updateUser = async (id, updatedData) => {
         try {
             const res = await axios.put(`${API}/users/${id}`, updatedData);
-            setLearners((prev) =>
-                prev.map((l) => (l._id === id ? res.data : l))
-            );
+            setUserProfile(res.data);
         } catch (err) {
-            console.error('Failed to update user', err);
+            console.error('Failed to update user.', err);
+            alert('Failed to update user.')
         }
     };
 
